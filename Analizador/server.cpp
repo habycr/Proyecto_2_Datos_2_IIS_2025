@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+
 int main(){
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
     sockaddr_in addr{};
@@ -31,3 +32,5 @@ int main(){
     close(server_socket);
     return 0;
 }
+
+
