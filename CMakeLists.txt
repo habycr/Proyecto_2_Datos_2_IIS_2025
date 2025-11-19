@@ -1,6 +1,10 @@
 # 🔧 Configura VCPKG como toolchain (antes del project)
-set(CMAKE_TOOLCHAIN_FILE "C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake"
+set(CMAKE_TOOLCHAIN_FILE "C:/Users/dylan/vcpkg/scripts/buildsystems/vcpkg.cmake"
         CACHE STRING "Vcpkg toolchain")
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 
 cmake_minimum_required(VERSION 3.15)
 project(CodeCoachDBTest)
@@ -12,6 +16,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 📦 MongoDB (C++ driver)
 find_package(mongocxx CONFIG REQUIRED)
 find_package(bsoncxx CONFIG REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
+
 
 # 📦 Crow (framework HTTP) – solo para los includes
 find_package(crow CONFIG REQUIRED)
