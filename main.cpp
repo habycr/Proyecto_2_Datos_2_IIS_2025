@@ -28,7 +28,6 @@ int main() {
             )
         ))
     );
-
     auto result = collection.insert_one(doc.view());
     std::cout << "Documento insertado con ID: "
               << result->inserted_id().get_oid().value.to_string() << std::endl;
