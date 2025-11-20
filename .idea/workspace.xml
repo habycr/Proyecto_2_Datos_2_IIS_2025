@@ -33,9 +33,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="">
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="CMakelists actualizado">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,12 +67,22 @@
     &quot;assignee&quot;: &quot;Kasyrgan04&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/habycr/Proyecto_2_Datos_2_IIS_2025.git&quot;,
-    &quot;accountId&quot;: &quot;89ff53d5-7a70-473f-89ab-0d1d9dae57b1&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/habycr/Proyecto_2_Datos_2_IIS_2025.git",
+    "accountId": "89ff53d5-7a70-473f-89ab-0d1d9dae57b1"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "habycr",
+    "repository": "Proyecto_2_Datos_2_IIS_2025"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <hideBySeverity>
       <option value="300" />
@@ -109,7 +118,7 @@
     "RunOnceActivity.west.config.association.type.startup.service": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "Javier",
+    "git-widget-placeholder": "#6 on Javier",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/dylan/source/repos/Proyecto_2_Datos_2_IIS_2025",
     "node.js.detected.package.eslint": "true",
@@ -172,7 +181,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762576858259</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="CMakelists actualizado">
+      <option name="closed" value="true" />
+      <created>1763597086830</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763597086831</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,6 +210,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="CMakelists actualizado" />
+    <option name="LAST_COMMIT_MESSAGE" value="CMakelists actualizado" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
