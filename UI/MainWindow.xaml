@@ -5,76 +5,111 @@
         Title="CodeCoach" Width="1400" Height="900"
         Background="#1e1e1e">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <!-- NUEVO: filas para barra superior + contenido -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <ListBox x:Name="ProblemList"
-                 Grid.Column="0"
-                 Background="#252526"
-                 Foreground="White"
-                 BorderThickness="0"
-                 SelectionChanged="ProblemList_SelectionChanged"
-                 />
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
-            <TabControl Grid.Row="0"
-                        Background="#2d2d30"
-                        Foreground="White">
-                <TabItem Header="Descripción">
-                    <ScrollViewer>
-                        <TextBlock x:Name="DescriptionText"
-                                   TextWrapping="Wrap"
-                                   Foreground="White"
-                                   Margin="10"/>
-                    </ScrollViewer>
-                </TabItem>
-            </TabControl>
-            <Grid Grid.Row="1">
+        <!-- Barra superior con botón de Modo Administrador -->
+        <Border Grid.Row="0" Background="#2d2d30" Padding="10,5">
+            <DockPanel>
+                <TextBlock Text="CodeCoach"
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           FontSize="16"
+                           DockPanel.Dock="Left" />
+
+                <Button x:Name="AdminButton"
+                        Content="⚙️ Modo Administrador"
+                        Click="AdminButton_Click"
+                        Padding="10,6"
+                        Background="#0e639c"
+                        Foreground="White"
+                        BorderThickness="0"
+                        HorizontalAlignment="Right"
+                        Cursor="Hand"
+                        DockPanel.Dock="Right"/>
+            </DockPanel>
+        </Border>
+
+        <!-- TODO TU CONTENIDO EXISTENTE VA AQUÍ, EN LA FILA 1 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="ProblemList"
+                     Grid.Column="0"
+                     Background="#252526"
+                     Foreground="White"
+                     BorderThickness="0"
+                     SelectionChanged="ProblemList_SelectionChanged" />
+
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" 
-                            Grid.Row="0"
-                            Margin="5">
-                    
-                    <Button Content="Run"
-                            
-                            Click="Run_Click"/>
-                    <Button Content="Submit"
-                            
-                            Click="Submit_Click"/>
-                </StackPanel>
-                <avalonedit:TextEditor x:Name="CodeEditor"
-                                       Grid.Row="1"
-                                       FontFamily="Consolas"
-                                       FontSize="14"
-                                       SyntaxHighlighting="C++"
-                                       Background="#1e1e1e"
-                                       Foreground="White"
-                                       ShowLineNumbers="True"/>
-                <TabControl Grid.Row="2"
+
+                <TabControl Grid.Row="0"
                             Background="#2d2d30"
                             Foreground="White">
-                    <TabItem Header="Console">
-                        <TextBox x:Name="ConsoleOutput"
-                                 Foreground="White"
-                                 Background="#1e1e1e"
-                                 TextWrapping="Wrap"
-                                 AcceptsReturn="False"/>
-                    </TabItem>
-                    <TabItem Header="Output">
-                        <TextBox x:Name="ResultOutput"
-                                 Foreground="White"
-                                 Background="#1e1e1e"/>
+                    <TabItem Header="Descripción">
+                        <ScrollViewer>
+                            <TextBlock x:Name="DescriptionText"
+                                       TextWrapping="Wrap"
+                                       Foreground="White"
+                                       Margin="10"/>
+                        </ScrollViewer>
                     </TabItem>
                 </TabControl>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="0"
+                                Margin="5">
+                        <Button Content="Run"
+                                Click="Run_Click"
+                                Margin="0,0,8,0"/>
+                        <Button Content="Submit"
+                                Click="Submit_Click"/>
+                    </StackPanel>
+
+                    <avalonedit:TextEditor x:Name="CodeEditor"
+                                           Grid.Row="1"
+                                           FontFamily="Consolas"
+                                           FontSize="14"
+                                           SyntaxHighlighting="C++"
+                                           Background="#1e1e1e"
+                                           Foreground="White"
+                                           ShowLineNumbers="True"/>
+
+                    <TabControl Grid.Row="2"
+                                Background="#2d2d30"
+                                Foreground="White">
+                        <TabItem Header="Console">
+                            <TextBox x:Name="ConsoleOutput"
+                                     Foreground="White"
+                                     Background="#1e1e1e"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="False"/>
+                        </TabItem>
+                        <TabItem Header="Output">
+                            <TextBox x:Name="ResultOutput"
+                                     Foreground="White"
+                                     Background="#1e1e1e"/>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
