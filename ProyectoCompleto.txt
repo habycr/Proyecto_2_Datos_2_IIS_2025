@@ -2,7 +2,10 @@ Estructura del directorio: C:\Users\Javier\OneDrive\Documentos\GitHub\Proyecto_2
 
 Proyecto_2_Datos_2_IIS_2025
 ├── .gitattributes
+<<<<<<< Updated upstream
 ├── .gitignore
+=======
+>>>>>>> Stashed changes
 ├── .idea
 │   ├── .gitignore
 │   ├── .name
@@ -41,6 +44,7 @@ Proyecto_2_Datos_2_IIS_2025
 ├── Motor
 │   ├── 2.txt
 ├── ProyectoCompleto.txt
+<<<<<<< Updated upstream
 ├── Proyecto_2_Datos_2_IIS_2025
 │   ├── .gitattributes
 │   ├── .gitignore
@@ -95,6 +99,11 @@ Proyecto_2_Datos_2_IIS_2025
 │   ├── MainWindow.xaml.cs
 │   ├── UI.csproj
 │   ├── UI.sln
+=======
+├── README.md
+├── UI
+│   ├── 3.txt
+>>>>>>> Stashed changes
 ├── cmake-build-release-mingw
 │   ├── .cmake
 │   │   ├── api
@@ -352,6 +361,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(mongocxx CONFIG REQUIRED)
 find_package(bsoncxx CONFIG REQUIRED)
 
+<<<<<<< Updated upstream
 # 📦 Crow (framework HTTP) – solo para los includes (es header-only)
 find_package(crow CONFIG REQUIRED)
 
@@ -2271,6 +2281,8 @@ find_package(bsoncxx CONFIG REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
 
 
+=======
+>>>>>>> Stashed changes
 # 📦 Crow (framework HTTP) – solo para los includes
 find_package(crow CONFIG REQUIRED)
 
@@ -3017,6 +3029,7 @@ nkjb cdhk dskhdv
 
 --------------------------------------------------
 
+<<<<<<< Updated upstream
 README.md:
 ----------
 # Proyecto_2_Datos_2_IIS_2025
@@ -3087,6 +3100,288 @@ namespace UI
 
 
     }
+=======
+ProyectoCompleto.txt:
+---------------------
+Estructura del directorio: C:\Users\Javier\OneDrive\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025
+
+Proyecto_2_Datos_2_IIS_2025
+├── .gitattributes
+├── .idea
+│   ├── .gitignore
+│   ├── .name
+│   ├── Proyecto_2_Datos_2_IIS_2025_v1.iml
+│   ├── copilot.data.migration.agent.xml
+│   ├── copilot.data.migration.ask.xml
+│   ├── copilot.data.migration.ask2agent.xml
+│   ├── copilot.data.migration.edit.xml
+│   ├── editor.xml
+│   ├── misc.xml
+│   ├── modules.xml
+│   ├── shelf
+│   │   ├── Uncommitted_changes_before_Checkout_at_7_11_2025_22_42_[Changes]
+│   │   │   ├── shelved.patch
+│   │   ├── Uncommitted_changes_before_Checkout_at_7_11_2025_22_42_[Changes]1
+│   │   │   ├── shelved.patch
+│   │   ├── Uncommitted_changes_before_Checkout_at_7_11_2025_22_42__Changes_.xml
+│   ├── vcs.xml
+│   ├── workspace.xml
+├── Analizador
+│   ├── server.cpp
+├── CMakeLists.txt
+├── Gestor
+│   ├── 1.txt
+│   ├── CMakeLists.txt
+│   ├── GestorREST.cpp
+│   ├── build
+│   ├── include
+│   │   ├── ProblemRepository.h
+│   ├── main_db_test.cpp
+│   ├── src
+│   │   ├── ProblemRepository.cpp
+│   ├── test_json
+│   │   ├── p1.json
+├── LICENSE
+├── Motor
+│   ├── 2.txt
+├── ProyectoCompleto.txt
+├── README.md
+├── UI
+│   ├── 3.txt
+├── cmake-build-release-mingw
+│   ├── .cmake
+│   │   ├── api
+│   │   │   ├── v1
+│   │   │   │   ├── query
+│   │   │   │   │   ├── cache-v2
+│   │   │   │   │   ├── cmakeFiles-v1
+│   │   │   │   │   ├── codemodel-v2
+│   │   │   │   │   ├── toolchains-v1
+│   │   │   │   ├── reply
+│   │   │   │   │   ├── cache-v2-92fbe2da625780c1281c.json
+│   │   │   │   │   ├── cmakeFiles-v1-ffebddc95455ae2c8002.json
+│   │   │   │   │   ├── codemodel-v2-fd83077bb0ba86b74abe.json
+│   │   │   │   │   ├── directory-.-Release-d0094a50bb2071803777.json
+│   │   │   │   │   ├── index-2025-11-19T06-27-41-0153.json
+│   │   │   │   │   ├── target-CodeCoachDBTest-Release-08c4fdcee69251ef2337.json
+│   │   │   │   │   ├── toolchains-v1-f238d9776ef1bd51892f.json
+│   ├── .gitignore
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   │   ├── 4.0.2
+│   │   │   ├── CMakeCCompiler.cmake
+│   │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   ├── CMakeRCCompiler.cmake
+│   │   │   ├── CMakeSystem.cmake
+│   │   │   ├── CompilerIdC
+│   │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   │   ├── CompilerIdCXX
+│   │   │   │   ├── CMakeCXXCompilerId.cpp
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   ├── CMakeConfigureLog.yaml
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── CodeCoachDBTest.dir
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── Gestor
+│   │   │   │   ├── src
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── includes_CXX.rsp
+│   │   │   ├── link.txt
+│   │   │   ├── linkLibs.rsp
+│   │   │   ├── objects1.rsp
+│   │   │   ├── progress.make
+│   │   ├── InstallScripts.json
+│   │   ├── Makefile.cmake
+│   │   ├── Makefile2
+│   │   ├── TargetDirectories.txt
+│   │   ├── clion-Release-MinGW-log.txt
+│   │   ├── clion-environment.txt
+│   │   ├── cmake.check_cache
+│   │   ├── pkgRedirects
+│   │   ├── progress.marks
+│   ├── Makefile
+│   ├── Testing
+│   │   ├── Temporary
+│   │   │   ├── LastTest.log
+│   ├── cmake_install.cmake
+├── cmake-build-relwithdebinfo
+│   ├── .cmake
+│   │   ├── api
+│   │   │   ├── v1
+│   │   │   │   ├── query
+│   │   │   │   │   ├── cache-v2
+│   │   │   │   │   ├── cmakeFiles-v1
+│   │   │   │   │   ├── codemodel-v2
+│   │   │   │   │   ├── toolchains-v1
+│   │   │   │   ├── reply
+│   │   │   │   │   ├── cache-v2-5fe582b0dd2d3d293d8d.json
+│   │   │   │   │   ├── cmakeFiles-v1-b570f7bf43a782cbc2af.json
+│   │   │   │   │   ├── codemodel-v2-4947ecff76a3c1ddda86.json
+│   │   │   │   │   ├── directory-.-RelWithDebInfo-d0094a50bb2071803777.json
+│   │   │   │   │   ├── index-2025-11-19T06-27-41-0179.json
+│   │   │   │   │   ├── target-CodeCoachDBTest-RelWithDebInfo-a66ec70d335ebfb99e67.json
+│   │   │   │   │   ├── toolchains-v1-f9f0cdee554ca778d098.json
+│   ├── .gitignore
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   │   ├── 4.0.2
+│   │   │   ├── CMakeCCompiler.cmake
+│   │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   ├── CMakeRCCompiler.cmake
+│   │   │   ├── CMakeSystem.cmake
+│   │   │   ├── CompilerIdC
+│   │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   │   ├── CompilerIdCXX
+│   │   │   │   ├── CMakeCXXCompilerId.cpp
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   ├── CMakeConfigureLog.yaml
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── CodeCoachDBTest.dir
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── Gestor
+│   │   │   │   ├── src
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── includes_CXX.rsp
+│   │   │   ├── link.txt
+│   │   │   ├── linkLibs.rsp
+│   │   │   ├── objects1.rsp
+│   │   │   ├── progress.make
+│   │   ├── InstallScripts.json
+│   │   ├── Makefile.cmake
+│   │   ├── Makefile2
+│   │   ├── TargetDirectories.txt
+│   │   ├── clion-RelWithDebInfo-log.txt
+│   │   ├── clion-environment.txt
+│   │   ├── cmake.check_cache
+│   │   ├── pkgRedirects
+│   │   ├── progress.marks
+│   ├── Makefile
+│   ├── cmake_install.cmake
+├── cmake-build-relwithdebinfo-1
+│   ├── .cmake
+│   │   ├── api
+│   │   │   ├── v1
+│   │   │   │   ├── query
+│   │   │   │   │   ├── cache-v2
+│   │   │   │   │   ├── cmakeFiles-v1
+│   │   │   │   │   ├── codemodel-v2
+│   │   │   │   │   ├── toolchains-v1
+│   │   │   │   ├── reply
+│   │   │   │   │   ├── cache-v2-1d87f851f0588284fbc4.json
+│   │   │   │   │   ├── cmakeFiles-v1-b641e94d672ec14baa41.json
+│   │   │   │   │   ├── codemodel-v2-2cbdb2e833932a8cf4f2.json
+│   │   │   │   │   ├── directory-.-RelWithDebInfo-d0094a50bb2071803777.json
+│   │   │   │   │   ├── index-2025-11-19T06-27-41-0155.json
+│   │   │   │   │   ├── target-CodeCoachDBTest-RelWithDebInfo-a66ec70d335ebfb99e67.json
+│   │   │   │   │   ├── toolchains-v1-f9f0cdee554ca778d098.json
+│   ├── .gitignore
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   │   ├── 4.0.2
+│   │   │   ├── CMakeCCompiler.cmake
+│   │   │   ├── CMakeCXXCompiler.cmake
+│   │   │   ├── CMakeDetermineCompilerABI_C.bin
+│   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+│   │   │   ├── CMakeRCCompiler.cmake
+│   │   │   ├── CMakeSystem.cmake
+│   │   │   ├── CompilerIdC
+│   │   │   │   ├── CMakeCCompilerId.c
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   │   ├── CompilerIdCXX
+│   │   │   │   ├── CMakeCXXCompilerId.cpp
+│   │   │   │   ├── a.exe
+│   │   │   │   ├── tmp
+│   │   ├── CMakeConfigureLog.yaml
+│   │   ├── CMakeDirectoryInformation.cmake
+│   │   ├── CodeCoachDBTest.dir
+│   │   │   ├── DependInfo.cmake
+│   │   │   ├── Gestor
+│   │   │   │   ├── src
+│   │   │   ├── build.make
+│   │   │   ├── cmake_clean.cmake
+│   │   │   ├── compiler_depend.make
+│   │   │   ├── compiler_depend.ts
+│   │   │   ├── depend.make
+│   │   │   ├── flags.make
+│   │   │   ├── includes_CXX.rsp
+│   │   │   ├── link.txt
+│   │   │   ├── linkLibs.rsp
+│   │   │   ├── objects1.rsp
+│   │   │   ├── progress.make
+│   │   ├── InstallScripts.json
+│   │   ├── Makefile.cmake
+│   │   ├── Makefile2
+│   │   ├── TargetDirectories.txt
+│   │   ├── clion-RelWithDebInfo 1-log.txt
+│   │   ├── clion-environment.txt
+│   │   ├── cmake.check_cache
+│   │   ├── pkgRedirects
+│   │   ├── progress.marks
+│   ├── Makefile
+│   ├── cmake_install.cmake
+├── main.cpp
+
+================================================================================
+CONTENIDO DE ARCHIVOS
+================================================================================
+
+server.cpp:
+-----------
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <unistd.h>
+
+
+int main(){
+    int server_socket = socket(AF_INET, SOCK_STREAM, 0);
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(8080);
+
+    int opt = 1;
+    setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    bind(server_socket, (sockaddr*)&addr, sizeof(addr));
+    listen(server_socket, 10);
+
+    std::cout << "Server listening on port 8080..." << std::endl;
+    while (true) {
+        int client_socket = accept(server_socket, nullptr, nullptr);
+        char buffer[1024];
+        memset(buffer, 0, sizeof(buffer));
+        read(client_socket, buffer, sizeof(buffer) - 1);
+        std::cout << "Received: " << buffer << std::endl;
+        const char* response = "HTTP/1.1 200 OK\r\nContent-Length: 13\r\n\r\nHello, World!";
+        send(client_socket, response, strlen(response), 0);
+        close(client_socket);
+    }
+    close(server_socket);
+    return 0;
+>>>>>>> Stashed changes
 }
 
 
@@ -3094,6 +3389,7 @@ namespace UI
 
 --------------------------------------------------
 
+<<<<<<< Updated upstream
 App.xaml.cs:
 ------------
 ﻿using System.Configuration;
@@ -3110,10 +3406,71 @@ namespace UI
     }
 
 }
+=======
+CMakeLists.txt:
+---------------
+# 🔧 Configura VCPKG como toolchain (antes del project)
+set(CMAKE_TOOLCHAIN_FILE "C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain")
+
+cmake_minimum_required(VERSION 3.15)
+project(CodeCoachDBTest)
+
+# 🧠 Estándar de C++
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 📦 MongoDB (C++ driver)
+find_package(mongocxx CONFIG REQUIRED)
+find_package(bsoncxx CONFIG REQUIRED)
+
+# 📦 Crow (framework HTTP) – solo para los includes
+find_package(crow CONFIG REQUIRED)
+
+# ============================================================
+# Ejecutable 1: Prueba de BD (main_db_test)
+# ============================================================
+add_executable(CodeCoachDBTest
+        Gestor/main_db_test.cpp
+        Gestor/src/ProblemRepository.cpp
+)
+
+target_include_directories(CodeCoachDBTest
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Gestor/include
+)
+
+target_link_libraries(CodeCoachDBTest
+        PRIVATE
+        mongo::mongocxx_shared
+        mongo::bsoncxx_shared
+)
+
+# ============================================================
+# Ejecutable 2: Servidor REST (problem_manager_api)
+# ============================================================
+add_executable(problem_manager_api
+        Gestor/GestorREST.cpp
+        Gestor/src/ProblemRepository.cpp
+)
+
+target_include_directories(problem_manager_api
+        PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Gestor/include
+)
+
+# 👇 SOLO MongoDB; Crow NO se enlaza porque es header-only
+target_link_libraries(problem_manager_api
+        PRIVATE
+        mongo::mongocxx_shared
+        mongo::bsoncxx_shared
+)
+>>>>>>> Stashed changes
 
 
 --------------------------------------------------
 
+<<<<<<< Updated upstream
 AssemblyInfo.cs:
 ----------------
 using System.Windows;
@@ -3126,10 +3483,43 @@ using System.Windows;
                                                 //(used if a resource is not found in the page,
                                                 // app, or any theme specific resource dictionaries)
 )]
+=======
+1.txt:
+------
+chjbcdhjcdvcd
+
+--------------------------------------------------
+
+CMakeLists.txt:
+---------------
+# Este archivo NO genera ejecutables.
+# Solo define la librería "gestor" para que la raíz pueda usarla.
+
+cmake_minimum_required(VERSION 3.15)
+
+# Crear una librería con el código del gestor
+add_library(gestor_lib
+        src/ProblemRepository.cpp
+)
+
+# Incluir los headers dentro de Gestor/include
+target_include_directories(gestor_lib
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# Enlazar mongo C++ driver a esta librería
+target_link_libraries(gestor_lib
+        PUBLIC
+        mongo::mongocxx_shared
+        mongo::bsoncxx_shared
+)
+>>>>>>> Stashed changes
 
 
 --------------------------------------------------
 
+<<<<<<< Updated upstream
 MainWindow.xaml.cs:
 -------------------
 ﻿using System.Text;
@@ -3288,12 +3678,669 @@ int main() {
     std::cout << "\n📦 Documentos en 'problems':\n";
     for (auto&& item : cursor) {
         std::cout << bsoncxx::to_json(item) << std::endl;
+=======
+GestorREST.cpp:
+---------------
+// Archivo: Gestor/src/GestorREST.cpp
+// Servidor REST del Gestor de Problemas (CodeCoach)
+
+#include "ProblemRepository.h"
+
+#include <crow.h>
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
+#include <mongocxx/uri.hpp>
+
+#include <algorithm>
+#include <optional>
+#include <random>
+#include <string>
+#include <vector>
+
+// =================== Helpers JSON ===================
+
+// Convierte un Problem a JSON (Crow). Si summary = true, omite description, code_stub y test_cases.
+static crow::json::wvalue problem_to_json(const Problem& p, bool summary = false) {
+    crow::json::wvalue json;
+
+    json["problem_id"] = p.problem_id;
+    json["title"]      = p.title;
+    json["difficulty"] = p.difficulty;
+
+    if (!summary) {
+        json["description"] = p.description;
+        json["code_stub"]   = p.code_stub;
+
+        // tags
+        for (std::size_t i = 0; i < p.tags.size(); ++i) {
+            json["tags"][i] = p.tags[i];
+        }
+
+        // test_cases
+        for (std::size_t i = 0; i < p.test_cases.size(); ++i) {
+            json["test_cases"][i]["input"]           = p.test_cases[i].input;
+            json["test_cases"][i]["expected_output"] = p.test_cases[i].expected_output;
+        }
+    } else {
+        // En modo resumen, igual devolvemos tags porque son útiles para filtrar en UI
+        for (std::size_t i = 0; i < p.tags.size(); ++i) {
+            json["tags"][i] = p.tags[i];
+        }
+    }
+
+    return json;
+}
+
+// Convierte un JSON (Crow) a Problem.
+// - require_id = true en POST: el body debe traer problem_id.
+// - require_id = false en PUT: el id viene en la ruta, no en el JSON.
+static std::optional<Problem> json_to_problem(const crow::json::rvalue& body,
+                                              bool require_id,
+                                              std::string& error_out) {
+    Problem p;
+
+    using crow::json::type;
+
+    // Helper para validar un campo string
+    auto get_string = [&](const char* name, bool required, std::string& dst) -> bool {
+        if (!body.has(name)) {
+            if (required) {
+                error_out = std::string("Falta el campo obligatorio '") + name + "'";
+                return false;
+            }
+            return true; // no requerido
+        }
+        if (body[name].t() != type::String) {
+            error_out = std::string("El campo '") + name + "' debe ser string";
+            return false;
+        }
+        dst = std::string(body[name].s());
+        return true;
+    };
+
+    if (require_id) {
+        if (!get_string("problem_id", true, p.problem_id)) return std::nullopt;
+    }
+
+    if (!get_string("title",       true, p.title))       return std::nullopt;
+    if (!get_string("description", true, p.description)) return std::nullopt;
+    if (!get_string("difficulty",  true, p.difficulty))  return std::nullopt;
+    if (!get_string("code_stub",   true, p.code_stub))   return std::nullopt;
+
+    // tags (lista de strings)
+    if (!body.has("tags") || body["tags"].t() != type::List) {
+        error_out = "El campo 'tags' es obligatorio y debe ser una lista";
+        return std::nullopt;
+    }
+    for (std::size_t i = 0; i < body["tags"].size(); ++i) {
+        if (body["tags"][i].t() != type::String) {
+            error_out = "Todos los elementos de 'tags' deben ser strings";
+            return std::nullopt;
+        }
+        p.tags.emplace_back(body["tags"][i].s());
+    }
+
+    // test_cases (lista de objetos { input, expected_output })
+    if (!body.has("test_cases") || body["test_cases"].t() != type::List) {
+        error_out = "El campo 'test_cases' es obligatorio y debe ser una lista";
+        return std::nullopt;
+    }
+
+    for (std::size_t i = 0; i < body["test_cases"].size(); ++i) {
+        const auto& tc_json = body["test_cases"][i];
+
+        if (tc_json.t() != type::Object) {
+            error_out = "Cada elemento de 'test_cases' debe ser un objeto";
+            return std::nullopt;
+        }
+
+        if (!tc_json.has("input") ||
+            tc_json["input"].t() != type::String ||
+            !tc_json.has("expected_output") ||
+            tc_json["expected_output"].t() != type::String) {
+            error_out = "Cada test_case debe tener 'input' y 'expected_output' como strings";
+            return std::nullopt;
+        }
+
+        TestCase tc;
+        tc.input           = std::string(tc_json["input"].s());
+        tc.expected_output = std::string(tc_json["expected_output"].s());
+        p.test_cases.push_back(std::move(tc));
+    }
+
+    return p;
+}
+
+// Crea una respuesta HTTP con JSON y código de estado
+static crow::response make_json_response(int status, const crow::json::wvalue& body) {
+    crow::response res;
+    res.code = status;
+    res.set_header("Content-Type", "application/json");
+    res.body = body.dump();
+    return res;
+}
+
+// Crea una respuesta de error JSON simple
+static crow::response make_error_response(int status, const std::string& message) {
+    crow::json::wvalue body;
+    body["error"] = message;
+    return make_json_response(status, body);
+}
+
+// =================== main ===================
+
+int main() {
+    try {
+        // 1. Inicializar MongoDB driver
+        mongocxx::instance inst{}; // una sola vez por proceso
+
+        // 2. Conectarse a MongoDB local
+        mongocxx::client client{mongocxx::uri{"mongodb://localhost:27017"}};
+        auto db = client["codecoach"];
+
+        // 3. Crear el repositorio de problemas
+        ProblemRepository repo{db};
+
+        // 4. Inicializar la app Crow
+        crow::SimpleApp app;
+
+        // --------- Endpoint de salud ---------
+        CROW_ROUTE(app, "/health")
+        ([] {
+            crow::json::wvalue body;
+            body["status"] = "OK";
+            return make_json_response(200, body);
+        });
+
+        // --------- GET /problems (lista resumida) ---------
+        CROW_ROUTE(app, "/problems")
+        ([&repo](const crow::request&) {
+            auto problems = repo.get_all();
+
+            crow::json::wvalue body;
+            for (std::size_t i = 0; i < problems.size(); ++i) {
+                body["problems"][i] = problem_to_json(problems[i], /*summary=*/true);
+            }
+
+            return make_json_response(200, body);
+        });
+
+        // --------- GET /problems/<id> (detalle completo) ---------
+        CROW_ROUTE(app, "/problems/<string>")
+        ([&repo](const crow::request&, const std::string& problem_id) {
+            auto maybe = repo.get_by_id(problem_id);
+            if (!maybe) {
+                return make_error_response(404, "Problema no encontrado");
+            }
+
+            crow::json::wvalue body = problem_to_json(*maybe, /*summary=*/false);
+            return make_json_response(200, body);
+        });
+
+        // --------- GET /problems/difficulty/<level> ---------
+        CROW_ROUTE(app, "/problems/difficulty/<string>")
+        ([&repo](const crow::request&, const std::string& level) {
+            auto problems = repo.get_by_difficulty(level);
+
+            crow::json::wvalue body;
+            for (std::size_t i = 0; i < problems.size(); ++i) {
+                body["problems"][i] = problem_to_json(problems[i], /*summary=*/true);
+            }
+
+            return make_json_response(200, body);
+        });
+
+        // --------- GET /problems/tags/<tag> (filtra en memoria) ---------
+        CROW_ROUTE(app, "/problems/tags/<string>")
+        ([&repo](const crow::request&, const std::string& tag) {
+            auto all = repo.get_all();
+            std::vector<Problem> filtered;
+
+            for (const auto& p : all) {
+                if (std::find(p.tags.begin(), p.tags.end(), tag) != p.tags.end()) {
+                    filtered.push_back(p);
+                }
+            }
+
+            crow::json::wvalue body;
+            for (std::size_t i = 0; i < filtered.size(); ++i) {
+                body["problems"][i] = problem_to_json(filtered[i], /*summary=*/true);
+            }
+
+            return make_json_response(200, body);
+        });
+
+        // --------- GET /problems/random ---------
+        CROW_ROUTE(app, "/problems/random")
+        ([&repo](const crow::request&) {
+            auto all = repo.get_all();
+            if (all.empty()) {
+                return make_error_response(404, "No hay problemas en la base de datos");
+            }
+
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<std::size_t> dist(0, all.size() - 1);
+
+            const auto& chosen = all[dist(gen)];
+            crow::json::wvalue body = problem_to_json(chosen, /*summary=*/false);
+            return make_json_response(200, body);
+        });
+
+        // --------- POST /problems (crear) ---------
+        CROW_ROUTE(app, "/problems").methods(crow::HTTPMethod::Post)
+        ([&repo](const crow::request& req) {
+            auto body_json = crow::json::load(req.body);
+            if (!body_json) {
+                return make_error_response(400, "JSON malformado");
+            }
+
+            std::string error;
+            auto maybe_problem = json_to_problem(body_json, /*require_id=*/true, error);
+            if (!maybe_problem) {
+                return make_error_response(400, error);
+            }
+
+            Problem p = *maybe_problem;
+
+            // Verificar si ya existe ese problem_id
+            auto existing = repo.get_by_id(p.problem_id);
+            if (existing) {
+                return make_error_response(400, "Ya existe un problema con ese problem_id");
+            }
+
+            repo.insert_problem(p);
+
+            crow::json::wvalue res_body;
+            res_body["message"]    = "Problema creado correctamente";
+            res_body["problem_id"] = p.problem_id;
+            return make_json_response(201, res_body);
+        });
+
+        // --------- PUT /problems/<id> (actualizar) ---------
+        CROW_ROUTE(app, "/problems/<string>").methods(crow::HTTPMethod::Put)
+        ([&repo](const crow::request& req, const std::string& problem_id) {
+            auto body_json = crow::json::load(req.body);
+            if (!body_json) {
+                return make_error_response(400, "JSON malformado");
+            }
+
+            std::string error;
+            // No requerimos problem_id en el body; viene en la URL
+            auto maybe_problem = json_to_problem(body_json, /*require_id=*/false, error);
+            if (!maybe_problem) {
+                return make_error_response(400, error);
+            }
+
+            Problem p = *maybe_problem;
+            p.problem_id = problem_id; // clave lógica desde la URL
+
+            // Intentamos actualizar
+            bool updated = repo.update_problem(p);
+            if (!updated) {
+                return make_error_response(404, "No se encontró un problema con ese problem_id para actualizar");
+            }
+
+            crow::json::wvalue res_body;
+            res_body["message"]    = "Problema actualizado correctamente";
+            res_body["problem_id"] = p.problem_id;
+            return make_json_response(200, res_body);
+        });
+
+        // --------- DELETE /problems/<id> (eliminar) ---------
+        CROW_ROUTE(app, "/problems/<string>").methods(crow::HTTPMethod::Delete)
+        ([&repo](const crow::request&, const std::string& problem_id) {
+            bool deleted = repo.delete_problem(problem_id);
+            if (!deleted) {
+                return make_error_response(404, "No se encontró un problema con ese problem_id para eliminar");
+            }
+
+            crow::json::wvalue res_body;
+            res_body["message"]    = "Problema eliminado correctamente";
+            res_body["problem_id"] = problem_id;
+            return make_json_response(200, res_body);
+        });
+
+        // 5. Levantar el servidor
+        std::cout << "[GestorREST] Escuchando en http://localhost:8080 ..." << std::endl;
+        app.port(8080).multithreaded().run();
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "[GestorREST] Excepción fatal: " << ex.what() << std::endl;
+        return 1;
+    }
+    catch (...) {
+        std::cerr << "[GestorREST] Excepción desconocida" << std::endl;
+        return 1;
+>>>>>>> Stashed changes
     }
 
     return 0;
 }
 
 
+<<<<<<< Updated upstream
+=======
+--------------------------------------------------
+
+ProblemRepository.h:
+--------------------
+#pragma once
+
+#include <mongocxx/database.hpp>
+#include <mongocxx/collection.hpp>
+
+#include <string>
+#include <vector>
+#include <optional>
+
+// Representa un caso de prueba de un problema
+struct TestCase {
+    std::string input;
+    std::string expected_output;
+};
+
+// Representa un problema de CodeCoach
+struct Problem {
+    std::string problem_id;           // ID legible (ej: "sum-two-numbers")
+    std::string title;
+    std::string description;
+    std::string difficulty;           // "Fácil", "Medio", "Difícil"
+    std::vector<std::string> tags;    // ["intro", "math"]
+    std::vector<TestCase> test_cases; // Casos de prueba
+    std::string code_stub;            // Código base opcional
+};
+
+// Repositorio que encapsula el acceso a MongoDB
+class ProblemRepository {
+public:
+    explicit ProblemRepository(mongocxx::database db);
+
+    // Crea un nuevo documento en la colección "problems"
+    void insert_problem(const Problem& p);
+
+    // Devuelve todos los problemas
+    std::vector<Problem> get_all();
+
+    // Busca por problem_id (clave lógica)
+    std::optional<Problem> get_by_id(const std::string& id);
+
+    // Lista problemas filtrados por dificultad
+    std::vector<Problem> get_by_difficulty(const std::string& difficulty);
+
+    // Actualiza un problema existente (match por problem_id)
+    bool update_problem(const Problem& p);
+
+    // Elimina un problema (match por problem_id)
+    bool delete_problem(const std::string& id);
+
+private:
+    mongocxx::collection collection_;
+};
+
+
+--------------------------------------------------
+
+main_db_test.cpp:
+-----------------
+#include <mongocxx/instance.hpp>
+#include <mongocxx/client.hpp>
+#include <mongocxx/uri.hpp>
+#include <iostream>
+
+#include "ProblemRepository.h"
+
+int main() {
+    try {
+        mongocxx::instance inst{};  // Inicializa driver MongoDB (una sola vez)
+        mongocxx::client client{mongocxx::uri{"mongodb://localhost:27017"}};
+
+        auto db = client["codecoach"];  // Nombre de tu base de datos
+        ProblemRepository repo{db};
+
+        // Crear problema de ejemplo
+        Problem p;
+        p.problem_id  = "sum-two-numbers";
+        p.title       = "Suma de dos números";
+        p.description = "Dado dos enteros a y b, imprima su suma.";
+        p.difficulty  = "Fácil";
+        p.code_stub   = "int solve(int a, int b) { return a + b; }";
+        p.tags        = {"intro", "math"};
+        p.test_cases = {
+            {"2 3", "5"},
+            {"10 20", "30"}
+        };
+
+        repo.insert_problem(p);
+        std::cout << "[OK] Problema insertado.\n";
+
+        auto all = repo.get_all();
+        std::cout << "[INFO] Problemas en BD: " << all.size() << "\n";
+
+        auto found = repo.get_by_id("sum-two-numbers");
+        if (found) {
+            std::cout << "[OK] Encontrado: " << found->title
+                      << " (" << found->difficulty << ")\n";
+        } else {
+            std::cout << "[WARN] No se encontró sum-two-numbers\n";
+        }
+
+    } catch (const std::exception& e) {
+        std::cerr << "[ERROR] Excepción: " << e.what() << "\n";
+        return 1;
+    }
+
+    return 0;
+}
+
+
+--------------------------------------------------
+
+ProblemRepository.cpp:
+----------------------
+#include "ProblemRepository.h"
+
+#include <bsoncxx/builder/basic/document.hpp>
+#include <bsoncxx/builder/basic/array.hpp>
+#include <bsoncxx/json.hpp>
+#include <bsoncxx/types.hpp>
+
+using bsoncxx::builder::basic::kvp;
+using bsoncxx::builder::basic::document;
+using bsoncxx::builder::basic::array;
+
+// =================== Helpers internos ===================
+
+// Convierte un campo string BSON a std::string usando get_string() y k_string
+static std::string get_string_field(const bsoncxx::document::view& doc,
+                                    const char* field_name) {
+    auto elem = doc[field_name];
+    if (elem && elem.type() == bsoncxx::type::k_string) {
+        auto sv = elem.get_string().value;           // string_view
+        return std::string(sv.data(), sv.size());    // lo convertimos a std::string
+    }
+    return {};
+}
+
+// Convierte un documento BSON a un struct Problem
+static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
+    Problem p;
+
+    // Campos simples
+    p.problem_id  = get_string_field(doc_view, "problem_id");
+    p.title       = get_string_field(doc_view, "title");
+    p.description = get_string_field(doc_view, "description");
+    p.difficulty  = get_string_field(doc_view, "difficulty");
+    p.code_stub   = get_string_field(doc_view, "code_stub");
+
+    // tags: arreglo de strings
+    auto it_tags = doc_view.find("tags");
+    if (it_tags != doc_view.end() && it_tags->type() == bsoncxx::type::k_array) {
+        auto arr = it_tags->get_array().value;
+        for (auto&& t : arr) {
+            if (t.type() == bsoncxx::type::k_string) {
+                auto sv = t.get_string().value;
+                p.tags.emplace_back(sv.data(), sv.size());
+            }
+        }
+    }
+
+    // test_cases: arreglo de documentos { input, expected_output }
+    auto it_tcs = doc_view.find("test_cases");
+    if (it_tcs != doc_view.end() && it_tcs->type() == bsoncxx::type::k_array) {
+        auto arr = it_tcs->get_array().value;
+        for (auto&& tc_elem : arr) {
+            if (tc_elem.type() == bsoncxx::type::k_document) {
+                auto tc_doc = tc_elem.get_document().value;
+                TestCase tc;
+
+                auto it_in = tc_doc.find("input");
+                if (it_in != tc_doc.end() && it_in->type() == bsoncxx::type::k_string) {
+                    auto sv = it_in->get_string().value;
+                    tc.input.assign(sv.data(), sv.size());
+                }
+
+                auto it_out = tc_doc.find("expected_output");
+                if (it_out != tc_doc.end() && it_out->type() == bsoncxx::type::k_string) {
+                    auto sv = it_out->get_string().value;
+                    tc.expected_output.assign(sv.data(), sv.size());
+                }
+
+                p.test_cases.push_back(std::move(tc));
+            }
+        }
+    }
+
+    return p;
+}
+
+// =================== Implementación de ProblemRepository ===================
+
+ProblemRepository::ProblemRepository(mongocxx::database db)
+    : collection_{db["problems"]} {}
+
+// INSERT
+void ProblemRepository::insert_problem(const Problem& p) {
+    // Construir arreglo de tags
+    array tags_arr;
+    for (const auto& t : p.tags) {
+        tags_arr.append(t);
+    }
+
+    // Construir arreglo de test_cases
+    array tcs_arr;
+    for (const auto& tc : p.test_cases) {
+        document tc_doc;
+        tc_doc.append(
+            kvp("input", tc.input),
+            kvp("expected_output", tc.expected_output)
+        );
+        tcs_arr.append(tc_doc.extract());
+    }
+
+    document doc_builder;
+    doc_builder.append(
+        kvp("problem_id", p.problem_id),
+        kvp("title", p.title),
+        kvp("description", p.description),
+        kvp("difficulty", p.difficulty),
+        kvp("code_stub", p.code_stub),
+        kvp("tags", tags_arr),
+        kvp("test_cases", tcs_arr)
+    );
+
+    collection_.insert_one(doc_builder.view());
+}
+
+// GET ALL
+std::vector<Problem> ProblemRepository::get_all() {
+    std::vector<Problem> results;
+    auto cursor = collection_.find({});
+    for (auto&& doc : cursor) {
+        results.push_back(document_to_problem(doc));
+    }
+    return results;
+}
+
+// GET BY ID (problem_id)
+std::optional<Problem> ProblemRepository::get_by_id(const std::string& id) {
+    auto filter_doc = document{};
+    filter_doc.append(kvp("problem_id", id));
+
+    auto maybe_doc = collection_.find_one(filter_doc.view());
+    if (!maybe_doc) {
+        return std::nullopt;
+    }
+
+    return document_to_problem(maybe_doc->view());
+}
+
+// GET BY DIFFICULTY
+std::vector<Problem> ProblemRepository::get_by_difficulty(const std::string& difficulty) {
+    std::vector<Problem> results;
+
+    document filter_doc;
+    filter_doc.append(kvp("difficulty", difficulty));
+
+    auto cursor = collection_.find(filter_doc.view());
+    for (auto&& doc : cursor) {
+        results.push_back(document_to_problem(doc));
+    }
+
+    return results;
+}
+
+// UPDATE (por problem_id)
+bool ProblemRepository::update_problem(const Problem& p) {
+    // tags
+    array tags_arr;
+    for (const auto& t : p.tags) {
+        tags_arr.append(t);
+    }
+
+    // test_cases
+    array tcs_arr;
+    for (const auto& tc : p.test_cases) {
+        document tc_doc;
+        tc_doc.append(
+            kvp("input", tc.input),
+            kvp("expected_output", tc.expected_output)
+        );
+        tcs_arr.append(tc_doc.extract());
+    }
+
+    // Documento con los campos a actualizar
+    document set_doc;
+    set_doc.append(
+        kvp("title", p.title),
+        kvp("description", p.description),
+        kvp("difficulty", p.difficulty),
+        kvp("code_stub", p.code_stub),
+        kvp("tags", tags_arr),
+        kvp("test_cases", tcs_arr)
+    );
+
+    // Filtro por problem_id
+    document filter_doc;
+    filter_doc.append(kvp("problem_id", p.problem_id));
+
+    document update_doc;
+    update_doc.append(kvp("$set", set_doc.view()));
+
+    auto result = collection_.update_one(filter_doc.view(), update_doc.view());
+    return result && result->modified_count() > 0;
+}
+
+// DELETE (por problem_id)
+bool ProblemRepository::delete_problem(const std::string& id) {
+    document filter_doc;
+    filter_doc.append(kvp("problem_id", id));
+
+    auto result = collection_.delete_one(filter_doc.view());
+    return result && result->deleted_count() > 0;
+}
+
+>>>>>>> Stashed changes
 
 --------------------------------------------------
 
@@ -3305,6 +4352,7 @@ README.md:
 
 --------------------------------------------------
 
+<<<<<<< Updated upstream
 ApiClient.cs:
 -------------
 ﻿
@@ -3520,6 +4568,11 @@ Global
 	EndGlobalSection
 EndGlobal
 
+=======
+3.txt:
+------
+njksb dhj csj dhcs cda
+>>>>>>> Stashed changes
 
 --------------------------------------------------
 
@@ -3787,9 +4840,12 @@ Project_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=C:/Users/Javier/OneDrive/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025
 
+<<<<<<< Updated upstream
 //The directory containing a CMake configuration file for Qt6.
 Qt6_DIR:PATH=Qt6_DIR-NOTFOUND
 
+=======
+>>>>>>> Stashed changes
 //Automatically copy dependencies into the output directory for
 // executables.
 VCPKG_APPLOCAL_DEPS:BOOL=ON
@@ -5011,6 +6067,7 @@ Call Stack (most recent call first):
   C:/Program Files/JetBrains/CLion 2025.2/bin/cmake/win/x64/share/cmake-4.0/Modules/CMakeFindDependencyMacro.cmake:78 (find_package)
   C:/Users/Javier/vcpkg/installed/x64-windows/share/mongocxx/mongocxx-config.cmake:2 (find_dependency)
   C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package)
+<<<<<<< Updated upstream
   CMakeLists.txt:17 (find_package)
 
 
@@ -5030,6 +6087,24 @@ CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find
   separate development package or SDK, be sure it has been installed.
 Call Stack (most recent call first):
   CMakeLists.txt:19 (find_package)
+=======
+  CMakeLists.txt:13 (find_package)
+
+
+CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package):
+  Could not find a package configuration file provided by "crow" with any of
+  the following names:
+
+    crowConfig.cmake
+    crow-config.cmake
+
+  Add the installation prefix of "crow" to CMAKE_PREFIX_PATH or set
+  "crow_DIR" to a directory containing one of the above files.  If "crow"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+Call Stack (most recent call first):
+  CMakeLists.txt:17 (find_package)
+>>>>>>> Stashed changes
 
 
 -- Configuring incomplete, errors occurred!
@@ -5311,9 +6386,12 @@ Project_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=C:/Users/Javier/OneDrive/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025
 
+<<<<<<< Updated upstream
 //The directory containing a CMake configuration file for Qt6.
 Qt6_DIR:PATH=Qt6_DIR-NOTFOUND
 
+=======
+>>>>>>> Stashed changes
 //Automatically copy dependencies into the output directory for
 // executables.
 VCPKG_APPLOCAL_DEPS:BOOL=ON
@@ -6533,6 +7611,7 @@ Call Stack (most recent call first):
   C:/Program Files/JetBrains/CLion 2025.2/bin/cmake/win/x64/share/cmake-4.0/Modules/CMakeFindDependencyMacro.cmake:78 (find_package)
   C:/Users/Javier/vcpkg/installed/x64-windows/share/mongocxx/mongocxx-config.cmake:2 (find_dependency)
   C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package)
+<<<<<<< Updated upstream
   CMakeLists.txt:17 (find_package)
 
 
@@ -6552,6 +7631,24 @@ CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find
   separate development package or SDK, be sure it has been installed.
 Call Stack (most recent call first):
   CMakeLists.txt:19 (find_package)
+=======
+  CMakeLists.txt:13 (find_package)
+
+
+CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package):
+  Could not find a package configuration file provided by "crow" with any of
+  the following names:
+
+    crowConfig.cmake
+    crow-config.cmake
+
+  Add the installation prefix of "crow" to CMAKE_PREFIX_PATH or set
+  "crow_DIR" to a directory containing one of the above files.  If "crow"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+Call Stack (most recent call first):
+  CMakeLists.txt:17 (find_package)
+>>>>>>> Stashed changes
 
 
 -- Configuring incomplete, errors occurred!
@@ -6832,9 +7929,12 @@ Project_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Project_SOURCE_DIR:STATIC=C:/Users/Javier/OneDrive/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025
 
+<<<<<<< Updated upstream
 //The directory containing a CMake configuration file for Qt6.
 Qt6_DIR:PATH=Qt6_DIR-NOTFOUND
 
+=======
+>>>>>>> Stashed changes
 //Automatically copy dependencies into the output directory for
 // executables.
 VCPKG_APPLOCAL_DEPS:BOOL=ON
@@ -8054,6 +9154,7 @@ Call Stack (most recent call first):
   C:/Program Files/JetBrains/CLion 2025.2/bin/cmake/win/x64/share/cmake-4.0/Modules/CMakeFindDependencyMacro.cmake:78 (find_package)
   C:/Users/Javier/vcpkg/installed/x64-windows/share/mongocxx/mongocxx-config.cmake:2 (find_dependency)
   C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package)
+<<<<<<< Updated upstream
   CMakeLists.txt:17 (find_package)
 
 
@@ -8073,6 +9174,24 @@ CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find
   separate development package or SDK, be sure it has been installed.
 Call Stack (most recent call first):
   CMakeLists.txt:19 (find_package)
+=======
+  CMakeLists.txt:13 (find_package)
+
+
+CMake Error at C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake:904 (_find_package):
+  Could not find a package configuration file provided by "crow" with any of
+  the following names:
+
+    crowConfig.cmake
+    crow-config.cmake
+
+  Add the installation prefix of "crow" to CMAKE_PREFIX_PATH or set
+  "crow_DIR" to a directory containing one of the above files.  If "crow"
+  provides a separate development package or SDK, be sure it has been
+  installed.
+Call Stack (most recent call first):
+  CMakeLists.txt:17 (find_package)
+>>>>>>> Stashed changes
 
 
 -- Configuring incomplete, errors occurred!
