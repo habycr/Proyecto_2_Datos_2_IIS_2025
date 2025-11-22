@@ -6,6 +6,11 @@
 #include <mongocxx/uri.hpp>
 #include <iostream>
 
+
+
+
+
+
 int main() {
     mongocxx::instance inst{};
     mongocxx::client client{mongocxx::uri{"mongodb://localhost:27017"}};
@@ -18,7 +23,7 @@ int main() {
     using bsoncxx::builder::basic::make_array;
 
     auto doc = make_document(
-        kvp("title", "Suma de dos números"),
+        kvp("title", "Suma de tres   números"),
         kvp("difficulty", "Fácil"),
         kvp("tags", make_array("math", "intro")),
         kvp("test_cases", make_array(
@@ -40,3 +45,4 @@ int main() {
 
     return 0;
 }
+
