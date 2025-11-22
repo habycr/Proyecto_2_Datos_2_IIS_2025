@@ -1,12 +1,7 @@
 # 🔧 Configura VCPKG como toolchain (antes del project)
-if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    if(DEFINED ENV{VCPKG_ROOT})
-        set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-                CACHE STRING "Vcpkg toolchain")
-    else()
-        message(WARNING "VCPKG_ROOT no está definido. Define la variable de entorno o establece CMAKE_TOOLCHAIN_FILE manualmente.")
-    endif()
-endif()
+set(CMAKE_TOOLCHAIN_FILE "C:/Users/Javier/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain")
+
 cmake_minimum_required(VERSION 3.15)
 project(CodeCoachDBTest)
 
@@ -59,9 +54,3 @@ target_link_libraries(problem_manager_api
         mongo::mongocxx_shared
         mongo::bsoncxx_shared
 )
-
-# ============================================================
-# NOTA: Si más adelante agregas una UI en C++ con Qt6,
-#       ahí sí volvemos a activar AUTOMOC/AUTOUIC y find_package(Qt6)
-#       pero por ahora no los necesitamos, porque la UI real es en C#/.NET.
-# ============================================================
