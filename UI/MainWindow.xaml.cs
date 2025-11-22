@@ -11,15 +11,12 @@ namespace UI
     {
         private ProblemApiClient _apiClient;
         private ProblemDto? _currentProblem;
+        private bool _isLoadingProblems = false;
 
         public MainWindow()
         {
             InitializeComponent();
-
-            // Inicializar el cliente API
             _apiClient = new ProblemApiClient("http://localhost:8080");
-
-            // Cargar la lista de problemas al iniciar
             Loaded += MainWindow_Loaded;
         }
 
@@ -32,11 +29,15 @@ namespace UI
         // ==================== Cargar lista de problemas ====================
         private async System.Threading.Tasks.Task LoadProblemListAsync()
         {
+            if (_isLoadingProblems) return;
+
             try
             {
+                _isLoadingProblems = true;
+                DisableButtons();
+
                 ConsoleOutput.Text = "🔄 Conectando al Gestor de Problemas...\n";
 
-                // Verificar salud del servidor
                 bool isHealthy = await _apiClient.IsHealthyAsync();
                 if (!isHealthy)
                 {
@@ -48,18 +49,16 @@ namespace UI
 
                 ConsoleOutput.Text += "✅ Conexión exitosa al servidor.\n";
 
-                // Obtener todos los problemas
                 var problems = await _apiClient.GetAllProblemsAsync();
 
                 if (problems.Count == 0)
                 {
                     ConsoleOutput.Text += "\n📭 No hay problemas en la base de datos.\n";
-                    ConsoleOutput.Text += "   → Puedes crear algunos usando el endpoint POST /problems\n";
+                    ConsoleOutput.Text += "   → Puedes crear algunos usando el Modo Administrador.\n";
                     ProblemList.ItemsSource = null;
                     return;
                 }
 
-                // Asignar al ListBox (mostrando solo los títulos)
                 ProblemList.ItemsSource = problems;
                 ProblemList.DisplayMemberPath = "title";
 
@@ -69,8 +68,153 @@ namespace UI
             catch (Exception ex)
             {
                 ConsoleOutput.Text += $"❌ ERROR: {ex.Message}\n";
-                ConsoleOutput.Text += $"   Detalles: {ex.StackTrace}\n";
             }
+            finally
+            {
+                _isLoadingProblems = false;
+                EnableButtons();
+            }
+        }
+
+        // ==================== Filtro por Dificultad ====================
+        private async void DifficultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Evitar ejecución durante la inicialización de la ventana
+            if (!this.IsLoaded) return;
+            if (DifficultyComboBox.SelectedItem == null) return;
+            if (_isLoadingProblems) return;
+
+            string selectedDifficulty = ((ComboBoxItem)DifficultyComboBox.SelectedItem).Content.ToString();
+
+            if (selectedDifficulty == "Todas")
+            {
+                await LoadProblemListAsync();
+                return;
+            }
+
+            try
+            {
+                _isLoadingProblems = true;
+                DisableButtons();
+
+                ConsoleOutput.Text = $"🔍 Filtrando por dificultad: {selectedDifficulty}...\n";
+
+                var problems = await _apiClient.GetProblemsByDifficultyAsync(selectedDifficulty);
+
+                if (problems.Count == 0)
+                {
+                    ConsoleOutput.Text += $"📭 No hay problemas con dificultad '{selectedDifficulty}'.\n";
+                    ProblemList.ItemsSource = null;
+                    return;
+                }
+
+                ProblemList.ItemsSource = problems;
+                ProblemList.DisplayMemberPath = "title";
+
+                ConsoleOutput.Text += $"✅ {problems.Count} problema(s) encontrado(s).\n";
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutput.Text += $"❌ ERROR al filtrar: {ex.Message}\n";
+            }
+            finally
+            {
+                _isLoadingProblems = false;
+                EnableButtons();
+            }
+        }
+
+        // ==================== Filtro por Tag ====================
+        private async void FilterByTagButton_Click(object sender, RoutedEventArgs e)
+        {
+            string tag = TagTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(tag))
+            {
+                MessageBox.Show("Por favor escribe un tag para filtrar.", "Campo vacío", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                _isLoadingProblems = true;
+                DisableButtons();
+
+                ConsoleOutput.Text = $"🔍 Filtrando por tag: '{tag}'...\n";
+
+                var problems = await _apiClient.GetProblemsByTagAsync(tag);
+
+                if (problems.Count == 0)
+                {
+                    ConsoleOutput.Text += $"📭 No hay problemas con el tag '{tag}'.\n";
+                    ProblemList.ItemsSource = null;
+                    return;
+                }
+
+                ProblemList.ItemsSource = problems;
+                ProblemList.DisplayMemberPath = "title";
+
+                ConsoleOutput.Text += $"✅ {problems.Count} problema(s) encontrado(s).\n";
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutput.Text += $"❌ ERROR al filtrar: {ex.Message}\n";
+            }
+            finally
+            {
+                _isLoadingProblems = false;
+                EnableButtons();
+            }
+        }
+
+        // ==================== Problema Aleatorio ====================
+        private async void RandomProblemButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _isLoadingProblems = true;
+                DisableButtons();
+
+                ConsoleOutput.Text = "🎲 Obteniendo problema aleatorio...\n";
+
+                var problem = await _apiClient.GetRandomProblemAsync();
+
+                if (problem == null)
+                {
+                    ConsoleOutput.Text += "📭 No hay problemas disponibles.\n";
+                    return;
+                }
+
+                _currentProblem = problem;
+
+                DescriptionText.Text = $"📝 {problem.title}\n\n" +
+                                      $"🏷️  ID: {problem.problem_id}\n" +
+                                      $"⚡ Dificultad: {problem.difficulty}\n" +
+                                      $"🏷️  Tags: {string.Join(", ", problem.tags)}\n\n" +
+                                      $"📄 DESCRIPCIÓN:\n{problem.description}\n\n" +
+                                      $"📌 CASOS DE PRUEBA:\n{FormatTestCases(problem.test_cases)}";
+
+                CodeEditor.Text = problem.code_stub ?? "// Escribe tu solución aquí\n";
+
+                ConsoleOutput.Text += $"✅ Problema cargado: {problem.title}\n";
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutput.Text += $"❌ ERROR: {ex.Message}\n";
+            }
+            finally
+            {
+                _isLoadingProblems = false;
+                EnableButtons();
+            }
+        }
+
+        // ==================== Resetear Filtros ====================
+        private async void ResetFiltersButton_Click(object sender, RoutedEventArgs e)
+        {
+            DifficultyComboBox.SelectedIndex = 0;
+            TagTextBox.Text = "";
+            await LoadProblemListAsync();
         }
 
         // ==================== Evento: Problema seleccionado ====================
@@ -83,7 +227,6 @@ namespace UI
             {
                 ConsoleOutput.Text = $"📥 Cargando detalles de '{selectedProblem.title}'...\n";
 
-                // Obtener detalle completo del problema
                 var fullProblem = await _apiClient.GetProblemAsync(selectedProblem.problem_id);
 
                 if (fullProblem == null)
@@ -94,39 +237,16 @@ namespace UI
 
                 _currentProblem = fullProblem;
 
-                // Mostrar descripción en el panel de descripción
                 DescriptionText.Text = $"📝 {fullProblem.title}\n\n" +
                                       $"🏷️  ID: {fullProblem.problem_id}\n" +
-                                      $"📊 Dificultad: {fullProblem.difficulty}\n" +
-                                      $"🔖 Tags: {string.Join(", ", fullProblem.tags)}\n\n" +
-                                      $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-                                      $"{fullProblem.description}\n\n" +
-                                      $"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n" +
-                                      $"📋 Ejemplos de Prueba:\n\n";
+                                      $"⚡ Dificultad: {fullProblem.difficulty}\n" +
+                                      $"🏷️  Tags: {string.Join(", ", fullProblem.tags)}\n\n" +
+                                      $"📄 DESCRIPCIÓN:\n{fullProblem.description}\n\n" +
+                                      $"📌 CASOS DE PRUEBA:\n{FormatTestCases(fullProblem.test_cases)}";
 
-                // Agregar casos de prueba a la descripción
-                for (int i = 0; i < fullProblem.test_cases.Count; i++)
-                {
-                    var tc = fullProblem.test_cases[i];
-                    DescriptionText.Text += $"   Ejemplo {i + 1}:\n";
-                    DescriptionText.Text += $"   Input:  {tc.input}\n";
-                    DescriptionText.Text += $"   Output: {tc.expected_output}\n\n";
-                }
+                CodeEditor.Text = fullProblem.code_stub ?? "// Escribe tu solución aquí\n";
 
-                // Cargar el code_stub en el editor
-                if (!string.IsNullOrWhiteSpace(fullProblem.code_stub))
-                {
-                    CodeEditor.Text = fullProblem.code_stub;
-                }
-                else
-                {
-                    CodeEditor.Text = "// Escribe tu solución aquí\n";
-                }
-
-                // Actualizar consola
-                ConsoleOutput.Text += $"✅ Problema cargado exitosamente.\n";
-                ConsoleOutput.Text += $"📝 {fullProblem.test_cases.Count} caso(s) de prueba disponible(s).\n";
-                ConsoleOutput.Text += $"\n💡 Escribe tu código en el editor y presiona 'Run' para probar.\n";
+                ConsoleOutput.Text += "✅ Problema cargado correctamente.\n";
             }
             catch (Exception ex)
             {
@@ -134,77 +254,58 @@ namespace UI
             }
         }
 
-        // ==================== Botón: Run ====================
+        // ==================== Formatear casos de prueba ====================
+        private string FormatTestCases(System.Collections.Generic.List<TestCaseDto> testCases)
+        {
+            if (testCases == null || testCases.Count == 0)
+                return "  (No hay casos de prueba definidos)\n";
+
+            var result = "";
+            for (int i = 0; i < testCases.Count; i++)
+            {
+                result += $"  Test {i + 1}:\n";
+                result += $"    Input: {testCases[i].input}\n";
+                result += $"    Expected: {testCases[i].expected_output}\n\n";
+            }
+            return result;
+        }
+
+        // ==================== Botón Run ====================
         private void Run_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentProblem == null)
-            {
-                ConsoleOutput.Text = "❌ ERROR: Primero selecciona un problema de la lista.\n";
-                return;
-            }
-
-            string userCode = CodeEditor.Text;
-
-            if (string.IsNullOrWhiteSpace(userCode))
-            {
-                ConsoleOutput.Text = "❌ ERROR: El editor de código está vacío.\n";
-                return;
-            }
-
-            ConsoleOutput.Text = $"▶️  Ejecutando código para '{_currentProblem.title}'...\n\n";
-            ConsoleOutput.Text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            ConsoleOutput.Text += "📝 Código a ejecutar:\n\n";
-            ConsoleOutput.Text += userCode + "\n\n";
-            ConsoleOutput.Text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-            ConsoleOutput.Text += "⏳ [PENDIENTE] Conectar con el Motor de Evaluación\n";
-            ConsoleOutput.Text += "   → Endpoint: POST http://localhost:8081/run\n";
-            ConsoleOutput.Text += "   → Esta funcionalidad se implementará en la siguiente fase.\n";
-
-            // TODO: Llamar al Motor de Evaluación cuando esté listo
-            // var motorClient = new MotorApiClient("http://localhost:8081");
-            // var result = await motorClient.RunCodeAsync(_currentProblem.problem_id, userCode);
+            ConsoleOutput.Text = "⚙️ La función 'Run' aún no está implementada.\n";
+            ConsoleOutput.Text += "   → Esta función se conectará al Motor de Evaluación.\n";
         }
 
-        // ==================== Botón: Submit ====================
+        // ==================== Botón Submit ====================
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentProblem == null)
-            {
-                ConsoleOutput.Text = "❌ ERROR: Primero selecciona un problema de la lista.\n";
-                return;
-            }
-
-            string userCode = CodeEditor.Text;
-
-            if (string.IsNullOrWhiteSpace(userCode))
-            {
-                ConsoleOutput.Text = "❌ ERROR: El editor de código está vacío.\n";
-                return;
-            }
-
-            ConsoleOutput.Text = $"✅ Enviando solución para '{_currentProblem.title}'...\n\n";
-            ConsoleOutput.Text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-            ConsoleOutput.Text += "📝 Código enviado:\n\n";
-            ConsoleOutput.Text += userCode + "\n\n";
-            ConsoleOutput.Text += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-            ConsoleOutput.Text += "⏳ [PENDIENTE] Conectar con el Analizador de Soluciones\n";
-            ConsoleOutput.Text += "   → Endpoint: POST http://localhost:8082/submit\n";
-            ConsoleOutput.Text += "   → Esta funcionalidad se implementará en la siguiente fase.\n";
-
-            // TODO: Llamar al Analizador cuando esté listo
-            // var analizadorClient = new AnalizadorApiClient("http://localhost:8082");
-            // var feedback = await analizadorClient.AnalyzeCodeAsync(_currentProblem.problem_id, userCode);
+            ConsoleOutput.Text = "⚙️ La función 'Submit' aún no está implementada.\n";
+            ConsoleOutput.Text += "   → Esta función enviará la solución al Motor de Evaluación.\n";
         }
 
-        // ==================== Botón: Abrir Modo Administrador ====================
+        // ==================== Botón Admin ====================
         private void AdminButton_Click(object sender, RoutedEventArgs e)
         {
             var adminWindow = new AdminWindow();
-            adminWindow.ShowDialog(); // Modal: bloquea MainWindow hasta que se cierre
-
-            // Opcional: recargar la lista después de cerrar Admin
-            // _ = LoadProblemListAsync();
+            adminWindow.Show();
         }
 
+        // ==================== Helpers: Deshabilitar/Habilitar botones ====================
+        private void DisableButtons()
+        {
+            if (FilterByTagButton != null) FilterByTagButton.IsEnabled = false;
+            if (RandomProblemButton != null) RandomProblemButton.IsEnabled = false;
+            if (ResetFiltersButton != null) ResetFiltersButton.IsEnabled = false;
+            if (DifficultyComboBox != null) DifficultyComboBox.IsEnabled = false;
+        }
+
+        private void EnableButtons()
+        {
+            if (FilterByTagButton != null) FilterByTagButton.IsEnabled = true;
+            if (RandomProblemButton != null) RandomProblemButton.IsEnabled = true;
+            if (ResetFiltersButton != null) ResetFiltersButton.IsEnabled = true;
+            if (DifficultyComboBox != null) DifficultyComboBox.IsEnabled = true;
+        }
     }
 }
