@@ -1,0 +1,9 @@
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/CMakeFiles/CodeCoachDBTest.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/CMakeFiles/problem_manager_api.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/evaluation_engine/CMakeFiles/engine_core.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/evaluation_engine/CMakeFiles/engine_demo.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/evaluation_engine/CMakeFiles/evaluation_server.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/evaluation_engine/CMakeFiles/edit_cache.dir
+C:/Users/josef/Downloads/Proyecto_2_Datos_2_IIS_2025-Fabio (1)/Proyecto_2_Datos_2_IIS_2025-Fabio/cmake-build-debug/evaluation_engine/CMakeFiles/rebuild_cache.dir
