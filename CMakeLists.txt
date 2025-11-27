@@ -16,6 +16,9 @@ find_package(bsoncxx CONFIG REQUIRED)
 # 📦 Crow (framework HTTP) – solo para los includes (es header-only)
 find_package(crow CONFIG REQUIRED)
 
+find_package(cpr CONFIG REQUIRED)
+
+
 # ============================================================
 # Ejecutable 1: Prueba de BD (main_db_test)
 # ============================================================
@@ -53,4 +56,8 @@ target_link_libraries(problem_manager_api
         PRIVATE
         mongo::mongocxx_shared
         mongo::bsoncxx_shared
+        cpr::cpr
 )
+
+# con eso CLion verá el submódulo y te creará la configuración engine_demo
+add_subdirectory(evaluation_engine)

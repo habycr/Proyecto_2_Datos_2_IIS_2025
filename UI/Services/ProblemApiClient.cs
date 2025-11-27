@@ -269,6 +269,56 @@ namespace UI.Services
             }
         }
 
+        // ==================== POST /submissions ====================
+        /// <summary>
+        /// Envía una solución para que sea evaluada por el Gestor + Motor.
+        /// </summary>
+        public async Task<EvaluationResponse?> SubmitSolutionAsync(
+            string problemId,
+            string language,
+            string sourceCode,
+            int timeLimitMs = 2000)
+        {
+            try
+            {
+                var bodyObject = new
+                {
+                    problem_id = problemId,
+                    language = language,
+                    source_code = sourceCode,
+                    time_limit_ms = timeLimitMs
+                };
+
+                var json = JsonSerializer.Serialize(bodyObject);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("/submissions", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"[ERROR] POST /submissions falló ({response.StatusCode}): {error}");
+                    return null;
+                }
+
+                var responseText = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var evalResponse = JsonSerializer.Deserialize<EvaluationResponse>(responseText, options);
+                return evalResponse;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Excepción en SubmitSolutionAsync: {ex.Message}");
+                return null;
+            }
+        }
+
+
 
     }
 }
