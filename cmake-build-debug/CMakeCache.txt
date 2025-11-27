@@ -242,8 +242,8 @@ CMAKE_STRIP:FILEPATH=C:/Program Files/JetBrains/CLion 2025.2/bin/mingw/bin/strip
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
-//The CMake toolchain file
-CMAKE_TOOLCHAIN_FILE:FILEPATH=C:/Users/josef/vcpkg/scripts/buildsystems/vcpkg.cmake
+//Vcpkg toolchain
+CMAKE_TOOLCHAIN_FILE:STRING=C:/Users/josef/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
