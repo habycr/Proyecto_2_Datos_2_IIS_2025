@@ -1,0 +1,12 @@
+{
+  "problem_id": "sum-two-numbers",
+  "title": "Suma de dos números",
+  "description": "Dado dos enteros a y b, imprima su suma.",
+  "difficulty": "Fácil",
+  "code_stub": "int solve(int a, int b) { return a + b; }",
+  "tags": ["intro", "math"],
+  "test_cases": [
+    { "input": "2 3", "expected_output": "5" },
+    { "input": "10 20", "expected_output": "30" }
+  ]
+}
