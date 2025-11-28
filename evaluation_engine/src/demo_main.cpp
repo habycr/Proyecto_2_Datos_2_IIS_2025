@@ -58,6 +58,7 @@ int main() {
         std::cout << "== Resultado general ==\n";
         std::cout << "Submission: " << res.submissionId << "\n";
         std::cout << "Max time (ms): " << res.maxTimeMs << "\n";
+        std::cout << "Max memory (KB): " << res.maxMemoryKb << "\n";
         std::cout << "Estado global: ";
 
         switch (res.overallStatus) {
@@ -81,7 +82,7 @@ int main() {
                 case TestStatus::RuntimeError:       std::cout << "RuntimeError"; break;
                 case TestStatus::InternalError:      std::cout << "InternalError"; break;
             }
-            std::cout << " (" << t.timeMs << " ms)\n";
+            std::cout << " (" << t.timeMs << " ms, " << t.memoryKb << " KB)\n";
 
             if (!t.runtimeLog.empty()) {
                 std::cout << "  runtime.log:\n" << t.runtimeLog << "\n";

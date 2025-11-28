@@ -23,6 +23,7 @@ namespace engine {
         std::string testId;
         TestStatus status{TestStatus::InternalError};
         int timeMs{0};
+        int memoryKb{0};
         std::string runtimeLog;
     };
 
@@ -49,6 +50,7 @@ namespace engine {
         std::string compileLog;
         std::vector<TestResult> tests;
         int maxTimeMs{0};
+        int maxMemoryKb{0};
     };
 
 } // namespace engine

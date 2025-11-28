@@ -371,13 +371,14 @@ namespace UI
 
             ConsoleOutput.Text += $"📌 Resultado global: {result.OverallStatus}\n";
             ConsoleOutput.Text += $"⏱️ Tiempo máximo: {result.MaxTimeMs} ms\n";
+            ConsoleOutput.Text += $"💾 Memoria máxima: {result.MaxMemoryKb} KB\n";
             ConsoleOutput.Text += $"📄 Log de compilación:\n{result.CompileLog}\n";
 
             ConsoleOutput.Text += "\n🔍 Resultados por test:\n";
 
             foreach (var t in result.Tests)
             {
-                ConsoleOutput.Text += $"  ➤ Test {t.Id}: {t.Status} ({t.TimeMs} ms)\n";
+                ConsoleOutput.Text += $"  ➤ Test {t.Id}: {t.Status} ({t.TimeMs} ms, {t.MemoryKb} KB)\n";
                 if (!string.IsNullOrWhiteSpace(t.RuntimeLog))
                 {
                     ConsoleOutput.Text += $"     Log:\n{t.RuntimeLog}\n";

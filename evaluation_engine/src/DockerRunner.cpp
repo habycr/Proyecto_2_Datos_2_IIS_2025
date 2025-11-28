@@ -72,7 +72,7 @@ RunResult DockerRunner::runSingleTest(
         << imageName_ << " "
         << "/bin/bash -lc \"cd /workspace && "
         << "timeout " << timeLimitSeconds << "s "
-        << "./main < " << inputFileName
+        << "/usr/bin/time -v ./main < " << inputFileName
         << " > " << outputFileName
         << " 2> " << runtimeLogName << "\"";
 

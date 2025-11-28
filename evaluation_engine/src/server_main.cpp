@@ -51,12 +51,14 @@ int main() {
 
             result["compile_log"] = er.compileLog;
             result["max_time_ms"] = er.maxTimeMs;
+            result["max_memory_kb"] = er.maxMemoryKb;
 
             json testArray = json::array();
             for (auto& t : er.tests){
                 json jt;
                 jt["id"] = t.testId;
                 jt["time_ms"] = t.timeMs;
+                jt["memory_kb"] = t.memoryKb;
 
                 jt["status"] =
                     (t.status == TestStatus::Accepted) ? "Accepted" :

@@ -11,6 +11,32 @@
 #include <cstdint>
 #include <system_error>
 
+#include <sstream>   // asegúrate de incluirlo
+
+namespace {
+
+    // Busca la línea "Maximum resident set size (kbytes): N"
+    int extractMaxMemoryKb(const std::string& logText) {
+        std::istringstream iss(logText);
+        std::string line;
+        const std::string key = "Maximum resident set size (kbytes):";
+        while (std::getline(iss, line)) {
+            auto pos = line.find(key);
+            if (pos != std::string::npos) {
+                std::string valueStr = line.substr(pos + key.size());
+                try {
+                    return std::stoi(valueStr);
+                } catch (...) {
+                    return 0;
+                }
+            }
+        }
+        return 0;
+    }
+
+} // namespace
+
+
 namespace engine {
 
 EvaluationService::EvaluationService(std::filesystem::path baseDir,
@@ -53,6 +79,7 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
 
         // 3. Ejecutar tests uno por uno
         int maxTimeMs = 0;
+        int maxMemoryKb = 0;
 
         for (const auto& tc : request.testCases) {
             TestResult tr;
@@ -103,6 +130,11 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
                     std::istreambuf_iterator<char>());
             }
 
+            tr.memoryKb = extractMaxMemoryKb(tr.runtimeLog);
+            if (tr.memoryKb > maxMemoryKb) {
+                maxMemoryKb = tr.memoryKb;
+            }
+
             // Clasificación del resultado
             if (runRes.timedOut) {
                 tr.status = TestStatus::TimeLimitExceeded;
@@ -139,6 +171,7 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
         }
 
         result.maxTimeMs = maxTimeMs;
+        result.maxMemoryKb = maxMemoryKb;
 
         // 4. Determinar overallStatus
         bool allAccepted = true;
