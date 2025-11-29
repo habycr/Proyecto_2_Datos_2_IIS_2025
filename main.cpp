@@ -6,11 +6,6 @@
 #include <mongocxx/uri.hpp>
 #include <iostream>
 
-
-
-
-
-
 int main() {
     mongocxx::instance inst{};
     mongocxx::client client{mongocxx::uri{"mongodb://localhost:27017"}};

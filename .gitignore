@@ -76,6 +76,7 @@ out/
 *.so
 *.a
 *.lib
+.env
 
 # Compiled static and shared libs
 *.dylib
