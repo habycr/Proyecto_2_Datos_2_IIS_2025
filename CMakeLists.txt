@@ -20,6 +20,8 @@ find_package(crow CONFIG REQUIRED)
 find_package(asio CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(cpr CONFIG REQUIRED)
+
 
 # ============================================================
 # Ejecutable 1: Prueba de BD (main_db_test)
@@ -58,6 +60,7 @@ target_link_libraries(problem_manager_api
         PRIVATE
         mongo::mongocxx_shared
         mongo::bsoncxx_shared
+        cpr::cpr
 )
 add_executable(analyzer_server
         Analizador/main.cpp
@@ -115,3 +118,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
         target_compile_options(analyzer_server PRIVATE /O2)
     endif()
 endif()
+
+# con eso CLion verá el submódulo y te creará la configuración engine_demo
+add_subdirectory(evaluation_engine)

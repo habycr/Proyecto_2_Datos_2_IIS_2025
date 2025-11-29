@@ -6,6 +6,8 @@
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="3" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -21,11 +23,14 @@
       <config projectName="CodeCoachDBTest" targetName="problem_manager_api" />
       <config projectName="CodeCoachDBTest" targetName="analyzer_server" />
       <config projectName="CodeCoachDBTest" targetName="CodeCoachDBTest" />
+      <config projectName="CodeCoachDBTest" targetName="engine_demo" />
+      <config projectName="CodeCoachDBTest" targetName="evaluation_server" />
+      <config projectName="CodeCoachDBTest" targetName="engine_core" />
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=C:/Users/dylan/vcpkg/scripts/buildsystems/vcpkg.cmake" />
+      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=C:/Users/josef/vcpkg/scripts/buildsystems/vcpkg.cmake" />
     </configurations>
   </component>
   <component name="ChangeListManager">
@@ -34,6 +39,15 @@
       <change beforePath="$PROJECT_DIR$/Analizador/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" afterDir="false" />
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Arreglos">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker/cpp/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/cpp/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/Models.h" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/include/Models.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/DockerRunner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/DockerRunner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/EvaluationService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/EvaluationService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/demo_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/demo_main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/server_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/server_main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +67,32 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/Fabio" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="main" />
@@ -69,7 +109,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/habycr/Proyecto_2_Datos_2_IIS_2025.git&quot;,
-    &quot;accountId&quot;: &quot;175144cf-164f-4945-adc8-4eaca68e924b&quot;
+    &quot;accountId&quot;: &quot;226636af-1ec8-4542-999a-3abd69769aaf&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -133,17 +173,61 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.analyzer_server">
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.engine_demo.executor": "Run",
+    "CMake Application.evaluation_server.executor": "Run",
+    "CMake Application.problem_manager_api.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "Fabio",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/josef/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025/evaluation_engine/include",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CPPToolchains",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine\include" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine\include" />
+      <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.evaluation_server">
     <configuration name="CodeCoachDBTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="CodeCoachDBTest" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="CodeCoachDBTest">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="engine_core" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="engine_core" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="analyzer_server" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="analyzer_server" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="analyzer_server">
+    <configuration name="engine_demo" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="engine_demo" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="engine_demo">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="evaluation_server" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="evaluation_server" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="evaluation_server">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -156,6 +240,9 @@
     <list>
       <item itemvalue="CMake Application.analyzer_server" />
       <item itemvalue="CMake Application.CodeCoachDBTest" />
+      <item itemvalue="CMake Application.engine_core" />
+      <item itemvalue="CMake Application.engine_demo" />
+      <item itemvalue="CMake Application.evaluation_server" />
       <item itemvalue="CMake Application.problem_manager_api" />
     </list>
   </component>
@@ -174,6 +261,12 @@
       <workItem from="1763850798017" duration="727000" />
       <workItem from="1764033945087" duration="818000" />
       <workItem from="1764364861047" duration="25038000" />
+      <workItem from="1763795211600" duration="2524000" />
+      <workItem from="1764036540070" duration="2000" />
+      <workItem from="1764194835836" duration="6000" />
+      <workItem from="1764194929174" duration="3848000" />
+      <workItem from="1764201053746" duration="13836000" />
+      <workItem from="1764293077037" duration="7978000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
@@ -208,6 +301,15 @@
       <updated>1764408310008</updated>
     </task>
     <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00002" summary="Arreglos">
+      <option name="closed" value="true" />
+      <created>1764229430947</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764229430947</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,5 +340,23 @@
     <MESSAGE value="Cambios del gitignore" />
     <MESSAGE value="Analizador de soluciones y LLM" />
     <option name="LAST_COMMIT_MESSAGE" value="Analizador de soluciones y LLM" />
+    <MESSAGE value="Arreglos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Arreglos" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/evaluation_engine/include/SubmissionFilesystem.h</url>
+          <line>2</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/evaluation_engine/include/Models.h</url>
+          <line>2</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

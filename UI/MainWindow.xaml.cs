@@ -284,11 +284,56 @@ namespace UI
         }
 
         // ==================== Botón Run ====================
-        private void Run_Click(object sender, RoutedEventArgs e)
+        private async void Run_Click(object sender, RoutedEventArgs e)
         {
             ConsoleOutput.Text = "La función 'Run' aún no está implementada.\n";
             ConsoleOutput.Text += "   → Esta función se conectará al Motor de Evaluación.\n";
+            if (_currentProblem == null)
+            {
+                ConsoleOutput.Text = "❌ No hay un problema seleccionado.\n";
+                return;
+            }
+
+            string sourceCode = CodeEditor.Text;
+
+            if (string.IsNullOrWhiteSpace(sourceCode))
+            {
+                MessageBox.Show("El código está vacío.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ConsoleOutput.Text = "🚀 Enviando solución al motor de evaluación...\n";
+
+            var result = await _apiClient.SubmitSolutionAsync(
+                _currentProblem.problem_id,
+                "cpp",
+                sourceCode,
+                2000
+            );
+
+            if (result == null)
+            {
+                ConsoleOutput.Text += "❌ Error al evaluar la solución.\n";
+                return;
+            }
+
+            ConsoleOutput.Text += $"📌 Resultado global: {result.OverallStatus}\n";
+            ConsoleOutput.Text += $"⏱️ Tiempo máximo: {result.MaxTimeMs} ms\n";
+            ConsoleOutput.Text += $"💾 Memoria máxima: {result.MaxMemoryKb} KB\n";
+            ConsoleOutput.Text += $"📄 Log de compilación:\n{result.CompileLog}\n";
+
+            ConsoleOutput.Text += "\n🔍 Resultados por test:\n";
+
+            foreach (var t in result.Tests)
+            {
+                ConsoleOutput.Text += $"  ➤ Test {t.Id}: {t.Status} ({t.TimeMs} ms, {t.MemoryKb} KB)\n";
+                if (!string.IsNullOrWhiteSpace(t.RuntimeLog))
+                {
+                    ConsoleOutput.Text += $"     Log:\n{t.RuntimeLog}\n";
+                }
+            }
         }
+
 
         // ==================== Botón Submit ====================
         private async void Submit_Click(object sender, RoutedEventArgs e)
@@ -331,7 +376,12 @@ namespace UI
                     ConsoleOutput.AppendText($"\n⚠ Complexity analysis failed: {result.Error}\n");
                 }
             }
+        {
+            ConsoleOutput.Text = "⚙️ La función 'Submit' aún no está implementada.\n";
+            ConsoleOutput.Text += "   → Esta función enviará la solución al Motor de Evaluación.\n";
+
         }
+
 
         // ==================== Botón Admin ====================
         private void AdminButton_Click(object sender, RoutedEventArgs e)

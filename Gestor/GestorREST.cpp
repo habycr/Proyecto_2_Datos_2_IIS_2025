@@ -14,6 +14,9 @@
 #include <string>
 #include <vector>
 
+#include <cpr/cpr.h>
+
+
 // =================== Helpers JSON ===================
 
 // Convierte un Problem a JSON (Crow). Si summary = true, omite description, code_stub y test_cases.
@@ -317,6 +320,145 @@ int main() {
             res_body["problem_id"] = problem_id;
             return make_json_response(200, res_body);
         });
+
+                // --------- POST /submissions (evaluar código de un problema) ---------
+        CROW_ROUTE(app, "/submissions").methods(crow::HTTPMethod::Post)
+        ([&repo](const crow::request& req) {
+            // 1. Parsear JSON de la UI
+            auto body_json = crow::json::load(req.body);
+            if (!body_json) {
+                return make_error_response(400, "JSON malformado");
+            }
+
+            using crow::json::type;
+
+            // Campos obligatorios: problem_id, language, source_code
+            if (!body_json.has("problem_id") || body_json["problem_id"].t() != type::String) {
+                return make_error_response(400, "Falta 'problem_id' o no es string");
+            }
+            if (!body_json.has("language") || body_json["language"].t() != type::String) {
+                return make_error_response(400, "Falta 'language' o no es string");
+            }
+            if (!body_json.has("source_code") || body_json["source_code"].t() != type::String) {
+                return make_error_response(400, "Falta 'source_code' o no es string");
+            }
+
+            std::string problem_id  = std::string(body_json["problem_id"].s());
+            std::string language    = std::string(body_json["language"].s());
+            std::string source_code = std::string(body_json["source_code"].s());
+
+            int time_limit_ms = 2000;
+            if (body_json.has("time_limit_ms") && body_json["time_limit_ms"].t() == type::Number) {
+                time_limit_ms = static_cast<int>(body_json["time_limit_ms"].i());
+            }
+
+            // 2. Buscar el problema en Mongo
+            auto maybe_problem = repo.get_by_id(problem_id);
+            if (!maybe_problem) {
+                return make_error_response(404, "Problema no encontrado");
+            }
+            Problem p = *maybe_problem;
+
+            if (p.test_cases.empty()) {
+                return make_error_response(400, "El problema no tiene casos de prueba configurados");
+            }
+
+            // 3. Construir el JSON para el motor de evaluación
+            crow::json::wvalue eval_json;
+
+            // Generar un "submission_id" simple (puedes mejorarlo luego)
+            eval_json["submission_id"] = "sub-" + problem_id;
+
+            eval_json["problem_id"]    = problem_id;
+            eval_json["language"]      = language;
+            eval_json["source_code"]   = source_code;
+            eval_json["time_limit_ms"] = time_limit_ms;
+
+            // test_cases: el motor espera id, input, expected_output
+            for (std::size_t i = 0; i < p.test_cases.size(); ++i) {
+                const auto& tc = p.test_cases[i];
+                auto idx = static_cast<int>(i); // Crow usa índices int
+
+                eval_json["test_cases"][idx]["id"]              = std::to_string(i + 1);
+                eval_json["test_cases"][idx]["input"]           = tc.input;
+                eval_json["test_cases"][idx]["expected_output"] = tc.expected_output;
+            }
+
+            // 4. Llamar al motor de evaluación (http://localhost:8090/evaluate)
+            std::string eval_url = "http://localhost:8090/evaluate";
+
+            cpr::Response resp = cpr::Post(
+                cpr::Url{eval_url},
+                cpr::Header{{"Content-Type", "application/json"}},
+                cpr::Body{eval_json.dump()}
+            );
+
+            if (resp.error) {
+                return make_error_response(502, std::string("Error al llamar al motor de evaluación: ") + resp.error.message);
+            }
+
+            if (resp.status_code != 200) {
+                std::string msg = "El motor de evaluación respondió con código " +
+                                  std::to_string(resp.status_code) +
+                                  ", body: " + resp.text;
+                return make_error_response(502, msg);
+            }
+
+            // 5. Reenviar la respuesta del motor tal cual a la UI
+            crow::response proxy_resp;
+            proxy_resp.code = 200;
+            proxy_resp.set_header("Content-Type", "application/json");
+            proxy_resp.body = resp.text;
+            return proxy_resp;
+        });
+
+        // --------- POST /run  (simple execution, no judge) ---------
+        CROW_ROUTE(app, "/run").methods(crow::HTTPMethod::Post)
+        ([&repo](const crow::request& req) {
+
+            auto body_json = crow::json::load(req.body);
+            if (!body_json)
+                return crow::response(400, "JSON malformado");
+
+            if (!body_json.has("source_code") || body_json["source_code"].t() != crow::json::type::String)
+                return crow::response(400, "Falta 'source_code'");
+
+            if (!body_json.has("input") || body_json["input"].t() != crow::json::type::String)
+                return crow::response(400, "Falta 'input'");
+
+            std::string sourceCode = body_json["source_code"].s();
+            std::string input      = body_json["input"].s();
+
+            // preparar un request minimalista para el motor
+            crow::json::wvalue evalJson;
+            evalJson["submission_id"] = "run-" + std::to_string(rand());
+            evalJson["language"]      = "cpp";
+            evalJson["source_code"]   = sourceCode;
+            evalJson["time_limit_ms"] = 2000;
+
+            // test único sin expected_output
+            evalJson["test_cases"][0]["id"]    = "1";
+            evalJson["test_cases"][0]["input"] = input;
+            evalJson["test_cases"][0]["expected_output"] = "";  // vacío → no comparar
+
+            // llamar al motor
+            auto resp = cpr::Post(
+                cpr::Url{"http://localhost:8090/evaluate"},
+                cpr::Header{{"Content-Type", "application/json"}},
+                cpr::Body{evalJson.dump()}
+            );
+
+            if (resp.error)
+                return crow::response(502, resp.error.message);
+
+            crow::response r;
+            r.code = resp.status_code;
+            r.set_header("Content-Type", "application/json");
+            r.body = resp.text;
+            return r;
+        });
+
+
 
         // 5. Levantar el servidor
         std::cout << "[GestorREST] Escuchando en http://localhost:8080 ..." << std::endl;
