@@ -360,18 +360,18 @@ namespace UI
         // ==================== Verificar conexión con el servidor de análisis ====================
         private async void CheckServerConnection()
             {
-                ConsoleOutput.Text = "Checking connection to Complexity Analyzer server...\n";
+                ConsoleOutput.Text = "Verificando conexión con el Analizodr de Soluciones...\n";
                 _serverConnected = await _analyzerService.CheckServerHealthAsync();
 
                 if (_serverConnected)
                 {
-                    ConsoleOutput.AppendText("Connected to Complexity Analyzer API\n");
-                    ConsoleOutput.AppendText("Ready to analyze algorithm complexity!\n");
+                    ConsoleOutput.AppendText("Conectado al Analizador\n");
+                    ConsoleOutput.AppendText("Listo para analizar la complejidad del algoritmo\n");
                 }
                 else
                 {
-                    ConsoleOutput.AppendText("Warning: Complexity Analyzer server not connected.\n");
-                    ConsoleOutput.AppendText("Start the C++ server on port 8080 to enable analysis.\n");
+                    ConsoleOutput.AppendText("Advertencia: servidor del Analizador no conectado.\n");
+                    ConsoleOutput.AppendText("Inicie el servidor C++ en el puerto 8081.\n");
                 }
             }
 
@@ -379,22 +379,22 @@ namespace UI
         private void DisplayAnalysisResults(AnalysisResult result)
         {
             ConsoleOutput.AppendText("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-            ConsoleOutput.AppendText("         COMPLEXITY ANALYSIS RESULTS\n");
+            ConsoleOutput.AppendText("         RESULTADO DEL ANALISIS DE COMPLEJIDAD\n");
             ConsoleOutput.AppendText("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
             
-            ConsoleOutput.AppendText($"Algorithm Type: {result.AlgorithmType}\n\n");
+            ConsoleOutput.AppendText($"Tipo de algoritmo: {result.AlgorithmType}\n\n");
 
-            ConsoleOutput.AppendText("Details:\n");
-            ConsoleOutput.AppendText($"   • Nested Loops: {result.Details.NestedLoops}\n");
+            ConsoleOutput.AppendText("Detalles:\n");
+            ConsoleOutput.AppendText($"   • Ciclos anidados: {result.Details.NestedLoops}\n");
 
             ConsoleOutput.AppendText($"   • Average Ratio: {result.Details.AverageRatio:F2}\n\n");
 
-            ConsoleOutput.AppendText($"Explanation:\n   {result.Explanation}\n\n");
+            ConsoleOutput.AppendText($"Explicación:\n   {result.Explanation}\n\n");
 
             if (result.Suggestions != null && result.Suggestions.Count > 0)
             {
-                ConsoleOutput.AppendText("Suggestions:\n");
+                ConsoleOutput.AppendText("Sugerencias:\n");
                 foreach (var suggestion in result.Suggestions)
                 {
                     ConsoleOutput.AppendText($"   • {suggestion}\n");
@@ -406,18 +406,7 @@ namespace UI
 
         // ==================== Obtener emoji según la complejidad ====================
 
-        private string GetComplexityEmoji(string complexity)
-        {
-            if (complexity.Contains("O(1)") || complexity.Contains("O(log n)"))
-                return "🟢";
-            if (complexity.Contains("O(n)") || complexity.Contains("O(n log n)"))
-                return "🔵";
-            if (complexity.Contains("O(n²)"))
-                return "🟡";
-            if (complexity.Contains("O(n³)"))
-                return "🟠";
-            return "🔴";
-        }
+        
 
 
     }

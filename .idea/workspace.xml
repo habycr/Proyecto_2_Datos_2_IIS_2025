@@ -29,23 +29,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Cambios del gitignore">
-      <change afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/Env/env_loader.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/Env/env_loader.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/Gemini_test.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/LLM/gemini_client.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/LLM/gemini_client.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/main.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Analizador/test_api.ps1" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Analizador de soluciones y LLM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/server.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analizador/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +173,7 @@
       <workItem from="1763795211600" duration="14885000" />
       <workItem from="1763850798017" duration="727000" />
       <workItem from="1764033945087" duration="818000" />
-      <workItem from="1764364861047" duration="23563000" />
+      <workItem from="1764364861047" duration="25038000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
@@ -211,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763798035258</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Analizador de soluciones y LLM">
+      <option name="closed" value="true" />
+      <created>1764408310008</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764408310008</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,6 +236,7 @@
     <MESSAGE value="Estructura V2" />
     <MESSAGE value="CMake funcional" />
     <MESSAGE value="Cambios del gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cambios del gitignore" />
+    <MESSAGE value="Analizador de soluciones y LLM" />
+    <option name="LAST_COMMIT_MESSAGE" value="Analizador de soluciones y LLM" />
   </component>
 </project>

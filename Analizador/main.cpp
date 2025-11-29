@@ -244,7 +244,7 @@ void linearSearch(int n) {
     cout << "Server started at http://localhost:8080" << endl;
     cout << "========================================" << endl;
 
-    app.port(8080)
+    app.port(8081)
         .multithreaded()
         .run();
 

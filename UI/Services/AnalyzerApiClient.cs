@@ -51,7 +51,7 @@ namespace UI.Services
     class AnalyzerApiClient
     {
         private readonly HttpClient _httpClient;
-        private const string API_BASE_URL = "http://localhost:8080/api";
+        private const string API_BASE_URL = "http://localhost:8081/api";
 
         public AnalyzerApiClient()
         {
@@ -74,14 +74,15 @@ namespace UI.Services
             }
         }
 
-        public async Task<AnalysisResult> AnalyzeCodeAsync(string code, string problemName = "")
+        public async Task<AnalysisResult> AnalyzeCodeAsync(string code, string problemName = "", string consoleOutput = "")
         {
             try
             {
                 var request = new
                 {
                     code = code,
-                    problemName = problemName
+                    problemName = problemName,
+                    consoleOutput = consoleOutput  // ← NUEVO
                 };
 
                 var json = JsonSerializer.Serialize(request);
@@ -106,20 +107,12 @@ namespace UI.Services
 
                 return JsonSerializer.Deserialize<AnalysisResult>(responseBody, options);
             }
-            catch (HttpRequestException ex)
-            {
-                return new AnalysisResult
-                {
-                    Success = false,
-                    Error = $"Connection error: {ex.Message}\n\nMake sure the C++ server is running on port 8080."
-                };
-            }
             catch (Exception ex)
             {
                 return new AnalysisResult
                 {
                     Success = false,
-                    Error = $"Unexpected error: {ex.Message}"
+                    Error = $"Error: {ex.Message}"
                 };
             }
         }
