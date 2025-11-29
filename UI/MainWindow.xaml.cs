@@ -273,73 +273,6 @@ namespace UI
         // ==================== Botón Run ====================
         private async void Run_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Verificar que haya un problema seleccionado
-            if (_currentProblem == null)
-            {
-                ConsoleOutput.Text = "❌ No hay un problema seleccionado.\n";
-                return;
-            }
-
-            // 2. Obtener el código que está en el editor
-            string sourceCode = CodeEditor.Text;
-
-            if (string.IsNullOrWhiteSpace(sourceCode))
-            {
-                ConsoleOutput.Text = "❌ El código está vacío.\n";
-                return;
-            }
-
-            // 3. Mensaje inicial en la consola
-            ConsoleOutput.Text = "▶ Ejecutando solución (modo rápido)...\n";
-
-            try
-            {
-                // 4. Llamar al Gestor + Motor de Evaluación
-                var result = await _apiClient.SubmitSolutionAsync(
-                    _currentProblem.problem_id,
-                    "cpp",
-                    sourceCode,
-                    2000 // time limit en ms (puedes ajustarlo luego por problema)
-                );
-
-                if (result == null)
-                {
-                    ConsoleOutput.Text += "❌ Error al ejecutar la solución.\n";
-                    return;
-                }
-
-                // 5. Mostrar un resumen simple del resultado
-                ConsoleOutput.Text += $"📌 Resultado global: {result.OverallStatus}\n";
-                ConsoleOutput.Text += $"⏱️ Tiempo máximo: {result.MaxTimeMs} ms\n";
-
-                // 6. Solo mostrar log de compilación si hubo error
-                if (!string.IsNullOrWhiteSpace(result.CompileLog))
-                {
-                    ConsoleOutput.Text += "\n⚠️ Problemas de compilación:\n";
-                    ConsoleOutput.Text += result.CompileLog + "\n";
-                }
-
-                // 7. Resumen por test (sin tanto texto adicional)
-                ConsoleOutput.Text += "\n🔍 Tests:\n";
-                foreach (var t in result.Tests)
-                {
-                    ConsoleOutput.Text += $"  • Test {t.Id}: {t.Status} ({t.TimeMs} ms)\n";
-                }
-            }
-            catch (Exception ex)
-            {
-                ConsoleOutput.Text += $"❌ Excepción al ejecutar: {ex.Message}\n";
-            }
-        }
-
-
-
-
-
-
-        // ==================== Botón Submit ====================
-        private async void Submit_Click(object sender, RoutedEventArgs e)
-        {
             if (_currentProblem == null)
             {
                 ConsoleOutput.Text = "❌ No hay un problema seleccionado.\n";
@@ -384,6 +317,15 @@ namespace UI
                     ConsoleOutput.Text += $"     Log:\n{t.RuntimeLog}\n";
                 }
             }
+        }
+
+
+        // ==================== Botón Submit ====================
+        private async void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            ConsoleOutput.Text = "⚙️ La función 'Submit' aún no está implementada.\n";
+            ConsoleOutput.Text += "   → Esta función enviará la solución al Motor de Evaluación.\n";
+
         }
 
 
