@@ -4,7 +4,7 @@ Write-Host "  Testing Gemini API Connection" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 
 try {
-    $result = Invoke-RestMethod -Uri http://localhost:8080/api/test-gemini
+    $result = Invoke-RestMethod -Uri http://localhost:8081/api/test-gemini
 
     Write-Host "`nStatus: " -NoNewline
     if ($result.success) {

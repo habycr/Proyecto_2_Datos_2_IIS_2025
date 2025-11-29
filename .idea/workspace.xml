@@ -21,6 +21,7 @@
   <component name="CMakeRunConfigurationManager">
     <generated>
       <config projectName="CodeCoachDBTest" targetName="problem_manager_api" />
+      <config projectName="CodeCoachDBTest" targetName="analyzer_server" />
       <config projectName="CodeCoachDBTest" targetName="CodeCoachDBTest" />
       <config projectName="CodeCoachDBTest" targetName="engine_demo" />
       <config projectName="CodeCoachDBTest" targetName="evaluation_server" />
@@ -35,13 +36,7 @@
   <component name="ChangeListManager">
     <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Arreglos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/cpp/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/docker/cpp/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/Models.h" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/include/Models.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/DockerRunner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/DockerRunner.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/EvaluationService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/EvaluationService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/demo_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/demo_main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/server_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation_engine/src/server_main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analizador/Gemini_test.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Gemini_test.ps1" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,6 +125,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "CMake Application.analyzer_server.executor": "Run",
     "CMake Application.engine_demo.executor": "Run",
     "CMake Application.evaluation_server.executor": "Run",
     "CMake Application.problem_manager_api.executor": "Run",
@@ -151,7 +147,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CPPToolchains",
+    "settings.editor.selected.configurable": "CMakeSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -166,6 +162,16 @@
   </component>
   <component name="RunManager" selected="CMake Application.evaluation_server">
     <configuration name="CodeCoachDBTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="CodeCoachDBTest" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="CodeCoachDBTest">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="analyzer_server" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="analyzer_server" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="analyzer_server">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -191,6 +197,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="CMake Application.analyzer_server" />
       <item itemvalue="CMake Application.CodeCoachDBTest" />
       <item itemvalue="CMake Application.engine_core" />
       <item itemvalue="CMake Application.engine_demo" />
@@ -215,6 +222,7 @@
       <workItem from="1764194929174" duration="3848000" />
       <workItem from="1764201053746" duration="13836000" />
       <workItem from="1764293077037" duration="7978000" />
+      <workItem from="1764410758778" duration="1408000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
