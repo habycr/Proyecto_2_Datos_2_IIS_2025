@@ -337,25 +337,25 @@ namespace UI
 
         // ==================== Botón Submit ====================
         private async void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentProblem == null)
             {
-                if (_currentProblem == null)
-                {
-                    MessageBox.Show("Por favor selecciona un problema primero", "Aviso",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
+                MessageBox.Show("Por favor selecciona un problema primero", "Aviso",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
-                string code = CodeEditor.Text;
+            string code = CodeEditor.Text;
 
-                if (string.IsNullOrWhiteSpace(code))
-                {
-                    MessageBox.Show("Por favor escribe código antes de enviar", "Aviso",
-                        MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                MessageBox.Show("Por favor escribe código antes de enviar", "Aviso",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
-                ConsoleOutput.Clear();
-                ResultOutput.Clear();
+            ConsoleOutput.Clear();
+            ResultOutput.Clear();
 
             // Submit SOLO analiza la complejidad (NO compila)
             if (_serverConnected)
@@ -376,10 +376,6 @@ namespace UI
                     ConsoleOutput.AppendText($"\n⚠ Complexity analysis failed: {result.Error}\n");
                 }
             }
-        {
-            ConsoleOutput.Text = "⚙️ La función 'Submit' aún no está implementada.\n";
-            ConsoleOutput.Text += "   → Esta función enviará la solución al Motor de Evaluación.\n";
-
         }
 
 
