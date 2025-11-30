@@ -40,11 +40,11 @@ private:
     bool detectRecursion();
     bool detectLogarithmic();
     string identifyAlgorithmType();
-    vector<double> measureExecutionTimes();
+
     string determineComplexity(const vector<double>& times);
     string generateExplanation(const string& complexity, const string& type);
     vector<string> generateSuggestions(const string& complexity);
-    bool compileAndRun(int n, double& time);
+
     vector<string> generateSuggestionsWithGemini(const string& complexity, const string& consoleOutput);
 
 };
