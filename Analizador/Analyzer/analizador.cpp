@@ -21,68 +21,78 @@ ComplexityAnalyzer::ComplexityAnalyzer(const string& sourceCode, const string& a
 }
 
 string ComplexityAnalyzer::extractFunctionName() {
-    regex funcRegex(R"(\b(void|int|long|double|float|bool)\s+(\w+)\s*\([^)]*int\s+n[^)]*\))");
-    smatch match;
+    regex patron1(R"(\w+\s+(\w+)\s*\(\s*int\s+n\s*\))");
+    smatch coincidencias;
 
-    if (regex_search(code, match, funcRegex)) {
-        return match[2];
+    if (regex_search(code, coincidencias, patron1)) {
+        cout << "[ANALYZER] Found function: " << coincidencias[1].str() << "(int n)" << endl;
+        return coincidencias[1].str();
     }
-    return "";
+
+    // Patrón 2: Función main
+    regex patron2(R"(int\s+main\s*\()");
+    if (regex_search(code, coincidencias, patron2)) {
+        cout << "[ANALYZER] Found main() function" << endl;
+        return "main";
+    }
+
+    // Patrón 3: Cualquier función
+    regex patron3(R"(\w+\s+(\w+)\s*\([^)]*\))");
+    if (regex_search(code, coincidencias, patron3)) {
+        cout << "[ANALYZER] Found function: " << coincidencias[1].str() << endl;
+        return coincidencias[1].str();
+    }
+
+    // Si no encuentra función, retornar genérico
+    cout << "[ANALYZER] No function found, analyzing code structure" << endl;
+    return "code_snippet";
 }
 
 int ComplexityAnalyzer::countNestedLoops() {
-    int maxDepth = 0;
-    int currentDepth = 0;
+    int maxNivel = 0;
+    int nivelActual = 0;
+    bool dentroDeLoop = false;
 
+    // Contar profundidad de llaves dentro de loops
     for (size_t i = 0; i < code.length(); i++) {
-        // Detectar 'for'
-        if (i + 3 <= code.length() && code.substr(i, 3) == "for") {
-            if (i > 0 && isalnum(code[i-1])) continue;
-            if (i + 3 < code.length() && isalnum(code[i+3])) continue;
-
-            currentDepth++;
-            maxDepth = max(maxDepth, currentDepth);
-        }
-        // Detectar 'while'
-        else if (i + 5 <= code.length() && code.substr(i, 5) == "while") {
-            if (i > 0 && isalnum(code[i-1])) continue;
-            if (i + 5 < code.length() && isalnum(code[i+5])) continue;
-
-            currentDepth++;
-            maxDepth = max(maxDepth, currentDepth);
+        // Detectar inicio de loop
+        if (i + 3 < code.length()) {
+            string sub = code.substr(i, 3);
+            if (sub == "for" || sub == "whi") {  // for o while
+                dentroDeLoop = true;
+            }
         }
 
-        // Detectar cierre de bloque
-        if (code[i] == '}') {
-            if (currentDepth > 0) currentDepth--;
+        if (code[i] == '{' && dentroDeLoop) {
+            nivelActual++;
+            if (nivelActual > maxNivel) {
+                maxNivel = nivelActual;
+            }
+        } else if (code[i] == '}') {
+            if (nivelActual > 0) {
+                nivelActual--;
+            }
         }
     }
 
-    return maxDepth;
-}
-
-bool ComplexityAnalyzer::detectRecursion() {
-    if (functionName.empty()) return false;
-
-    regex callRegex(functionName + R"(\s*\()");
-
-    size_t defPos = code.find(functionName + "(");
-    if (defPos == string::npos) return false;
-
-    string functionBody = code.substr(defPos);
-
-    smatch match;
-    int calls = 0;
-    auto searchStart = functionBody.cbegin();
-
-    while (regex_search(searchStart, functionBody.cend(), match, callRegex)) {
-        calls++;
-        searchStart = match.suffix().first;
-        if (calls > 1) return true;
+    // Si no hay loops anidados, contar loops simples
+    if (maxNivel == 0) {
+        size_t pos = 0;
+        while ((pos = code.find("for", pos)) != string::npos) {
+            maxNivel = 1;
+            pos += 3;
+        }
+        pos = 0;
+        while ((pos = code.find("while", pos)) != string::npos) {
+            maxNivel = max(maxNivel, 1);
+            pos += 5;
+        }
     }
 
-    return calls > 1;
+    return maxNivel;
 }
+
+
 
 bool ComplexityAnalyzer::detectLogarithmic() {
     regex logRegex(R"(\w+\s*[*/]=\s*2)");
@@ -115,7 +125,10 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
                 score++;
             }
         }
-        scores[algorithm] = score;
+        if (score >= 1) {  // Reducir umbral a 1 para detección más flexible
+            return algorithm;
+        }
+
     }
 
     auto maxIt = max_element(scores.begin(), scores.end(),
@@ -127,77 +140,17 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
         return maxIt->first;
     }
 
+    if (code.find("main") != string::npos) {
+        if (code.find("cin") != string::npos || code.find("cout") != string::npos) {
+            return "Simple I/O Program";
+        }
+        return "Main Program";
+    }
+
     return "Custom Algorithm";
 }
 
-bool ComplexityAnalyzer::compileAndRun(int n, double& time) {
-    ofstream file("temp_analysis.cpp");
 
-    file << "#include <iostream>\n";
-    file << "#include <vector>\n";
-    file << "#include <algorithm>\n";
-    file << "#include <chrono>\n";
-    file << "#include <queue>\n";
-    file << "#include <cstdlib>\n";
-    file << "#include <ctime>\n";
-    file << "using namespace std;\n";
-    file << "using namespace chrono;\n\n";
-
-    file << code << "\n\n";
-
-    file << "int main() {\n";
-    file << "    srand(time(nullptr));\n";
-    file << "    auto start = high_resolution_clock::now();\n";
-    file << "    " << functionName << "(" << n << ");\n";
-    file << "    auto end = high_resolution_clock::now();\n";
-    file << "    auto duration = duration_cast<microseconds>(end - start).count();\n";
-    file << "    cout << duration << endl;\n";
-    file << "    return 0;\n";
-    file << "}\n";
-
-    file.close();
-
-    // Compilar con cl.exe (Visual Studio) o g++
-    int result = system("cl /EHsc /std:c++17 /O2 temp_analysis.cpp >nul 2>&1");
-
-    if (result != 0) {
-        result = system("g++ -std=c++17 -O2 temp_analysis.cpp -o temp_analysis.exe 2>nul");
-
-        if (result != 0) {
-            return false;
-        }
-    }
-
-    // Ejecutar
-#ifdef _WIN32
-    FILE* pipe = _popen("temp_analysis.exe", "r");
-#else
-    FILE* pipe = popen("./temp_analysis", "r");
-#endif
-
-    if (!pipe) {
-        return false;
-    }
-
-    char buffer[128];
-    string resultStr;
-    while (fgets(buffer, sizeof(buffer), pipe)) {
-        resultStr += buffer;
-    }
-
-#ifdef _WIN32
-    _pclose(pipe);
-#else
-    pclose(pipe);
-#endif
-
-    try {
-        time = stod(resultStr) / 1000.0; // Convert to ms
-        return true;
-    } catch (...) {
-        return false;
-    }
-}
 
 vector<double> ComplexityAnalyzer::measureExecutionTimes() {
     vector<int> sizes = {100, 200, 400, 800, 1600};
@@ -307,17 +260,23 @@ vector<string> ComplexityAnalyzer::generateSuggestions(const string& complexity)
 AnalysisResult ComplexityAnalyzer::analyze() {
     AnalysisResult result;
 
-    if (functionName.empty()) {
-        result.success = false;
-        result.errorMessage = "No valid function detected with 'int n' parameter";
-        return result;
-    }
+    // Extraer nombre de función (puede ser cualquiera ahora)
+    functionName = extractFunctionName();
 
+    cout << "[ANALYZER] Starting analysis..." << endl;
+    cout << "[ANALYZER] Code length: " << code.length() << " chars" << endl;
+
+    // Análisis estático
     result.nestedLoops = countNestedLoops();
-    result.isRecursive = detectRecursion();
+
     result.algorithmType = identifyAlgorithmType();
 
-    result.executionTimes = measureExecutionTimes();
+    cout << "[ANALYZER] Nested loops: " << result.nestedLoops << endl;
+    cout << "[ANALYZER] Is recursive: " << (result.isRecursive ? "yes" : "no") << endl;
+    cout << "[ANALYZER] Algorithm type: " << result.algorithmType << endl;
+
+    // Análisis empírico (por ahora vacío)
+    result.executionTimes =measureExecutionTimes();
 
     if (!result.executionTimes.empty()) {
         result.averageRatio = 0;
@@ -327,13 +286,21 @@ AnalysisResult ComplexityAnalyzer::analyze() {
             }
         }
         result.averageRatio /= (result.executionTimes.size() - 1);
+    } else {
+        result.averageRatio = 0.0;
     }
 
+    // Determinar complejidad
     result.complexity = determineComplexity(result.executionTimes);
-    result.explanation = generateExplanation(result.complexity, result.algorithmType);
-    result.suggestions = generateSuggestions(result.complexity);
-    result.suggestions = generateSuggestionsWithGemini(result.complexity, result.consoleOutput);
+    cout << "[ANALYZER] Complexity: " << result.complexity << endl;
 
+    // Generar explicación
+    result.explanation = generateExplanation(result.complexity, result.algorithmType);
+
+    // Generar sugerencias con Gemini
+    cout << "[ANALYZER] Generating suggestions..." << endl;
+    result.suggestions = generateSuggestionsWithGemini(result.complexity, result.consoleOutput);
+    cout << "[ANALYZER] Generated " << result.suggestions.size() << " suggestions" << endl;
 
     result.success = true;
     return result;
