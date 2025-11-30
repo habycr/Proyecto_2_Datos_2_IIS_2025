@@ -150,34 +150,32 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
     return "Custom Algorithm";
 }
 
+bool ComplexityAnalyzer::detectRecursion() {
+    if (functionName.empty()) return false;
 
+    regex callRegex(functionName + R"(\s*\()");
 
-vector<double> ComplexityAnalyzer::measureExecutionTimes() {
-    vector<int> sizes = {100, 200, 400, 800, 1600};
-    vector<double> times;
+    size_t defPos = code.find(functionName + "(");
+    if (defPos == string::npos) return false;
 
-    cout << "[INFO] Measuring execution times..." << endl;
+    string functionBody = code.substr(defPos);
 
-    for (int n : sizes) {
-        double time;
-        if (compileAndRun(n, time)) {
-            times.push_back(time);
-            cout << "[INFO]   n=" << n << ": " << time << " ms" << endl;
-        } else {
-            cout << "[WARN]   Failed at n=" << n << endl;
-            break;
-        }
+    smatch match;
+    int calls = 0;
+    auto searchStart = functionBody.cbegin();
+
+    while (regex_search(searchStart, functionBody.cend(), match, callRegex)) {
+        calls++;
+        searchStart = match.suffix().first;
+        if (calls > 1) return true;
     }
 
-    // Cleanup
-#ifdef _WIN32
-    system("del temp_analysis.cpp temp_analysis.exe temp_analysis.obj 2>nul");
-#else
-    system("rm -f temp_analysis.cpp temp_analysis temp_analysis.o");
-#endif
-
-    return times;
+    return calls>1;
 }
+
+
+
+
 
 string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
     if (times.size() < 2) {
@@ -276,7 +274,7 @@ AnalysisResult ComplexityAnalyzer::analyze() {
     cout << "[ANALYZER] Algorithm type: " << result.algorithmType << endl;
 
     // Análisis empírico (por ahora vacío)
-    result.executionTimes =measureExecutionTimes();
+
 
     if (!result.executionTimes.empty()) {
         result.averageRatio = 0;
