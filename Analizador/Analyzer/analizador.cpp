@@ -1,7 +1,3 @@
-//
-// Created by dylan on 22/11/25.
-//
-// AlgorithmComplexityAnalyzer/analyzer.cpp
 #include "analizador.h"
 #include <fstream>
 #include <regex>
@@ -15,12 +11,16 @@
 #include <Windows.h>
 #endif
 
+// Constructor: guarda el código, la API key de Gemini y trata de identificar el nombre de la función
+// principal a analizar.
 ComplexityAnalyzer::ComplexityAnalyzer(const string& sourceCode, const string& apiKey)
     : code(sourceCode), geminiApiKey(apiKey) {
     functionName = extractFunctionName ();
 }
 
+// Intenta extraer el nombre de la función principal usando varios patrones heurísticos.
 string ComplexityAnalyzer::extractFunctionName() {
+    // Patrón 1: Función que recibe un int n, típico de análisis de complejidad.
     regex patron1(R"(\w+\s+(\w+)\s*\(\s*int\s+n\s*\))");
     smatch coincidencias;
 
@@ -29,53 +29,56 @@ string ComplexityAnalyzer::extractFunctionName() {
         return coincidencias[1].str();
     }
 
-    // Patrón 2: Función main
+    // Patrón 2: Función main()
     regex patron2(R"(int\s+main\s*\()");
     if (regex_search(code, coincidencias, patron2)) {
         cout << "[ANALYZER] Found main() function" << endl;
         return "main";
     }
 
-    // Patrón 3: Cualquier función
+    // Patrón 3: Cualquier otra función con parámetros arbitrarios.
     regex patron3(R"(\w+\s+(\w+)\s*\([^)]*\))");
     if (regex_search(code, coincidencias, patron3)) {
         cout << "[ANALYZER] Found function: " << coincidencias[1].str() << endl;
         return coincidencias[1].str();
     }
 
-    // Si no encuentra función, retornar genérico
+    // Si no encuentra función, se asume que es un fragmento de código genérico.
     cout << "[ANALYZER] No function found, analyzing code structure" << endl;
     return "code_snippet";
 }
 
+// Cuenta la profundidad máxima de loops anidados (for/while) de forma aproximada.
 int ComplexityAnalyzer::countNestedLoops() {
     int maxNivel = 0;
     int nivelActual = 0;
     bool dentroDeLoop = false;
 
-    // Contar profundidad de llaves dentro de loops
+    // Recorre el código buscando palabras clave de loops y llaves que abren/cerran bloques.
     for (size_t i = 0; i < code.length(); i++) {
         // Detectar inicio de loop
         if (i + 3 < code.length()) {
             string sub = code.substr(i, 3);
-            if (sub == "for" || sub == "whi") {  // for o while
+            if (sub == "for" || sub == "whi") {  // for o while (se comprueba solo las primeras letras)
                 dentroDeLoop = true;
             }
         }
 
         if (code[i] == '{' && dentroDeLoop) {
+            // Al abrir una llave dentro de un loop, aumenta el nivel de anidamiento.
             nivelActual++;
             if (nivelActual > maxNivel) {
                 maxNivel = nivelActual;
             }
         } else if (code[i] == '}') {
+            // Al cerrar una llave, se reduce el nivel actual (si es mayor a 0).
             if (nivelActual > 0) {
                 nivelActual--;
             }
         }
     }
 
-    // Si no hay loops anidados, contar loops simples
+    // Si no se detectaron loops anidados, se revisa si al menos hay loops simples.
     if (maxNivel == 0) {
         size_t pos = 0;
         while ((pos = code.find("for", pos)) != string::npos) {
@@ -92,17 +95,19 @@ int ComplexityAnalyzer::countNestedLoops() {
     return maxNivel;
 }
 
-
-
+// Busca patrones sencillos que sugieren complejidad logarítmica, como i *= 2.
 bool ComplexityAnalyzer::detectLogarithmic() {
     regex logRegex(R"(\w+\s*[*/]=\s*2)");
     return regex_search(code, logRegex);
 }
 
+// Intenta identificar el tipo de algoritmo por palabras clave típicas en el código.
 string ComplexityAnalyzer::identifyAlgorithmType() {
     string codeLower = code;
+    // Normaliza el código a minúsculas para facilitar las búsquedas.
     transform(codeLower.begin(), codeLower.end(), codeLower.begin(), ::tolower);
 
+    // Mapa de tipo de algoritmo -> palabras clave que lo caracterizan.
     map<string, vector<string>> patterns = {
         {"Linear Search", {"for", "arr[i]", "==", "return"}},
         {"Binary Search", {"while", "low", "high", "mid"}},
@@ -118,6 +123,7 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
 
     map<string, int> scores;
 
+    // Recorre cada patrón y suma "puntos" según las coincidencias.
     for (const auto& [algorithm, keywords] : patterns) {
         int score = 0;
         for (const auto& keyword : keywords) {
@@ -125,12 +131,14 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
                 score++;
             }
         }
-        if (score >= 1) {  // Reducir umbral a 1 para detección más flexible
+        // Si se cumple un umbral mínimo, se devuelve directamente ese algoritmo.
+        if (score >= 1) {  // Umbral reducido a 1 para detección más flexible
             return algorithm;
         }
 
     }
 
+    // Si no se devolvió antes, se busca el mejor puntaje entre todos.
     auto maxIt = max_element(scores.begin(), scores.end(),
         [](const pair<string, int>& a, const pair<string, int>& b) {
             return a.second < b.second;
@@ -140,6 +148,8 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
         return maxIt->first;
     }
 
+    // Si el código contiene main pero no coincide con ningún algoritmo conocido,
+    // se clasifica como programa principal o simple I/O.
     if (code.find("main") != string::npos) {
         if (code.find("cin") != string::npos || code.find("cout") != string::npos) {
             return "Simple I/O Program";
@@ -147,46 +157,51 @@ string ComplexityAnalyzer::identifyAlgorithmType() {
         return "Main Program";
     }
 
+    // Caso por defecto.
     return "Custom Algorithm";
 }
 
+// Detecta si la función principal se llama a sí misma dentro de su cuerpo (recursión directa).
 bool ComplexityAnalyzer::detectRecursion() {
     if (functionName.empty()) return false;
 
+    // Regex que busca llamadas a la función por nombre seguida de '('.
     regex callRegex(functionName + R"(\s*\()");
 
+    // Ubica la definición de la función.
     size_t defPos = code.find(functionName + "(");
     if (defPos == string::npos) return false;
 
+    // Solo se analiza el código a partir de la definición.
     string functionBody = code.substr(defPos);
 
     smatch match;
     int calls = 0;
     auto searchStart = functionBody.cbegin();
 
+    // Cuenta cuántas veces aparece una llamada a la función en su propio cuerpo.
     while (regex_search(searchStart, functionBody.cend(), match, callRegex)) {
         calls++;
         searchStart = match.suffix().first;
-        if (calls > 1) return true;
+        if (calls > 1) return true;   // Se considera recursivo si hay más de una llamada.
     }
 
     return calls>1;
 }
 
-
-
-
-
+// Determina la complejidad usando tiempos empíricos si existen; si no, usa análisis estático.
 string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
     if (times.size() < 2) {
-        // Fallback to static analysis
+        // Fallback a análisis estático si no hay suficientes datos empíricos.
+
         if (detectRecursion()) {
+            // Heurística simple: si es recursivo y no hay más info, se asume exponencial.
             return "O(2^n)";
         }
 
         int loops = countNestedLoops();
         switch (loops) {
-            case 0: return "O(1)";
+            case 0: return "O(1)"; // Sin loops: tiempo constante aproximado.
             case 1: return detectLogarithmic() ? "O(log n)" : "O(n)";
             case 2: return "O(n²)";
             case 3: return "O(n³)";
@@ -194,6 +209,7 @@ string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
         }
     }
 
+    // Si hay tiempos de ejecución, se calcula una razón promedio entre ellos.
     double avgRatio = 0;
     for (size_t i = 1; i < times.size(); i++) {
         if (times[i-1] > 0) {
@@ -202,6 +218,7 @@ string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
     }
     avgRatio /= (times.size() - 1);
 
+    // Se compara la razón promedio contra rangos típicos de crecimiento.
     if (avgRatio < 1.5) return "O(log n)";
     else if (avgRatio <= 2.3) return "O(n)";
     else if (avgRatio <= 2.5) return "O(n log n)";
@@ -210,6 +227,7 @@ string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
     else return "O(2^n)";
 }
 
+// Construye una explicación en texto de la complejidad, usando mensajes predefinidos.
 string ComplexityAnalyzer::generateExplanation(const string& complexity, const string& type) {
     map<string, string> explanations = {
         {"O(1)", "Constant complexity - execution time does not depend on input size."},
@@ -227,6 +245,7 @@ string ComplexityAnalyzer::generateExplanation(const string& complexity, const s
     return explanation;
 }
 
+// Devuelve sugerencias básicas de optimización según la complejidad detectada.
 vector<string> ComplexityAnalyzer::generateSuggestions(const string& complexity) {
     vector<string> suggestions;
 
@@ -255,6 +274,7 @@ vector<string> ComplexityAnalyzer::generateSuggestions(const string& complexity)
     return suggestions;
 }
 
+// Orquesta el análisis completo combinando análisis estático y (en el futuro) empírico.
 AnalysisResult ComplexityAnalyzer::analyze() {
     AnalysisResult result;
 
@@ -264,19 +284,20 @@ AnalysisResult ComplexityAnalyzer::analyze() {
     cout << "[ANALYZER] Starting analysis..." << endl;
     cout << "[ANALYZER] Code length: " << code.length() << " chars" << endl;
 
-    // Análisis estático
+    // Análisis estático de loops
     result.nestedLoops = countNestedLoops();
 
+    // Identificar tipo de algoritmo
     result.algorithmType = identifyAlgorithmType();
 
     cout << "[ANALYZER] Nested loops: " << result.nestedLoops << endl;
     cout << "[ANALYZER] Is recursive: " << (result.isRecursive ? "yes" : "no") << endl;
     cout << "[ANALYZER] Algorithm type: " << result.algorithmType << endl;
 
-    // Análisis empírico (por ahora vacío)
-
+    // Análisis empírico (por ahora vacío, se deja preparado para tiempos medidos externamente).
 
     if (!result.executionTimes.empty()) {
+        // Calcula la razón promedio entre tiempos consecutivos si vienen llenos.
         result.averageRatio = 0;
         for (size_t i = 1; i < result.executionTimes.size(); i++) {
             if (result.executionTimes[i-1] > 0) {
@@ -285,17 +306,18 @@ AnalysisResult ComplexityAnalyzer::analyze() {
         }
         result.averageRatio /= (result.executionTimes.size() - 1);
     } else {
+        // Si no hay tiempos, se deja en 0.0.
         result.averageRatio = 0.0;
     }
 
-    // Determinar complejidad
+    // Determinar complejidad teórica/empírica.
     result.complexity = determineComplexity(result.executionTimes);
     cout << "[ANALYZER] Complexity: " << result.complexity << endl;
 
-    // Generar explicación
+    // Generar explicación textual.
     result.explanation = generateExplanation(result.complexity, result.algorithmType);
 
-    // Generar sugerencias con Gemini
+    // Generar sugerencias (idealmente usando Gemini si está configurado).
     cout << "[ANALYZER] Generating suggestions..." << endl;
     result.suggestions = generateSuggestionsWithGemini(result.complexity, result.consoleOutput);
     cout << "[ANALYZER] Generated " << result.suggestions.size() << " suggestions" << endl;
@@ -304,6 +326,7 @@ AnalysisResult ComplexityAnalyzer::analyze() {
     return result;
 }
 
+// Genera sugerencias usando Gemini si hay API key; si no, cae en sugerencias estáticas.
 vector<string> ComplexityAnalyzer::generateSuggestionsWithGemini(
     const string& complexity,
     const string& consoleOutput
@@ -317,6 +340,7 @@ vector<string> ComplexityAnalyzer::generateSuggestionsWithGemini(
         GeminiClient gemini(geminiApiKey);
         string algorithmType = identifyAlgorithmType();
 
+        // Se delega la generación de sugerencias al cliente de Gemini.
         return gemini.generateSuggestions(code, complexity, algorithmType, consoleOutput);
     } catch (const exception& e) {
         cerr << "[WARN] Gemini API failed, using static suggestions: " << e.what() << endl;

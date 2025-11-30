@@ -1,6 +1,3 @@
-// Archivo: Gestor/src/GestorREST.cpp
-// Servidor REST del Gestor de Problemas (CodeCoach)
-
 #include "ProblemRepository.h"
 
 #include <crow.h>

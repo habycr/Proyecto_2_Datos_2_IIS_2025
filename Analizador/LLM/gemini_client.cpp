@@ -5,15 +5,20 @@
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
+
+// Constructor: guarda la API key y configura la URL del modelo de Gemini a usar.
 GeminiClient::GeminiClient(const string& key) :
     apiKey(key) {
     apiUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash-lite:generateContent"; // URL para generar
 }
+
+// Callback que usa libcurl para ir escribiendo la respuesta HTTP en un std::string.
 size_t GeminiClient::WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
     ((string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
 
+// Llama a la API de Gemini para generar sugerencias de optimización a partir del código y su análisis.
 vector<string> GeminiClient::generateSuggestions(
     const string& code,
     const string& complexity,
@@ -22,6 +27,7 @@ vector<string> GeminiClient::generateSuggestions(
 ) {
     vector<string> suggestions;
 
+    // Si no hay API key, se informa con una sugerencia básica.
     if (apiKey.empty()) {
         suggestions.push_back("Gemini API key not configured");
         return suggestions;
@@ -34,7 +40,7 @@ vector<string> GeminiClient::generateSuggestions(
     }
 
     try {
-        // Construir el prompt
+        // Construir el prompt que se enviará al modelo.
         stringstream prompt;
         prompt << "Eres un asiste experto en optimización de codigo para C++ .\n\n";
         prompt << "Codigo a analizar:\n```cpp\n" << code << "\n```\n\n";
@@ -56,7 +62,7 @@ vector<string> GeminiClient::generateSuggestions(
         prompt << "Ejemplo: [\"Usar un mapa hash en lugar de busqueda lineal\", \"Considerar using std::sort\"]\n";
         prompt << "Las sugerencias deben de ser concisas (max 100 caracteres cada una).";
 
-        // Construir JSON payload
+        // Construir JSON payload compatible con la API de Gemini.
         json payload = {
             {"contents", json::array({
                 {
@@ -75,7 +81,7 @@ vector<string> GeminiClient::generateSuggestions(
 
         string payloadStr = payload.dump();
 
-        // Configurar CURL
+        // Configurar CURL: URL, headers y body JSON.
         string response;
         string url = apiUrl + "?key=" + apiKey;
 
@@ -101,7 +107,7 @@ vector<string> GeminiClient::generateSuggestions(
             return suggestions;
         }
 
-        // Parsear respuesta
+        // Parsear respuesta JSON de la API de Gemini.
         try {
             json responseJson = json::parse(response);
 
@@ -109,9 +115,10 @@ vector<string> GeminiClient::generateSuggestions(
                 !responseJson["candidates"].empty() &&
                 responseJson["candidates"][0].contains("content")) {
 
+                // Texto generado por el modelo.
                 string text = responseJson["candidates"][0]["content"]["parts"][0]["text"];
 
-                // Intentar parsear como JSON array
+                // Intentar parsear como JSON array de strings, según el formato pedido.
                 try {
                     // Buscar el array JSON en la respuesta
                     size_t start = text.find('[');
@@ -127,12 +134,12 @@ vector<string> GeminiClient::generateSuggestions(
                             }
                         }
                     } else {
-                        // Si no hay JSON array, usar el texto completo dividido por líneas
+                        // Si no hay JSON array, se hace un fallback dividiendo por líneas.
                         stringstream ss(text);
                         string line;
                         while (getline(ss, line)) {
                             if (!line.empty() && line.length() > 5) {
-                                // Limpiar números de lista, guiones, etc.
+                                // Limpiar numeraciones (1., 2.-, etc.) y guiones.
                                 size_t pos = line.find_first_not_of("0123456789.-* \t");
                                 if (pos != string::npos) {
                                     suggestions.push_back(line.substr(pos));
@@ -141,7 +148,7 @@ vector<string> GeminiClient::generateSuggestions(
                         }
                     }
                 } catch (...) {
-                    // Si falla el parsing, usar el texto completo
+                    // Si falla el parsing del array, se agrega todo el texto como una sola sugerencia.
                     suggestions.push_back(text);
                 }
             } else if (responseJson.contains("error")) {
@@ -160,7 +167,7 @@ vector<string> GeminiClient::generateSuggestions(
         curl_easy_cleanup(curl);
     }
 
-    // Si no se generaron sugerencias, dar una por defecto
+    // Si por alguna razón no se obtuvieron sugerencias, se devuelve una genérica.
     if (suggestions.empty()) {
         suggestions.push_back("Considerar revisar la complejidad del algoritmo y las estructuras de datos utilizadas.");
     }

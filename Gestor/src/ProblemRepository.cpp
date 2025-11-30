@@ -9,20 +9,24 @@ using bsoncxx::builder::basic::kvp;
 using bsoncxx::builder::basic::document;
 using bsoncxx::builder::basic::array;
 
-// =================== Helpers internos ===================
+// ============================================================================
+// Helpers internos: funciones auxiliares para convertir BSON <-> structs C++
+// ============================================================================
 
-// Convierte un campo string BSON a std::string usando get_string() y k_string
+// Extrae un campo string del documento BSON.
+// Si no existe o no es string, se devuelve un string vacío.
 static std::string get_string_field(const bsoncxx::document::view& doc,
                                     const char* field_name) {
     auto elem = doc[field_name];
     if (elem && elem.type() == bsoncxx::type::k_string) {
         auto sv = elem.get_string().value;           // string_view
-        return std::string(sv.data(), sv.size());    // lo convertimos a std::string
+        return std::string(sv.data(), sv.size());    // convertir a std::string
     }
     return {};
 }
 
-// Convierte un documento BSON a un struct Problem
+// Convierte un documento BSON a un struct Problem.
+// Se usa en GET /problems, GET by id, etc.
 static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
     Problem p;
 
@@ -33,7 +37,9 @@ static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
     p.difficulty  = get_string_field(doc_view, "difficulty");
     p.code_stub   = get_string_field(doc_view, "code_stub");
 
-    // tags: arreglo de strings
+    // --------------------------
+    // tags: array de strings
+    // --------------------------
     auto it_tags = doc_view.find("tags");
     if (it_tags != doc_view.end() && it_tags->type() == bsoncxx::type::k_array) {
         auto arr = it_tags->get_array().value;
@@ -45,7 +51,9 @@ static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
         }
     }
 
-    // test_cases: arreglo de documentos { input, expected_output }
+    // -----------------------------------------
+    // test_cases: array de documentos con {input, expected_output}
+    // -----------------------------------------
     auto it_tcs = doc_view.find("test_cases");
     if (it_tcs != doc_view.end() && it_tcs->type() == bsoncxx::type::k_array) {
         auto arr = it_tcs->get_array().value;
@@ -54,12 +62,14 @@ static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
                 auto tc_doc = tc_elem.get_document().value;
                 TestCase tc;
 
+                // input
                 auto it_in = tc_doc.find("input");
                 if (it_in != tc_doc.end() && it_in->type() == bsoncxx::type::k_string) {
                     auto sv = it_in->get_string().value;
                     tc.input.assign(sv.data(), sv.size());
                 }
 
+                // expected_output
                 auto it_out = tc_doc.find("expected_output");
                 if (it_out != tc_doc.end() && it_out->type() == bsoncxx::type::k_string) {
                     auto sv = it_out->get_string().value;
@@ -74,20 +84,27 @@ static Problem document_to_problem(const bsoncxx::document::view& doc_view) {
     return p;
 }
 
-// =================== Implementación de ProblemRepository ===================
+// ============================================================================
+// Implementación de ProblemRepository
+// ============================================================================
 
+// Constructor: se conecta a la colección "problems" dentro de la base 'codecoach'.
 ProblemRepository::ProblemRepository(mongocxx::database db)
     : collection_{db["problems"]} {}
 
+
+// -----------------------------------------------------------------------------------------
 // INSERT
+// -----------------------------------------------------------------------------------------
 void ProblemRepository::insert_problem(const Problem& p) {
-    // Construir arreglo de tags
+
+    // Construir arreglo BSON de tags
     array tags_arr;
     for (const auto& t : p.tags) {
         tags_arr.append(t);
     }
 
-    // Construir arreglo de test_cases
+    // Construir arreglo BSON de test_cases
     array tcs_arr;
     for (const auto& tc : p.test_cases) {
         document tc_doc;
@@ -98,6 +115,7 @@ void ProblemRepository::insert_problem(const Problem& p) {
         tcs_arr.append(tc_doc.extract());
     }
 
+    // Construir documento final BSON
     document doc_builder;
     doc_builder.append(
         kvp("problem_id", p.problem_id),
@@ -112,19 +130,27 @@ void ProblemRepository::insert_problem(const Problem& p) {
     collection_.insert_one(doc_builder.view());
 }
 
-// GET ALL
+
+// -----------------------------------------------------------------------------------------
+// GET ALL — devuelve todos los problemas
+// -----------------------------------------------------------------------------------------
 std::vector<Problem> ProblemRepository::get_all() {
     std::vector<Problem> results;
+
     auto cursor = collection_.find({});
     for (auto&& doc : cursor) {
         results.push_back(document_to_problem(doc));
     }
+
     return results;
 }
 
-// GET BY ID (problem_id)
+
+// -----------------------------------------------------------------------------------------
+// GET BY ID — devuelve un problema opcional
+// -----------------------------------------------------------------------------------------
 std::optional<Problem> ProblemRepository::get_by_id(const std::string& id) {
-    auto filter_doc = document{};
+    document filter_doc;
     filter_doc.append(kvp("problem_id", id));
 
     auto maybe_doc = collection_.find_one(filter_doc.view());
@@ -135,7 +161,10 @@ std::optional<Problem> ProblemRepository::get_by_id(const std::string& id) {
     return document_to_problem(maybe_doc->view());
 }
 
+
+// -----------------------------------------------------------------------------------------
 // GET BY DIFFICULTY
+// -----------------------------------------------------------------------------------------
 std::vector<Problem> ProblemRepository::get_by_difficulty(const std::string& difficulty) {
     std::vector<Problem> results;
 
@@ -150,15 +179,19 @@ std::vector<Problem> ProblemRepository::get_by_difficulty(const std::string& dif
     return results;
 }
 
-// UPDATE (por problem_id)
+
+// -----------------------------------------------------------------------------------------
+// UPDATE — actualiza un documento completo (match por problem_id)
+// -----------------------------------------------------------------------------------------
 bool ProblemRepository::update_problem(const Problem& p) {
-    // tags
+
+    // tags → BSON array
     array tags_arr;
     for (const auto& t : p.tags) {
         tags_arr.append(t);
     }
 
-    // test_cases
+    // test_cases → BSON array
     array tcs_arr;
     for (const auto& tc : p.test_cases) {
         document tc_doc;
@@ -169,7 +202,7 @@ bool ProblemRepository::update_problem(const Problem& p) {
         tcs_arr.append(tc_doc.extract());
     }
 
-    // Documento con los campos a actualizar
+    // Documento con los campos que se actualizarán
     document set_doc;
     set_doc.append(
         kvp("title", p.title),
@@ -184,14 +217,20 @@ bool ProblemRepository::update_problem(const Problem& p) {
     document filter_doc;
     filter_doc.append(kvp("problem_id", p.problem_id));
 
+    // Wrap con operador $set
     document update_doc;
     update_doc.append(kvp("$set", set_doc.view()));
 
     auto result = collection_.update_one(filter_doc.view(), update_doc.view());
+
+    // Se considera éxito solo si realmente se modificó algo.
     return result && result->modified_count() > 0;
 }
 
-// DELETE (por problem_id)
+
+// -----------------------------------------------------------------------------------------
+// DELETE — elimina un problema por problem_id
+// -----------------------------------------------------------------------------------------
 bool ProblemRepository::delete_problem(const std::string& id) {
     document filter_doc;
     filter_doc.append(kvp("problem_id", id));
