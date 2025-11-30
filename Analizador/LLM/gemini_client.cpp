@@ -148,7 +148,7 @@ vector<string> GeminiClient::generateSuggestions(
                         }
                     }
                 } catch (...) {
-                    // Si falla el parsing del array, se agrega todo el texto como una sola sugerencia.
+                    // Si falla el parsing del array, se agrega tod0 el texto como una sola sugerencia.
                     suggestions.push_back(text);
                 }
             } else if (responseJson.contains("error")) {

@@ -33,38 +33,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Arreglos">
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/Analyzer/analizador.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/Analyzer/analizador.h" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/Env/env_loader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Env/env_loader.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/Env/env_loader.h" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Env/env_loader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/Gemini_test.ps1" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Analizador/LLM/gemini_client.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/LLM/gemini_client.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/LLM/gemini_client.h" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/LLM/gemini_client.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analizador/test_api.ps1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Gestor/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/GestorREST.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Gestor/GestorREST.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/include/ProblemRepository.h" beforeDir="false" afterPath="$PROJECT_DIR$/Gestor/include/ProblemRepository.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/main_db_test.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/src/ProblemRepository.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Gestor/src/ProblemRepository.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/test_json/p1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Motor/2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker/cpp/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/docker/cpp/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/DockerRunner.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/DockerRunner.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/EvaluationService.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/EvaluationService.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/Models.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/Models.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/OutputComparer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/OutputComparer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/include/SubmissionFilesystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/SubmissionFilesystem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/DockerRunner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/DockerRunner.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/EvaluationService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/EvaluationService.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/OutputComparer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/OutputComparer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/SubmissionFilesystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/SubmissionFilesystem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/demo_main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation_engine/src/server_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/server_main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Motor/evaluation_engine/include/SubmissionFilesystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/include/SubmissionFilesystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Motor/evaluation_engine/src/EvaluationService.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/EvaluationService.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Motor/evaluation_engine/src/server_main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Motor/evaluation_engine/src/server_main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,7 +237,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764229430947</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor">
+      <option name="closed" value="true" />
+      <created>1764539730850</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1764539730850</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +270,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Estructura V2" />
     <MESSAGE value="Arreglos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Arreglos" />
+    <MESSAGE value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

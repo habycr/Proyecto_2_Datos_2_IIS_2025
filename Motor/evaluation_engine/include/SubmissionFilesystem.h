@@ -13,7 +13,7 @@ namespace engine {
     //  - escribir archivo fuente del usuario
     //  - escribir archivos input_*.txt y expected_*.txt
     //
-    // Es la parte que prepara todo antes de llamar al DockerRunner.
+    // Es la parte que prepara tod0 antes de llamar al DockerRunner.
     // ============================================================================
     class SubmissionFilesystem {
     public:
