@@ -29,10 +29,15 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=C:/Users/josef/vcpkg/scripts/buildsystems/vcpkg.cmake" />
+      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-DCMAKE_TOOLCHAIN_FILE=C:/Users/dylan/vcpkg/scripts/buildsystems/vcpkg.cmake" />
     </configurations>
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos">
+      <change afterPath="$PROJECT_DIR$/Analizador/test_api.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analizador/Analyzer/analizador.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analizador/Analyzer/analizador.h" beforeDir="false" afterPath="$PROJECT_DIR$/Analizador/Analyzer/analizador.h" afterDir="false" />
     <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se mejoró el código del LLM para que sea más inteligente y dé un mejor fedback">
       <change beforePath="$PROJECT_DIR$/Documentacion_Gestor_CodeCoach.docx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ProyectoCompleto.txt" beforeDir="false" />
@@ -51,6 +56,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CMakeLists.txt" />
+        <option value="PowerShell File" />
       </list>
     </option>
   </component>
@@ -123,39 +129,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;CMake Application.analyzer_server.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.engine_demo.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.evaluation_server.executor&quot;: &quot;Run&quot;,
-    &quot;CMake Application.problem_manager_api.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.RadMigrateCodeStyle&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.west.config.association.type.startup.service&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Fabio&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/josef/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025/evaluation_engine/include&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CMakeSettings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.analyzer_server.executor": "Run",
+    "CMake Application.engine_demo.executor": "Run",
+    "CMake Application.evaluation_server.executor": "Run",
+    "CMake Application.problem_manager_api.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.west.config.association.type.startup.service": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "Dylan",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/josef/Documentos/GitHub/Proyecto_2_Datos_2_IIS_2025/evaluation_engine/include",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CMakeSettings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine\include" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dylan\source\repos\Proyecto_2_Datos_2_IIS_2025\Motor\evaluation_engine" />
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\Motor" />
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine\include" />
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine" />
@@ -168,6 +175,11 @@
       </method>
     </configuration>
     <configuration name="CodeCoachDBTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="CodeCoachDBTest" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="CodeCoachDBTest">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>

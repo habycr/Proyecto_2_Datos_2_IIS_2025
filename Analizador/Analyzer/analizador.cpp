@@ -50,49 +50,141 @@ string ComplexityAnalyzer::extractFunctionName() {
 
 // Cuenta la profundidad máxima de loops anidados (for/while) de forma aproximada.
 int ComplexityAnalyzer::countNestedLoops() {
-    int maxNivel = 0;
-    int nivelActual = 0;
-    bool dentroDeLoop = false;
+    int maxDepth = 0;
+    int n = code.size();
 
-    // Recorre el código buscando palabras clave de loops y llaves que abren/cerran bloques.
-    for (size_t i = 0; i < code.length(); i++) {
-        // Detectar inicio de loop
-        if (i + 3 < code.length()) {
-            string sub = code.substr(i, 3);
-            if (sub == "for" || sub == "whi") {  // for o while (se comprueba solo las primeras letras)
-                dentroDeLoop = true;
+    for (int i = 0; i < n; i++) {
+        // Detectar "for" o "while" seguido de espacio o "("
+        bool isLoop =
+            (i + 3 <= n && code.compare(i, 3, "for") == 0 &&
+             (i + 3 == n || isspace(code[i+3]) || code[i+3]=='(')) ||
+            (i + 5 <= n && code.compare(i, 5, "while") == 0 &&
+             (i + 5 == n || isspace(code[i+5]) || code[i+5]=='('));
+
+        if (!isLoop)
+            continue;
+
+        // Calcular profundidad desde este loop
+        int depth = calculateDepth(i);
+        maxDepth = max(maxDepth, depth);
+    }
+
+    return maxDepth;
+}
+
+int ComplexityAnalyzer::calculateDepth(int loopStart) {
+    int n = code.size();
+
+    // Encontrar '(' del loop
+    size_t p = code.find('(', loopStart);
+    if (p == string::npos || p - loopStart > 8)
+        return 1;
+
+    // Encontrar ')' que cierra la condición
+    int parenDepth = 1;
+    size_t closeParen = p + 1;
+    while (closeParen < n && parenDepth > 0) {
+        if (code[closeParen] == '(') parenDepth++;
+        else if (code[closeParen] == ')') parenDepth--;
+        closeParen++;
+    }
+
+    if (parenDepth != 0)
+        return 1;
+
+    closeParen--; // Retroceder al ')'
+
+    // Saltar espacios después del ')'
+    size_t bodyStart = closeParen + 1;
+    while (bodyStart < n && isspace(code[bodyStart]))
+        bodyStart++;
+
+    if (bodyStart >= n)
+        return 1;
+
+    int maxInnerDepth = 0;
+
+    // Caso 1: Loop con llaves { }
+    if (code[bodyStart] == '{') {
+        int braceDepth = 1;
+        size_t j = bodyStart + 1;
+
+        while (j < n && braceDepth > 0) {
+            if (code[j] == '{') {
+                braceDepth++;
             }
+            else if (code[j] == '}') {
+                braceDepth--;
+                if (braceDepth == 0) break;
+            }
+
+            // Detectar loop interno
+            bool innerLoop =
+                (j + 3 <= n && code.compare(j, 3, "for") == 0 &&
+                 (j + 3 == n || isspace(code[j+3]) || code[j+3]=='(')) ||
+                (j + 5 <= n && code.compare(j, 5, "while") == 0 &&
+                 (j + 5 == n || isspace(code[j+5]) || code[j+5]=='('));
+
+            if (innerLoop) {
+                int innerDepth = calculateDepth(j);
+                maxInnerDepth = max(maxInnerDepth, innerDepth);
+            }
+
+            j++;
         }
+    }
+    // Caso 2: Loop sin llaves (una sola statement)
+    else {
+        // El cuerpo es una sola statement
+        // Buscar si esa statement es otro loop
+        size_t j = bodyStart;
 
-        if (code[i] == '{' && dentroDeLoop) {
-            // Al abrir una llave dentro de un loop, aumenta el nivel de anidamiento.
-            nivelActual++;
-            if (nivelActual > maxNivel) {
-                maxNivel = nivelActual;
-            }
-        } else if (code[i] == '}') {
-            // Al cerrar una llave, se reduce el nivel actual (si es mayor a 0).
-            if (nivelActual > 0) {
-                nivelActual--;
-            }
+        // Detectar si es un loop
+        bool innerLoop =
+            (j + 3 <= n && code.compare(j, 3, "for") == 0 &&
+             (j + 3 == n || isspace(code[j+3]) || code[j+3]=='(')) ||
+            (j + 5 <= n && code.compare(j, 5, "while") == 0 &&
+             (j + 5 == n || isspace(code[j+5]) || code[j+5]=='('));
+
+        if (innerLoop) {
+            maxInnerDepth = calculateDepth(j);
         }
     }
 
-    // Si no se detectaron loops anidados, se revisa si al menos hay loops simples.
-    if (maxNivel == 0) {
-        size_t pos = 0;
-        while ((pos = code.find("for", pos)) != string::npos) {
-            maxNivel = 1;
-            pos += 3;
-        }
-        pos = 0;
-        while ((pos = code.find("while", pos)) != string::npos) {
-            maxNivel = max(maxNivel, 1);
-            pos += 5;
-        }
+    return 1 + maxInnerDepth;
+}
+
+bool ComplexityAnalyzer::detectRecursion() {
+    if (functionName.empty()) return false;
+
+    // Encontrar la definición de la función
+    size_t defPos = code.find(functionName + "(");
+    if (defPos == string::npos) return false;
+
+    // Buscar llave que abre el cuerpo
+    size_t braceOpen = code.find('{', defPos);
+    if (braceOpen == string::npos) return false;
+
+    // Buscar llave que cierra el cuerpo
+    int depth = 1;
+    size_t i = braceOpen + 1;
+
+    for (; i < code.size() && depth > 0; i++) {
+        if (code[i] == '{') depth++;
+        else if (code[i] == '}') depth--;
     }
 
-    return maxNivel;
+    if (depth != 0) return false;
+
+    size_t braceClose = i - 1;
+
+    // Extraer cuerpo
+    string body = code.substr(braceOpen + 1, braceClose - braceOpen - 1);
+
+    // Buscar llamada recursiva real
+    regex callRegex("\\b" + functionName + "\\s*\\(");
+
+    return regex_search(body, callRegex);
 }
 
 // Busca patrones sencillos que sugieren complejidad logarítmica, como i *= 2.
@@ -103,128 +195,124 @@ bool ComplexityAnalyzer::detectLogarithmic() {
 
 // Intenta identificar el tipo de algoritmo por palabras clave típicas en el código.
 string ComplexityAnalyzer::identifyAlgorithmType() {
-    string codeLower = code;
-    // Normaliza el código a minúsculas para facilitar las búsquedas.
-    transform(codeLower.begin(), codeLower.end(), codeLower.begin(), ::tolower);
+    string c = code;
+    transform(c.begin(), c.end(), c.begin(), ::tolower);
 
-    // Mapa de tipo de algoritmo -> palabras clave que lo caracterizan.
-    map<string, vector<string>> patterns = {
-        {"Linear Search", {"for", "arr[i]", "==", "return"}},
-        {"Binary Search", {"while", "low", "high", "mid"}},
-        {"Bubble Sort", {"for", "for", "swap"}},
-        {"Insertion Sort", {"for", "while", "insert"}},
-        {"Selection Sort", {"for", "for", "min"}},
-        {"Merge Sort", {"merge", "mid", "recursiv"}},
-        {"Quick Sort", {"pivot", "partition"}},
-        {"Fibonacci", {"fib", "recursiv"}},
-        {"Factorial", {"factorial", "recursiv"}},
-        {"Matrix Multiplication", {"for", "for", "for", "matrix"}},
+    struct Algo {
+        string name;
+        vector<string> keys;
+        int minScore;
     };
 
-    map<string, int> scores;
+    vector<Algo> algos = {
+        {"Fibonacci", {"fib(", "return fib"}, 1},
+        {"Binary Search", {"low", "high", "mid"}, 2},
+        {"Bubble Sort", {"swap", "for", "for"}, 2},
+        {"Insertion Sort", {"while", "insert"}, 2},
+        {"Selection Sort", {"min", "for", "for"}, 2},
+        {"Merge Sort", {"merge", "mergesort"}, 1},
+        {"Quick Sort", {"pivot", "partition"}, 1},
+        {"Linear Search", {"for", "=="}, 2}
+    };
 
-    // Recorre cada patrón y suma "puntos" según las coincidencias.
-    for (const auto& [algorithm, keywords] : patterns) {
+    string best = "Custom Algorithm";
+    int bestScore = 0;
+
+    for (auto& a : algos) {
         int score = 0;
-        for (const auto& keyword : keywords) {
-            if (codeLower.find(keyword) != string::npos) {
+        for (auto& k : a.keys)
+            if (c.find(k) != string::npos)
                 score++;
-            }
+
+        if (score >= a.minScore && score > bestScore) {
+            bestScore = score;
+            best = a.name;
         }
-        // Si se cumple un umbral mínimo, se devuelve directamente ese algoritmo.
-        if (score >= 1) {  // Umbral reducido a 1 para detección más flexible
-            return algorithm;
-        }
-
     }
 
-    // Si no se devolvió antes, se busca el mejor puntaje entre todos.
-    auto maxIt = max_element(scores.begin(), scores.end(),
-        [](const pair<string, int>& a, const pair<string, int>& b) {
-            return a.second < b.second;
-        });
-
-    if (maxIt != scores.end() && maxIt->second >= 2) {
-        return maxIt->first;
-    }
-
-    // Si el código contiene main pero no coincide con ningún algoritmo conocido,
-    // se clasifica como programa principal o simple I/O.
-    if (code.find("main") != string::npos) {
-        if (code.find("cin") != string::npos || code.find("cout") != string::npos) {
-            return "Simple I/O Program";
-        }
-        return "Main Program";
-    }
-
-    // Caso por defecto.
-    return "Custom Algorithm";
-}
-
-// Detecta si la función principal se llama a sí misma dentro de su cuerpo (recursión directa).
-bool ComplexityAnalyzer::detectRecursion() {
-    if (functionName.empty()) return false;
-
-    // Regex que busca llamadas a la función por nombre seguida de '('.
-    regex callRegex(functionName + R"(\s*\()");
-
-    // Ubica la definición de la función.
-    size_t defPos = code.find(functionName + "(");
-    if (defPos == string::npos) return false;
-
-    // Solo se analiza el código a partir de la definición.
-    string functionBody = code.substr(defPos);
-
-    smatch match;
-    int calls = 0;
-    auto searchStart = functionBody.cbegin();
-
-    // Cuenta cuántas veces aparece una llamada a la función en su propio cuerpo.
-    while (regex_search(searchStart, functionBody.cend(), match, callRegex)) {
-        calls++;
-        searchStart = match.suffix().first;
-        if (calls > 1) return true;   // Se considera recursivo si hay más de una llamada.
-    }
-
-    return calls>1;
+    return best;
 }
 
 // Determina la complejidad usando tiempos empíricos si existen; si no, usa análisis estático.
+// Determina la complejidad usando tiempos empíricos si existen; si no, usa análisis estático.
 string ComplexityAnalyzer::determineComplexity(const vector<double>& times) {
+     // ============================
+    //  ANÁLISIS ESTÁTICO
+    // ============================
     if (times.size() < 2) {
-        // Fallback a análisis estático si no hay suficientes datos empíricos.
 
-        if (detectRecursion()) {
-            // Heurística simple: si es recursivo y no hay más info, se asume exponencial.
-            return "O(2^n)";
-        }
-
+        string alg = identifyAlgorithmType();
         int loops = countNestedLoops();
-        switch (loops) {
-            case 0: return "O(1)"; // Sin loops: tiempo constante aproximado.
-            case 1: return detectLogarithmic() ? "O(log n)" : "O(n)";
-            case 2: return "O(n²)";
-            case 3: return "O(n³)";
-            default: return "O(n^" + to_string(loops) + ")";
+        bool rec = detectRecursion();
+
+        // ---- Recursión manual ----
+        if (rec)
+        {
+            // Algoritmos recursivos conocidos tienen prioridad
+            if (alg == "Fibonacci")                return "O(2^n)";
+            if (alg == "Merge Sort" || alg == "Quick Sort") return "O(n log n)";
+
+            // doble llamada recursiva → exponencial
+            regex dbl("\\b" + functionName + R"(\s*\(.*\).*\b)" + functionName + R"(\s*\()");
+
+            if (regex_search(code, dbl))
+                return "O(2^n)";
+
+            // recursión lineal simple
+            return "O(n)";
         }
+
+        // ---- No recursivo: PRIORIZAR loops sobre algoritmos ----
+
+        // Si tenemos loops claros, usar eso primero
+        if (loops > 0) {
+            switch (loops)
+            {
+                case 1: return detectLogarithmic() ? "O(log n)" : "O(n)";
+                case 2: return "O(n^2)";
+                case 3: return "O(n^3)";
+                default: return "O(n^" + to_string(loops) + ")";
+            }
+        }
+
+        // Si no hay loops, verificar algoritmos conocidos
+        if (alg == "Linear Search")           return "O(n)";
+        if (alg == "Binary Search")           return "O(log n)";
+        if (alg == "Bubble Sort" ||
+            alg == "Insertion Sort" ||
+            alg == "Selection Sort")          return "O(n^2)";
+        if (alg == "Matrix Multiplication")    return "O(n^3)";
+
+        // Sin loops y sin algoritmo conocido
+        return "O(1)";
     }
 
-    // Si hay tiempos de ejecución, se calcula una razón promedio entre ellos.
+    // ============================
+    //  ANÁLISIS EMPÍRICO
+    // ============================
     double avgRatio = 0;
+    int count = 0;
+
     for (size_t i = 1; i < times.size(); i++) {
         if (times[i-1] > 0) {
             avgRatio += times[i] / times[i-1];
+            count++;
         }
     }
-    avgRatio /= (times.size() - 1);
 
-    // Se compara la razón promedio contra rangos típicos de crecimiento.
+    if (count == 0)
+        return determineComplexity({});
+
+    avgRatio /= count;
+
+    // O(log n) crece muy lento
     if (avgRatio < 1.5) return "O(log n)";
-    else if (avgRatio <= 2.3) return "O(n)";
-    else if (avgRatio <= 2.5) return "O(n log n)";
-    else if (avgRatio <= 4.5) return "O(n²)";
-    else if (avgRatio <= 9.0) return "O(n³)";
-    else return "O(2^n)";
+    if (avgRatio <= 2.3) return "O(n)";
+    if (avgRatio <= 3.5) return "O(n log n)";
+    if (avgRatio <= 6.0) return "O(n^2)";
+    if (avgRatio <= 12.0) return "O(n^3)";
+
+    return "O(2^n)";
 }
 
 // Construye una explicación en texto de la complejidad, usando mensajes predefinidos.
@@ -278,6 +366,7 @@ vector<string> ComplexityAnalyzer::generateSuggestions(const string& complexity)
 AnalysisResult ComplexityAnalyzer::analyze() {
     AnalysisResult result;
 
+
     // Extraer nombre de función (puede ser cualquiera ahora)
     functionName = extractFunctionName();
 
@@ -286,6 +375,8 @@ AnalysisResult ComplexityAnalyzer::analyze() {
 
     // Análisis estático de loops
     result.nestedLoops = countNestedLoops();
+
+    result.isRecursive = detectRecursion();
 
     // Identificar tipo de algoritmo
     result.algorithmType = identifyAlgorithmType();
