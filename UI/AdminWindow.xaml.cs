@@ -10,6 +10,16 @@ using UI.Services;
 
 namespace UI
 {
+    /// Ventana de administración del sistema.
+    ///
+    /// Funcionalidad principal:
+    /// - Crear nuevos problemas
+    /// - Editar problemas existentes
+    /// - Eliminar problemas
+    /// - Gestionar casos de prueba (input/expected)
+    ///
+    /// Esta vista es utilizada por docentes/administradores para mantener
+    /// la base de datos del Gestor de Problemas (C++).
     public partial class AdminWindow : Window
     {
         private ProblemApiClient _apiClient;

@@ -8,39 +8,55 @@ using UI.Services;
 
 namespace UI
 {
+    /// Ventana principal de la aplicación.
+    /// Se encarga de:
+    ///  - Conectarse al Gestor de Problemas (backend C++)
+    ///  - Cargar lista de problemas
+    ///  - Filtrarlos por dificultad o tag
+    ///  - Mostrar detalles del problema seleccionado
+    ///  - Enviar soluciones para evaluación (motor C++)
+    ///  - Enviar código al analizador de complejidad (servidor C++)
     public partial class MainWindow : Window
     {
-        private ProblemApiClient _apiClient;
-        private ProblemDto? _currentProblem;
-        private bool _isLoadingProblems = false;
-        private readonly AnalyzerApiClient _analyzerService;
-        private bool _serverConnected = false;
-        private object selectedProblem;
+        private ProblemApiClient _apiClient;              // Cliente REST para el Gestor de Problemas
+        private ProblemDto? _currentProblem;              // Problema actualmente seleccionado
+        private bool _isLoadingProblems = false;          // Evita recargas concurrentes
+        private readonly AnalyzerApiClient _analyzerService; // Cliente REST del Analizador
+        private bool _serverConnected = false;            // Estado del Analizador
+        private object selectedProblem;                   // Referencia temporal usada por el ListBox
 
-
-
-
-
-        // Flag para habilitar/deshabilitar compilación (cambiar a true cuando esté lista)
+        // Flag global para habilitar o no la compilación (actualmente desactivada)
         private const bool COMPILATION_ENABLED = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            // Inicializa clientes HTTP
             _apiClient = new ProblemApiClient("http://localhost:8080");
             _analyzerService = new AnalyzerApiClient();
+
+            // Cuando la ventana está cargada, inicia la carga de problemas
             Loaded += MainWindow_Loaded;
+
+            // Verificar conexión con el Analizador de complejidad
             CheckServerConnection();
         }
 
-        // ==================== Evento: Ventana cargada ====================
+        // =====================================================================
+        // Evento: Ventana cargada → cargar lista inicial de problemas
+        // =====================================================================
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             await LoadProblemListAsync();
         }
 
-        // ==================== Cargar lista de problemas ====================
-        private async System.Threading.Tasks.Task LoadProblemListAsync()
+        // =====================================================================
+        // Cargar lista completa de problemas desde el backend
+        // - Verifica conexión al servidor
+        // - Muestra mensajes en la consola integrada
+        // =====================================================================
+        private async Task LoadProblemListAsync()
         {
             if (_isLoadingProblems) return;
 
@@ -62,6 +78,7 @@ namespace UI
 
                 ConsoleOutput.Text += " Conexión exitosa al servidor.\n";
 
+                // Solicita la lista
                 var problems = await _apiClient.GetAllProblemsAsync();
 
                 if (problems.Count == 0)
@@ -72,6 +89,7 @@ namespace UI
                     return;
                 }
 
+                // Cargar al ListBox
                 ProblemList.ItemsSource = problems;
                 ProblemList.DisplayMemberPath = "title";
 
@@ -89,16 +107,19 @@ namespace UI
             }
         }
 
-        // ==================== Filtro por Dificultad ====================
+        // =====================================================================
+        // Filtrado de problemas por dificultad
+        // =====================================================================
         private async void DifficultyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Evitar ejecución durante la inicialización de la ventana
+            // Evitar ejecución durante la carga inicial
             if (!this.IsLoaded) return;
             if (DifficultyComboBox.SelectedItem == null) return;
             if (_isLoadingProblems) return;
 
             string selectedDifficulty = ((ComboBoxItem)DifficultyComboBox.SelectedItem).Content.ToString();
 
+            // Si selecciona "Todas", recargar normal
             if (selectedDifficulty == "Todas")
             {
                 await LoadProblemListAsync();
@@ -137,14 +158,17 @@ namespace UI
             }
         }
 
-        // ==================== Filtro por Tag ====================
+        // =====================================================================
+        // Filtrar por tag ingresado en la caja de texto
+        // =====================================================================
         private async void FilterByTagButton_Click(object sender, RoutedEventArgs e)
         {
             string tag = TagTextBox.Text.Trim();
 
             if (string.IsNullOrEmpty(tag))
             {
-                MessageBox.Show("Por favor escribe un tag para filtrar.", "Campo vacío", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor escribe un tag para filtrar.", "Campo vacío",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -180,7 +204,9 @@ namespace UI
             }
         }
 
-        // ==================== Problema Aleatorio ====================
+        // =====================================================================
+        // Cargar problema aleatorio (GET /problems/random)
+        // =====================================================================
         private async void RandomProblemButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -200,12 +226,13 @@ namespace UI
 
                 _currentProblem = problem;
 
-                DescriptionText.Text = $" {problem.title}\n\n" +
-                                      $"️ID: {problem.problem_id}\n" +
-                                      $"Dificultad: {problem.difficulty}\n" +
-                                      $"Tags: {string.Join(", ", problem.tags)}\n\n" +
-                                      $"DESCRIPCIÓN:\n{problem.description}\n\n" +
-                                      $"CASOS DE PRUEBA:\n{FormatTestCases(problem.test_cases)}";
+                DescriptionText.Text =
+                    $" {problem.title}\n\n" +
+                    $"️ID: {problem.problem_id}\n" +
+                    $"Dificultad: {problem.difficulty}\n" +
+                    $"Tags: {string.Join(", ", problem.tags)}\n\n" +
+                    $"DESCRIPCIÓN:\n{problem.description}\n\n" +
+                    $"CASOS DE PRUEBA:\n{FormatTestCases(problem.test_cases)}";
 
                 CodeEditor.Text = problem.code_stub ?? "// Escribe tu solución aquí\n";
 
@@ -222,7 +249,9 @@ namespace UI
             }
         }
 
-        // ==================== Resetear Filtros ====================
+        // =====================================================================
+        // Resetear todos los filtros y recargar problemas
+        // =====================================================================
         private async void ResetFiltersButton_Click(object sender, RoutedEventArgs e)
         {
             DifficultyComboBox.SelectedIndex = 0;
@@ -230,7 +259,9 @@ namespace UI
             await LoadProblemListAsync();
         }
 
-        // ==================== Evento: Problema seleccionado ====================
+        // =====================================================================
+        // Evento: usuario selecciona un problema en la lista
+        // =====================================================================
         private async void ProblemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ProblemList.SelectedItem is not ProblemDto selectedProblem)
@@ -240,6 +271,7 @@ namespace UI
             {
                 ConsoleOutput.Text = $"Cargando detalles de '{selectedProblem.title}'...\n";
 
+                // Obtener información completa desde el backend
                 var fullProblem = await _apiClient.GetProblemAsync(selectedProblem.problem_id);
 
                 if (fullProblem == null)
@@ -250,12 +282,14 @@ namespace UI
 
                 _currentProblem = fullProblem;
 
-                DescriptionText.Text = $"{fullProblem.title}\n\n" +
-                                      $"ID: {fullProblem.problem_id}\n" +
-                                      $"Dificultad: {fullProblem.difficulty}\n" +
-                                      $"Tags: {string.Join(", ", fullProblem.tags)}\n\n" +
-                                      $"DESCRIPCIÓN:\n{fullProblem.description}\n\n" +
-                                      $"CASOS DE PRUEBA:\n{FormatTestCases(fullProblem.test_cases)}";
+                // Mostrar en el panel de detalles
+                DescriptionText.Text =
+                    $"{fullProblem.title}\n\n" +
+                    $"ID: {fullProblem.problem_id}\n" +
+                    $"Dificultad: {fullProblem.difficulty}\n" +
+                    $"Tags: {string.Join(", ", fullProblem.tags)}\n\n" +
+                    $"DESCRIPCIÓN:\n{fullProblem.description}\n\n" +
+                    $"CASOS DE PRUEBA:\n{FormatTestCases(fullProblem.test_cases)}";
 
                 CodeEditor.Text = fullProblem.code_stub ?? "// Escribe tu solución aquí\n";
 
@@ -267,7 +301,9 @@ namespace UI
             }
         }
 
-        // ==================== Formatear casos de prueba ====================
+        // =====================================================================
+        // Formatear la lista de casos de prueba para mostrarlos en pantalla
+        // =====================================================================
         private string FormatTestCases(System.Collections.Generic.List<TestCaseDto> testCases)
         {
             if (testCases == null || testCases.Count == 0)
@@ -283,11 +319,13 @@ namespace UI
             return result;
         }
 
-        // ==================== Botón Run ====================
+        // =====================================================================
+        // Botón "Run": enviar el código al motor de evaluación (C++)
+        // =====================================================================
         private async void Run_Click(object sender, RoutedEventArgs e)
         {
-            ConsoleOutput.Text = "La función 'Run' aún no está implementada.\n";
-            ConsoleOutput.Text += "   → Esta función se conectará al Motor de Evaluación.\n";
+            ConsoleOutput.Clear();
+
             if (_currentProblem == null)
             {
                 ConsoleOutput.Text = "❌ No hay un problema seleccionado.\n";
@@ -298,50 +336,67 @@ namespace UI
 
             if (string.IsNullOrWhiteSpace(sourceCode))
             {
-                MessageBox.Show("El código está vacío.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("El código está vacío.", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            ConsoleOutput.Text = "🚀 Enviando solución al motor de evaluación...\n";
+            ConsoleOutput.AppendText("🚀 Enviando solución al motor de evaluación...\n");
 
-            var result = await _apiClient.SubmitSolutionAsync(
-                _currentProblem.problem_id,
-                "cpp",
-                sourceCode,
-                2000
-            );
-
-            if (result == null)
+            try
             {
-                ConsoleOutput.Text += "❌ Error al evaluar la solución.\n";
-                return;
-            }
+                var result = await _apiClient.SubmitSolutionAsync(
+                    _currentProblem.problem_id,
+                    "cpp",
+                    sourceCode,
+                    2000 // límite de tiempo
+                );
 
-            ConsoleOutput.Text += $"📌 Resultado global: {result.OverallStatus}\n";
-            ConsoleOutput.Text += $"⏱️ Tiempo máximo: {result.MaxTimeMs} ms\n";
-            ConsoleOutput.Text += $"💾 Memoria máxima: {result.MaxMemoryKb} KB\n";
-            ConsoleOutput.Text += $"📄 Log de compilación:\n{result.CompileLog}\n";
-
-            ConsoleOutput.Text += "\n🔍 Resultados por test:\n";
-
-            foreach (var t in result.Tests)
-            {
-                ConsoleOutput.Text += $"  ➤ Test {t.Id}: {t.Status} ({t.TimeMs} ms, {t.MemoryKb} KB)\n";
-                if (!string.IsNullOrWhiteSpace(t.RuntimeLog))
+                if (result == null)
                 {
-                    ConsoleOutput.Text += $"     Log:\n{t.RuntimeLog}\n";
+                    ConsoleOutput.AppendText("❌ Error al evaluar la solución (respuesta nula).\n");
+                    ConsoleOutput.AppendText("   → Verifica que el Gestor + Motor estén corriendo.\n");
+                    return;
                 }
+
+                // Mostrar resumen global
+                ConsoleOutput.AppendText($"📌 Resultado global: {result.OverallStatus}\n");
+                ConsoleOutput.AppendText($"⏱️ Tiempo máximo: {result.MaxTimeMs} ms\n");
+                ConsoleOutput.AppendText($"💾 Memoria máxima: {result.MaxMemoryKb} KB\n");
+                ConsoleOutput.AppendText($"📄 Log de compilación:\n{result.CompileLog}\n");
+
+                ConsoleOutput.AppendText("\n🔍 Resultados por test:\n");
+
+                // Mostrar resultados individuales
+                foreach (var t in result.Tests)
+                {
+                    ConsoleOutput.AppendText(
+                        $"  ➤ Test {t.Id}: {t.Status} ({t.TimeMs} ms, {t.MemoryKb} KB)\n");
+
+                    if (!string.IsNullOrWhiteSpace(t.RuntimeLog))
+                    {
+                        ConsoleOutput.AppendText($"     Log:\n{t.RuntimeLog}\n");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ConsoleOutput.AppendText($"❌ Excepción al ejecutar: {ex.Message}\n");
             }
         }
 
-
-        // ==================== Botón Submit ====================
+        // =====================================================================
+        // Botón "Submit": enviar el código al Analizador Inteligente
+        // =====================================================================
         private async void Submit_Click(object sender, RoutedEventArgs e)
         {
             if (_currentProblem == null)
             {
-                MessageBox.Show("Por favor selecciona un problema primero", "Aviso",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    "Por favor selecciona un problema primero",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
@@ -349,44 +404,59 @@ namespace UI
 
             if (string.IsNullOrWhiteSpace(code))
             {
-                MessageBox.Show("Por favor escribe código antes de enviar", "Aviso",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(
+                    "Por favor escribe código antes de enviar",
+                    "Aviso",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
                 return;
             }
 
             ConsoleOutput.Clear();
-            ResultOutput.Clear();
 
-            // Submit SOLO analiza la complejidad (NO compila)
-            if (_serverConnected)
+            if (!_serverConnected)
             {
-                ConsoleOutput.Text = "🔍 Analyzing algorithm complexity with AI suggestions...\n";
-                ConsoleOutput.AppendText("This may take a few seconds...\n\n");
+                ConsoleOutput.Text =
+                    "⚠ No hay conexión con el Analizador de Soluciones.\n" +
+                    "   → Asegúrate de iniciar el servidor C++ en el puerto 8081.\n";
+                return;
+            }
 
-                // Enviar también el output de la consola
-                string consoleText = ConsoleOutput.Text;
-                var result = await _analyzerService.AnalyzeCodeAsync(code, _currentProblem.description, consoleText);
+            ConsoleOutput.Text = "🔍 Analizando complejidad del algoritmo...\n";
+            ConsoleOutput.AppendText("Esto puede tardar unos segundos...\n\n");
 
-                if (result.Success)
-                {
-                    DisplayAnalysisResults(result);
-                }
-                else
-                {
-                    ConsoleOutput.AppendText($"\n⚠ Complexity analysis failed: {result.Error}\n");
-                }
+            // Texto previo de consola (el analizador lo usa para contexto)
+            string consoleText = ConsoleOutput.Text;
+
+            var result = await _analyzerService.AnalyzeCodeAsync(
+                code,
+                _currentProblem.description,
+                consoleText
+            );
+
+            if (result.Success)
+            {
+                DisplayAnalysisResults(result);
+            }
+            else
+            {
+                ConsoleOutput.AppendText(
+                    $"\n⚠ Error en el análisis de complejidad: {result.Error}\n");
             }
         }
 
-
-        // ==================== Botón Admin ====================
+        // =====================================================================
+        // Botón "Admin": abrir ventana de administración
+        // =====================================================================
         private void AdminButton_Click(object sender, RoutedEventArgs e)
         {
             var adminWindow = new AdminWindow();
             adminWindow.Show();
         }
 
-        // ==================== Helpers: Deshabilitar/Habilitar botones ====================
+        // =====================================================================
+        // Helpers: deshabilitar/habilitar controles durante cargas
+        // =====================================================================
         private void DisableButtons()
         {
             if (FilterByTagButton != null) FilterByTagButton.IsEnabled = false;
@@ -403,37 +473,40 @@ namespace UI
             if (DifficultyComboBox != null) DifficultyComboBox.IsEnabled = true;
         }
 
-        // ==================== Verificar conexión con el servidor de análisis ====================
+        // =====================================================================
+        // Verificar si el servidor del Analizador (C++) está disponible
+        // =====================================================================
         private async void CheckServerConnection()
+        {
+            ConsoleOutput.Text = "Verificando conexión con el Analizodr de Soluciones...\n";
+
+            _serverConnected = await _analyzerService.CheckServerHealthAsync();
+
+            if (_serverConnected)
             {
-                ConsoleOutput.Text = "Verificando conexión con el Analizodr de Soluciones...\n";
-                _serverConnected = await _analyzerService.CheckServerHealthAsync();
-
-                if (_serverConnected)
-                {
-                    ConsoleOutput.AppendText("Conectado al Analizador\n");
-                    ConsoleOutput.AppendText("Listo para analizar la complejidad del algoritmo\n");
-                }
-                else
-                {
-                    ConsoleOutput.AppendText("Advertencia: servidor del Analizador no conectado.\n");
-                    ConsoleOutput.AppendText("Inicie el servidor C++ en el puerto 8081.\n");
-                }
+                ConsoleOutput.AppendText("Conectado al Analizador\n");
+                ConsoleOutput.AppendText("Listo para analizar la complejidad del algoritmo\n");
             }
+            else
+            {
+                ConsoleOutput.AppendText("Advertencia: servidor del Analizador no conectado.\n");
+                ConsoleOutput.AppendText("Inicie el servidor C++ en el puerto 8081.\n");
+            }
+        }
 
-        // ==================== Mostrar resultados del análisis ====================
+        // =====================================================================
+        // Muestra de forma elegante el resultado del análisis inteligente
+        // =====================================================================
         private void DisplayAnalysisResults(AnalysisResult result)
         {
             ConsoleOutput.AppendText("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
             ConsoleOutput.AppendText("         RESULTADO DEL ANALISIS DE COMPLEJIDAD\n");
             ConsoleOutput.AppendText("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
 
-            
             ConsoleOutput.AppendText($"Tipo de algoritmo: {result.AlgorithmType}\n\n");
 
             ConsoleOutput.AppendText("Detalles:\n");
             ConsoleOutput.AppendText($"   • Ciclos anidados: {result.Details.NestedLoops}\n");
-
             ConsoleOutput.AppendText($"   • Average Ratio: {result.Details.AverageRatio:F2}\n\n");
 
             ConsoleOutput.AppendText($"Explicación:\n   {result.Explanation}\n\n");
@@ -449,11 +522,5 @@ namespace UI
 
             ConsoleOutput.AppendText("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
         }
-
-        // ==================== Obtener emoji según la complejidad ====================
-
-        
-
-
     }
 }

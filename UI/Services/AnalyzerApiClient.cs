@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace UI.Services
 {
+    /// Contiene métricas detalladas del análisis estático y dinámico:
+    /// - nestedLoops: profundidad máxima de loops
+    /// - isRecursive: si detectó recursión
+    /// - averageRatio: ratio de crecimiento de tiempos
+    /// - executionTimes: muestras empíricas usadas para estimar complejidad
     public class AnalysisDetails
     {
         [JsonPropertyName("nestedLoops")]
@@ -24,6 +29,8 @@ namespace UI.Services
         public List<double> ExecutionTimes { get; set; } = new List<double>();
     }
 
+    /// Resultado global del analizador inteligente.
+    /// Incluye complejidad, tipo de algoritmo, explicaciones y sugerencias.
     public class AnalysisResult
     {
         [JsonPropertyName("success")]
@@ -48,6 +55,7 @@ namespace UI.Services
         public string Error { get; set; }
     }
 
+    /// Cliente HTTP para conectarse al Analizador Automático (puerto 8081).
     class AnalyzerApiClient
     {
         private readonly HttpClient _httpClient;
@@ -55,12 +63,14 @@ namespace UI.Services
 
         public AnalyzerApiClient()
         {
+            // Timeout alto porque realiza compilación + instrumentación
             _httpClient = new HttpClient
             {
-                Timeout = TimeSpan.FromMinutes(5) // Tiempo largo para compilación
+                Timeout = TimeSpan.FromMinutes(5)
             };
         }
 
+        /// Verifica si el servidor del analizador está vivo.
         public async Task<bool> CheckServerHealthAsync()
         {
             try
@@ -74,6 +84,9 @@ namespace UI.Services
             }
         }
 
+        /// Envía código al analizador para obtener complejidad, tipo de algoritmo,
+        /// métricas, explicaciones y sugerencias.
+        /// También acepta consoleOutput para análisis híbrido.
         public async Task<AnalysisResult> AnalyzeCodeAsync(string code, string problemName = "", string consoleOutput = "")
         {
             try
@@ -82,7 +95,7 @@ namespace UI.Services
                 {
                     code = code,
                     problemName = problemName,
-                    consoleOutput = consoleOutput  // ← NUEVO
+                    consoleOutput = consoleOutput
                 };
 
                 var json = JsonSerializer.Serialize(request);

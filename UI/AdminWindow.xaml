@@ -149,7 +149,7 @@
                     <ComboBox x:Name="DifficultyComboBox"
                               Padding="8"
                               Background="#3c3c3c"
-                              Foreground="White"
+                              Foreground="Black"
                               BorderBrush="#555"
                               Margin="0,0,0,15">
                         <ComboBoxItem Content="Fácil"/>

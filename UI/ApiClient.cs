@@ -1,63 +1,85 @@
-﻿
-
+﻿using System;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-namespace UI
+using System.Threading.Tasks;
+
+namespace UI.Services
 {
-    class ApiClient
+    /// Cliente HTTP genérico para enviar peticiones al backend.
+    /// Lo heredan clientes más específicos:
+    ///  - ProblemApiClient
+    ///  - AnalyzerApiClient
+    ///
+    /// Contiene utilidades comunes para:
+    ///  - Serialización/deserialización JSON
+    ///  - Manejo de errores HTTP
+    ///  - Construcción de requests
+    public class ApiClient
     {
-        private readonly HttpClient http = new HttpClient();
+        protected readonly HttpClient _httpClient;
 
-        public string MotorEvaluacionURL { get; set; }
-        public string GestorProblemasURL { get; set; }
-        public string AnalizadorURL { get; set; }
-
-        public async Task<JsonDocument> GetProbelemList()
+        public ApiClient(string baseUrl)
         {
-            var response = await http.GetStreamAsync($"{GestorProblemasURL}/problems"); //Esto se cambia por la URL real
-            return JsonDocument.Parse(response);
-        }
-
-        public async Task<JsonDocument> GetProblemDetail()
-        {
-            var response = await http.GetStreamAsync($"{GestorProblemasURL}/problem/detail"); //Esto se cambia por la URL real
-            return JsonDocument.Parse(response);
-        }
-
-        public async Task<JsonDocument> RunSolution(string problemId, string code)
-        {
-            var body = JsonSerializer.Serialize(new
+            _httpClient = new HttpClient
             {
-                problemId,
-                code,
-                mode = "sample"
-            });
-            var response = await http.PostAsync(
-                $"{MotorEvaluacionURL}/run",
-                new StringContent(body, System.Text.Encoding.UTF8, "application/json"));
-            return JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                BaseAddress = new Uri(baseUrl),
+                Timeout = TimeSpan.FromSeconds(30)
+            };
         }
 
-        public async Task<JsonDocument> SubmitSolution(string problemId, string code, string lang)
+        // Envía una petición GET a una ruta relativa.
+        // Devuelve el contenido como string.
+        protected async Task<string?> GetStringAsync(string url)
         {
-            var body = JsonSerializer.Serialize(new
+            try
             {
-                problemId,
-                code,
-                language = lang
-            });
+                var response = await _httpClient.GetAsync(url);
 
-            var response = await http.PostAsync(
-                $"{AnalizadorURL}/submit",
-                new StringContent(body, Encoding.UTF8, "application/json"));
+                if (!response.IsSuccessStatusCode)
+                    return null;
 
-            return JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
+        // Envía una petición POST con contenido JSON serializando automáticamente el objeto.
+        protected async Task<string?> PostJsonAsync(string url, object body)
+        {
+            try
+            {
+                var json = JsonSerializer.Serialize(body);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+                var response = await _httpClient.PostAsync(url, content);
 
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        // Envía una petición DELETE.
+        protected async Task<bool> DeleteAsync(string url)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync(url);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
-
-
