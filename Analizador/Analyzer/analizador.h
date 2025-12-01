@@ -40,6 +40,8 @@ private:
     // Cuenta el nivel máximo de loops anidados (for/while) presentes en el código.
     int countNestedLoops();
 
+    int calculateDepth(int loopStart);
+
     // Detecta si la función principal se llama a sí misma (recursión).
     bool detectRecursion();
 
