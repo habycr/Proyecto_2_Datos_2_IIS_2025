@@ -33,21 +33,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor">
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gestor/GestorREST.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Gestor/GestorREST.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/AdminWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/UI/AdminWindow.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/AdminWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/AdminWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/ApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/ApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/App.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Models/EvaluationDtos.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Models/EvaluationDtos.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Models/ProblemDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Models/ProblemDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Services/AnalyzerApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Services/ProblemApiClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Services/ProblemApiClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pruebaCommit.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/UI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UI/UI.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/UI.sln" beforeDir="false" afterPath="$PROJECT_DIR$/UI/UI.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +164,7 @@
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.problem_manager_api">
+  <component name="RunManager" selected="CMake Application.analyzer_server">
     <configuration name="CodeCoachDBTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="CodeCoachDBTest" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="CodeCoachDBTest">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -224,7 +216,7 @@
       <workItem from="1764201053746" duration="13836000" />
       <workItem from="1764293077037" duration="7978000" />
       <workItem from="1764410758778" duration="1408000" />
-      <workItem from="1764550264248" duration="5152000" />
+      <workItem from="1764550264248" duration="6837000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
@@ -258,7 +250,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764540186467</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional.">
+      <option name="closed" value="true" />
+      <created>1764563549866</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764563549866</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +284,8 @@
     <MESSAGE value="Estructura V2" />
     <MESSAGE value="Arreglos" />
     <MESSAGE value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
+    <MESSAGE value="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional." />
+    <option name="LAST_COMMIT_MESSAGE" value="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

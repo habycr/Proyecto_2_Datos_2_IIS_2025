@@ -177,7 +177,6 @@
                                                    Grid.Row="1"
                                                    FontFamily="Consolas"
                                                    FontSize="14"
-                                                   SyntaxHighlighting="C++"
                                                    Background="#1e1e1e"
                                                    Foreground="White"
                                                    ShowLineNumbers="True"/>

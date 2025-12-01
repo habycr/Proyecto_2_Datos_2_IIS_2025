@@ -1,10 +1,17 @@
-﻿using System;
+﻿using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 using UI.Models;
 using UI.Services;
+
+
+
 
 namespace UI
 {
@@ -32,6 +39,9 @@ namespace UI
         {
             InitializeComponent();
 
+            CargarTemaNeonPastel();
+
+
             // Inicializa clientes HTTP
             _apiClient = new ProblemApiClient("http://localhost:8080");
             _analyzerService = new AnalyzerApiClient();
@@ -42,6 +52,29 @@ namespace UI
             // Verificar conexión con el Analizador de complejidad
             CheckServerConnection();
         }
+
+        // Esto es para que el editor de código use el tema Neon Pastel
+        private void CargarTemaNeonPastel()
+        {
+            
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CppNeonPastel-FIXED.xshd");
+                using (var stream = File.OpenRead(path))
+                using (var reader = new XmlTextReader(stream))
+                {
+                    CodeEditor.SyntaxHighlighting =
+                        HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando tema: " + ex.Message);
+                CodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C++");
+            }
+        }
+
+
 
         // =====================================================================
         // Evento: Ventana cargada → cargar lista inicial de problemas

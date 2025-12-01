@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CppNeonPastel-FIXED.xshd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="CppNeonPastel-FIXED.xshd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.3.1.120" />
   </ItemGroup>
 
