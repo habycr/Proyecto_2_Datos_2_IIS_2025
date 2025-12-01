@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SyntaxDefinition name="CppNeonPastelFIX" extensions=".cpp;.cc;.c;.h;.hpp"
+    xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+
+	<!-- PALETA CALAMITY / NEON PASTEL -->
+	<Color name="Default"      foreground="#FFFFFFFF" />
+	<!-- Blanco -->
+	<Color name="Keyword"      foreground="#7DF9FF" fontWeight="bold" />
+	<!-- Celeste -->
+	<Color name="Type"         foreground="#5CFFFF" />
+	<!-- Turquesa -->
+	<Color name="Comment"      foreground="#98FFB3" />
+	<!-- Verde menta -->
+	<Color name="String"       foreground="#FFC387" />
+	<!-- Durazno pastel -->
+	<Color name="Number"       foreground="#FFF7A8" />
+	<!-- Amarillo crema -->
+	<Color name="Preprocessor" foreground="#FF7CEB" />
+	<!-- Rosa pastel -->
+	<Color name="Operator"     foreground="#CCEFFF" />
+	<!-- Azul hielo -->
+
+	<RuleSet ignoreCase="false">
+
+		<!-- Comentarios -->
+		<Span color="Comment" begin="//" end="\n" />
+		<!-- Para /* ... */ hay que escapar el * en la regex -->
+		<Span color="Comment" begin="/\*" end="\*/" multiline="true" />
+
+
+		<!-- Strings (sin escapeCharacter para evitar error) -->
+		<Span color="String" begin="&quot;" end="&quot;" />
+		<Span color="String" begin="'" end="'" />
+
+		<!-- Preprocesador -->
+		<Span color="Preprocessor" begin="#" end="\n" />
+
+		<!-- Números -->
+		<Rule color="Number">\b0[xX][0-9a-fA-F]+\b</Rule>
+		<Rule color="Number">\b\d+(\.\d+)?\b</Rule>
+
+		<!-- Palabras clave -->
+		<Keywords color="Keyword">
+			<Word>if</Word>
+			<Word>else</Word>
+			<Word>for</Word>
+			<Word>while</Word>
+			<Word>do</Word>
+			<Word>switch</Word>
+			<Word>case</Word>
+			<Word>default</Word>
+			<Word>break</Word>
+			<Word>continue</Word>
+			<Word>return</Word>
+			<Word>namespace</Word>
+			<Word>using</Word>
+			<Word>class</Word>
+			<Word>struct</Word>
+			<Word>public</Word>
+			<Word>private</Word>
+			<Word>protected</Word>
+			<Word>virtual</Word>
+			<Word>override</Word>
+			<Word>const</Word>
+			<Word>static</Word>
+			<Word>inline</Word>
+			<Word>new</Word>
+			<Word>delete</Word>
+			<Word>try</Word>
+			<Word>catch</Word>
+			<Word>throw</Word>
+		</Keywords>
+
+		<!-- Tipos -->
+		<Keywords color="Type">
+			<Word>void</Word>
+			<Word>bool</Word>
+			<Word>char</Word>
+			<Word>short</Word>
+			<Word>int</Word>
+			<Word>long</Word>
+			<Word>float</Word>
+			<Word>double</Word>
+			<Word>unsigned</Word>
+			<Word>signed</Word>
+			<Word>auto</Word>
+			<Word>size_t</Word>
+			<Word>std</Word>
+			<Word>string</Word>
+		</Keywords>
+
+		<!-- Operadores -->
+		<Rule color="Operator">[+\-*/%=&lt;&gt;!|^~?:]+</Rule>
+
+	</RuleSet>
+</SyntaxDefinition>

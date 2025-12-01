@@ -27,7 +27,6 @@ find_package(cpr CONFIG REQUIRED)
 # Ejecutable 1: Prueba de BD (main_db_test)
 # ============================================================
 add_executable(CodeCoachDBTest
-        Gestor/main_db_test.cpp
         Gestor/src/ProblemRepository.cpp
 )
 
@@ -120,4 +119,4 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # con eso CLion verá el submódulo y te creará la configuración engine_demo
-add_subdirectory(evaluation_engine)
+add_subdirectory(Motor/evaluation_engine)

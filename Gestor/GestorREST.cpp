@@ -1,6 +1,3 @@
-// Archivo: Gestor/src/GestorREST.cpp
-// Servidor REST del Gestor de Problemas (CodeCoach)
-
 #include "ProblemRepository.h"
 
 #include <crow.h>
@@ -27,24 +24,19 @@ static crow::json::wvalue problem_to_json(const Problem& p, bool summary = false
     json["title"]      = p.title;
     json["difficulty"] = p.difficulty;
 
+    // Tags SIEMPRE, para que UI pueda usarlos
+    for (std::size_t i = 0; i < p.tags.size(); ++i) {
+        json["tags"][i] = p.tags[i];
+    }
+
     if (!summary) {
         json["description"] = p.description;
         json["code_stub"]   = p.code_stub;
 
-        // tags
-        for (std::size_t i = 0; i < p.tags.size(); ++i) {
-            json["tags"][i] = p.tags[i];
-        }
-
-        // test_cases
+        // test_cases completos
         for (std::size_t i = 0; i < p.test_cases.size(); ++i) {
             json["test_cases"][i]["input"]           = p.test_cases[i].input;
             json["test_cases"][i]["expected_output"] = p.test_cases[i].expected_output;
-        }
-    } else {
-        // En modo resumen, igual devolvemos tags porque son útiles para filtrar en UI
-        for (std::size_t i = 0; i < p.tags.size(); ++i) {
-            json["tags"][i] = p.tags[i];
         }
     }
 
@@ -185,6 +177,23 @@ int main() {
             return make_json_response(200, body);
         });
 
+        // --------- GET /problems/random ---------
+        CROW_ROUTE(app, "/problems/random")
+        ([&repo](const crow::request&) {
+            auto all = repo.get_all();
+            if (all.empty()) {
+                return make_error_response(404, "No hay problemas en la base de datos");
+            }
+
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<std::size_t> dist(0, all.size() - 1);
+
+            const auto& chosen = all[dist(gen)];
+            crow::json::wvalue body = problem_to_json(chosen, /*summary=*/false);
+            return make_json_response(200, body);
+        });
+
         // --------- GET /problems/<id> (detalle completo) ---------
         CROW_ROUTE(app, "/problems/<string>")
         ([&repo](const crow::request&, const std::string& problem_id) {
@@ -230,22 +239,6 @@ int main() {
             return make_json_response(200, body);
         });
 
-        // --------- GET /problems/random ---------
-        CROW_ROUTE(app, "/problems/random")
-        ([&repo](const crow::request&) {
-            auto all = repo.get_all();
-            if (all.empty()) {
-                return make_error_response(404, "No hay problemas en la base de datos");
-            }
-
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<std::size_t> dist(0, all.size() - 1);
-
-            const auto& chosen = all[dist(gen)];
-            crow::json::wvalue body = problem_to_json(chosen, /*summary=*/false);
-            return make_json_response(200, body);
-        });
 
         // --------- POST /problems (crear) ---------
         CROW_ROUTE(app, "/problems").methods(crow::HTTPMethod::Post)

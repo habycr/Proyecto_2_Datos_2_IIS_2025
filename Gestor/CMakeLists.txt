@@ -1,20 +1,23 @@
-# Este archivo NO genera ejecutables.
-# Solo define la librería "gestor" para que la raíz pueda usarla.
+# ============================================================================
+# Este CMake no crea ejecutables.
+# Define una librería llamada "gestor_lib" que contiene la capa de acceso
+# a MongoDB (ProblemRepository).
+# ============================================================================
 
 cmake_minimum_required(VERSION 3.15)
 
-# Crear una librería con el código del gestor
+# Compilar la librería con el código del repositorio
 add_library(gestor_lib
-        src/ProblemRepository.cpp
+        src/ProblemRepository.cpp   # implementación del repositorio
 )
 
-# Incluir los headers dentro de Gestor/include
+# Incluir headers desde Gestor/include para que otros targets los vean
 target_include_directories(gestor_lib
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-# Enlazar mongo C++ driver a esta librería
+# Vincular la librería con los drivers de MongoDB
 target_link_libraries(gestor_lib
         PUBLIC
         mongo::mongocxx_shared

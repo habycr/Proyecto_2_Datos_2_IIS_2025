@@ -7,15 +7,20 @@
 #include <algorithm>
 #include <chrono>
 #include <fstream>
-#include <iostream>   // solo para logs en demo
+#include <iostream>
 #include <cstdint>
 #include <system_error>
 
-#include <sstream>   // asegúrate de incluirlo
+#include <sstream>
 
 namespace {
 
-    // Busca la línea "Maximum resident set size (kbytes): N"
+    // ============================================================================
+    // extractMaxMemoryKb
+    // Extrae del runtime.log la línea con:
+    //   "Maximum resident set size (kbytes): N"
+    // Esto lo genera /usr/bin/time -v dentro del contenedor Docker.
+    // ============================================================================
     int extractMaxMemoryKb(const std::string& logText) {
         std::istringstream iss(logText);
         std::string line;
@@ -39,32 +44,57 @@ namespace {
 
 namespace engine {
 
+// ============================================================================
+// Constructor del servicio.
+// baseDir: carpeta base donde se crearán carpetas por submission
+// dockerImage: imagen Docker para compilar/ejecutar
+// ============================================================================
 EvaluationService::EvaluationService(std::filesystem::path baseDir,
                                      std::string dockerImage)
     : baseDir_(std::move(baseDir)),
       dockerImage_(std::move(dockerImage))
 {}
 
+// ============================================================================
+// evaluate
+// Orquesta tod0 el flujo:
+//
+// 1) Crear carpeta submission
+// 2) Escribir archivo fuente y archivos input/expected
+// 3) Compilar
+// 4) Ejecutar test por test
+// 5) Medir tiempo/memoria
+// 6) Comparar salida con expected_output
+// 7) Construir EvaluationResult final
+// ============================================================================
 EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
 {
     EvaluationResult result;
     result.submissionId = request.submissionId;
 
     try {
-        // 1. Crear directorio y archivos
+        // -------------------------
+        // 1. Crear directorio
+        // -------------------------
         auto submissionDir =
             SubmissionFilesystem::createSubmissionDir(baseDir_, request.submissionId);
 
+        // 2. Escribir código fuente
         SubmissionFilesystem::writeSourceFile(
             submissionDir, "main.cpp", request.sourceCode);
 
+        // 3. Escribir todos los test cases
         SubmissionFilesystem::writeTestFiles(
             submissionDir, request.testCases);
 
+        // -------------------------
         // 2. Compilar
+        // -------------------------
         DockerRunner runner(dockerImage_);
 
         auto comp = runner.compile(submissionDir, "main.cpp");
+
+        // Leer compile.log
         std::ifstream compLog(comp.logFilePath);
         if (compLog) {
             result.compileLog.assign(
@@ -72,12 +102,15 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
                 std::istreambuf_iterator<char>());
         }
 
+        // Si compilación falló
         if (comp.exitCode != 0) {
             result.overallStatus = OverallStatus::CompilationError;
             return result;
         }
 
-        // 3. Ejecutar tests uno por uno
+        // -------------------------
+        // 3. Ejecutar test cases
+        // -------------------------
         int maxTimeMs = 0;
         int maxMemoryKb = 0;
 
@@ -85,25 +118,28 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
             TestResult tr;
             tr.testId = tc.id;
 
+            // Construcción de nombres
             std::string inputFile   = "input_"   + tc.id + ".txt";
             std::string outputFile  = "output_"  + tc.id + ".txt";
             std::string runtimeFile = "runtime_" + tc.id + ".log";
 
-            // Preparar límites de ejecución para este test
+            // Configurar límites de ejecución
             RunLimits limits;
-            // Al menos 1 segundo, aunque el request tenga menos de 1000 ms
+
+            // time limit → mínimo 1s
             limits.timeLimitSeconds = std::max(1, request.timeLimitMs / 1000);
 
-            // memoryLimitKb -> MB (con mínimo razonable de 16 MB)
+            // memoria → convertir KB a MB
             if (request.memoryLimitKb > 0) {
                 limits.memoryLimitMb = std::max(16, request.memoryLimitKb / 1024);
             } else {
-                limits.memoryLimitMb = 256; // valor por defecto
+                limits.memoryLimitMb = 256;
             }
 
-            limits.cpuLimit  = 1.0; // 1 CPU lógico
-            limits.pidsLimit = 64;  // anti fork-bomb
+            limits.cpuLimit  = 1.0;
+            limits.pidsLimit = 64;
 
+            // Medición de tiempo
             auto start = std::chrono::steady_clock::now();
 
             auto runRes = runner.runSingleTest(
@@ -122,7 +158,7 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
                 maxTimeMs = tr.timeMs;
             }
 
-            // Leer runtime log (por si hubo errores)
+            // Leer runtime log
             std::ifstream rt(runRes.runtimeLogPath);
             if (rt) {
                 tr.runtimeLog.assign(
@@ -130,18 +166,21 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
                     std::istreambuf_iterator<char>());
             }
 
+            // Extraer memoria usada
             tr.memoryKb = extractMaxMemoryKb(tr.runtimeLog);
             if (tr.memoryKb > maxMemoryKb) {
                 maxMemoryKb = tr.memoryKb;
             }
 
-            // Clasificación del resultado
+            // Clasificar estado del test
             if (runRes.timedOut) {
                 tr.status = TestStatus::TimeLimitExceeded;
-            } else if (runRes.exitCode != 0) {
+            }
+            else if (runRes.exitCode != 0) {
                 tr.status = TestStatus::RuntimeError;
-            } else {
-                // 3.1. Límite de salida: p.ej. 1 MB
+            }
+            else {
+                // Límite de tamaño de salida: 1 MB
                 constexpr std::uintmax_t MAX_OUTPUT_BYTES = 1 * 1024 * 1024;
 
                 std::error_code ecSize;
@@ -153,11 +192,11 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
                     tr.runtimeLog +=
                         "\n[Output limit exceeded: " + std::to_string(outSize) + " bytes]\n";
                 } else {
-                    // Si no hay expected_output, es ejecución simple (caso /run)
+                    // Caso /run: no se compara expected_output
                     if (tc.expectedOutput.empty()) {
                         tr.status = TestStatus::Accepted;
                     } else {
-                        // Comparar salida con expected_output (caso /submissions normal)
+                        // Comparación tolerante
                         bool ok = OutputComparer::areEqual(
                             submissionDir / outputFile,
                             submissionDir / ("expected_" + tc.id + ".txt"));
@@ -170,10 +209,13 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
             result.tests.push_back(std::move(tr));
         }
 
+        // Guardar máximos globales
         result.maxTimeMs = maxTimeMs;
         result.maxMemoryKb = maxMemoryKb;
 
-        // 4. Determinar overallStatus
+        // -------------------------
+        // 4. Estado global
+        // -------------------------
         bool allAccepted = true;
         bool anyAccepted = false;
 
@@ -187,10 +229,12 @@ EvaluationResult EvaluationService::evaluate(const SubmissionRequest& request)
 
         if (allAccepted) {
             result.overallStatus = OverallStatus::Accepted;
-        } else if (anyAccepted) {
+        }
+        else if (anyAccepted) {
             result.overallStatus = OverallStatus::PartialAccepted;
-        } else {
-            result.overallStatus = OverallStatus::PartialAccepted; // o InternalError si quieres ser más estricto
+        }
+        else {
+            result.overallStatus = OverallStatus::PartialAccepted;
         }
 
     } catch (const std::exception& ex) {
