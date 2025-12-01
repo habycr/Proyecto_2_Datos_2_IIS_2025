@@ -1,5 +1,4 @@
-﻿// Archivo: Services/ProblemApiClient.cs
-// Cliente HTTP para hablar con el Gestor de Problemas en C++ (Crow + MongoDB).
+﻿// Cliente HTTP para hablar con el Gestor de Problemas en C++ (Crow + MongoDB).
 
 using System;
 using System.Collections.Generic;
@@ -12,10 +11,8 @@ using UI.Models;
 
 namespace UI.Services
 {
-    /// <summary>
     /// Cliente HTTP para comunicarse con el Gestor de Problemas (REST API en C++).
     /// Maneja las operaciones CRUD de problemas.
-    /// </summary>
     public class ProblemApiClient
     {
         private readonly HttpClient _httpClient;
@@ -48,9 +45,7 @@ namespace UI.Services
         }
 
         // ==================== GET /problems ====================
-        /// <summary>
         /// Obtiene la lista resumida de todos los problemas.
-        /// </summary>
         public async Task<List<ProblemDto>> GetAllProblemsAsync()
         {
             try
@@ -74,9 +69,7 @@ namespace UI.Services
         }
 
         // ==================== GET /problems/{id} ====================
-        /// <summary>
         /// Obtiene el detalle completo de un problema.
-        /// </summary>
         public async Task<ProblemDto?> GetProblemAsync(string problemId)
         {
             try
@@ -105,9 +98,7 @@ namespace UI.Services
         }
 
         // ==================== POST /problems ====================
-        /// <summary>
         /// Crea un nuevo problema. El DTO DEBE incluir un problem_id único.
-        /// </summary>
         public async Task<bool> CreateProblemAsync(ProblemDto problem)
         {
             try
@@ -136,9 +127,7 @@ namespace UI.Services
         }
 
         // ==================== PUT /problems/{id} ====================
-        /// <summary>
         /// Actualiza un problema existente. El ID va en la URL, NO en el body.
-        /// </summary>
         public async Task<bool> UpdateProblemAsync(string problemId, ProblemDto problemWithoutId)
         {
             try
@@ -184,9 +173,7 @@ namespace UI.Services
         }
 
         // ==================== DELETE /problems/{id} ====================
-        /// <summary>
         /// Elimina un problema existente.
-        /// </summary>
         public async Task<bool> DeleteProblemAsync(string problemId)
         {
             try
@@ -270,9 +257,7 @@ namespace UI.Services
         }
 
         // ==================== POST /submissions ====================
-        /// <summary>
         /// Envía una solución para que sea evaluada por el Gestor + Motor.
-        /// </summary>
         public async Task<EvaluationResponse?> SubmitSolutionAsync(
             string problemId,
             string language,

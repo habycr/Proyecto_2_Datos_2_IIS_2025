@@ -7,16 +7,27 @@
 
 namespace engine {
 
+// ============================================================================
+// Constructor: simplemente almacena el nombre de la imagen Docker a usar.
+// ============================================================================
 DockerRunner::DockerRunner(std::string imageName)
     : imageName_(std::move(imageName))
 {}
 
+// ============================================================================
+// buildVolumeArgument
+// Construye el argumento de volumen para Docker:
+//   -v "<ruta absoluta host>:/workspace"
+// Permite que el contenedor lea/escriba en la carpeta de la submission.
+// ============================================================================
 std::string DockerRunner::buildVolumeArgument(
     const std::filesystem::path& submissionDir) const
 {
-    // Convertir a ruta absoluta y normalizar separadores para Docker
+    // Convertir a ruta absoluta
     std::filesystem::path abs = std::filesystem::absolute(submissionDir);
     std::string hostPath = abs.string();
+
+    // Reemplazar backslashes por slashes (Windows compatibilidad)
     std::replace(hostPath.begin(), hostPath.end(), '\\', '/');
 
     std::ostringstream oss;
@@ -24,6 +35,12 @@ std::string DockerRunner::buildVolumeArgument(
     return oss.str();
 }
 
+// ============================================================================
+// compile
+// Ejecuta dentro del contenedor Docker:
+//   g++ main.cpp -O2 -std=c++20 -o main
+// El stderr se redirige a compile.log dentro del host.
+// ============================================================================
 CompileResult DockerRunner::compile(
     const std::filesystem::path& submissionDir,
     const std::string& sourceFileName) const
@@ -31,26 +48,38 @@ CompileResult DockerRunner::compile(
     CompileResult result;
     std::string volumeArg = buildVolumeArgument(submissionDir);
 
-    // compile.log quedará en el host: <submissionDir>/compile.log
     std::ostringstream cmd;
     cmd << "docker run --rm "
-        << "--network=none "
-        << "--memory=512m "
-        << "--cpus=1 "
+        << "--network=none "          // sin acceso a red
+        << "--memory=512m "           // límite de memoria
+        << "--cpus=1 "                // una CPU
         << volumeArg
         << imageName_ << " "
         << "/bin/bash -lc \"cd /workspace && "
         << "g++ " << sourceFileName
         << " -O2 -std=c++20 -o main 2> compile.log\"";
 
+    // Ruta al log dentro del host
     result.logFilePath = (submissionDir / "compile.log").string();
 
+    // Ejecutar comando
     int exitCode = std::system(cmd.str().c_str());
     result.exitCode = exitCode;
 
     return result;
 }
 
+// ============================================================================
+// runSingleTest
+// Ejecuta un test dentro de Docker con:
+//   - timeout
+//   - /usr/bin/time -v (para obtener memoria)
+//   - límites (memoria, CPU, pids)
+//
+// El input se redirige "< input_#.txt"
+// El output se escribe en "output_#.txt"
+// El stderr va a runtime_#.log
+// ============================================================================
 RunResult DockerRunner::runSingleTest(
     const std::filesystem::path& submissionDir,
     const std::string& inputFileName,
@@ -76,13 +105,14 @@ RunResult DockerRunner::runSingleTest(
         << " > " << outputFileName
         << " 2> " << runtimeLogName << "\"";
 
-    result.outputPath      = (submissionDir / outputFileName).string();
-    result.runtimeLogPath  = (submissionDir / runtimeLogName).string();
+    // Rutas finales de salida y log
+    result.outputPath     = (submissionDir / outputFileName).string();
+    result.runtimeLogPath = (submissionDir / runtimeLogName).string();
 
     int exitCode = std::system(cmd.str().c_str());
     result.exitCode = exitCode;
 
-    // Heurística simple: timeout(1) devuelve 124 cuando expira
+    // timeout devuelve 124 → time limit exceeded
     if (exitCode == 124) {
         result.timedOut = true;
     }

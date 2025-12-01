@@ -9,20 +9,43 @@
 using json = nlohmann::json;
 using namespace engine;
 
+// ============================================================================
+// Servidor REST del motor de evaluación
+//
+// Expone POST /evaluate
+// y delega tod0 el procesamiento en EvaluationService
+// ============================================================================
 int main() {
     crow::SimpleApp app;
 
+    // Carpeta donde se crearán las submissions
     std::filesystem::path baseDir =
         std::filesystem::current_path() / "eval_workdir";
 
+    // Servicio principal del motor
     EvaluationService service(baseDir, "codecoach-cpp:latest");
 
+    // ------------------------------------------------------------------------
+    // POST /evaluate
+    //
+    // Recibe:
+    // {
+    //   "submission_id": "...",
+    //   "problem_id": "...",
+    //   "language": "cpp",
+    //   "source_code": "...",
+    //   "time_limit_ms": 2000,
+    //   "test_cases": [...]
+    // }
+    //
+    // Y devuelve el JSON con los resultados detallados.
+    // ------------------------------------------------------------------------
     CROW_ROUTE(app, "/evaluate").methods(crow::HTTPMethod::Post)
     ([&service](const crow::request& req){
         try {
             json body = json::parse(req.body);
 
-            // Parsear SubmissionRequest desde JSON
+            // Parsear SubmissionRequest
             SubmissionRequest sr;
             sr.submissionId = body.at("submission_id").get<std::string>();
             sr.problemId    = body.at("problem_id").get<std::string>();
@@ -30,6 +53,7 @@ int main() {
             sr.sourceCode   = body.at("source_code").get<std::string>();
             sr.timeLimitMs  = body.value("time_limit_ms", 2000);
 
+            // test_cases (lista)
             for (auto& tc : body.at("test_cases")) {
                 TestCase t;
                 t.id = tc.at("id").get<std::string>();
@@ -38,9 +62,10 @@ int main() {
                 sr.testCases.push_back(t);
             }
 
+            // Ejecutar evaluación
             EvaluationResult er = service.evaluate(sr);
 
-            // Convertir EvaluationResult → JSON
+            // Convertir a JSON
             json result;
             result["submission_id"] = er.submissionId;
             result["overall_status"] =
@@ -49,11 +74,12 @@ int main() {
                 (er.overallStatus == OverallStatus::PartialAccepted) ? "PartialAccepted" :
                 "InternalError";
 
-            result["compile_log"] = er.compileLog;
-            result["max_time_ms"] = er.maxTimeMs;
+            result["compile_log"]  = er.compileLog;
+            result["max_time_ms"]  = er.maxTimeMs;
             result["max_memory_kb"] = er.maxMemoryKb;
 
             json testArray = json::array();
+
             for (auto& t : er.tests){
                 json jt;
                 jt["id"] = t.testId;
@@ -68,7 +94,6 @@ int main() {
                     "InternalError";
 
                 jt["runtime_log"] = t.runtimeLog;
-
                 testArray.push_back(jt);
             }
 

@@ -114,73 +114,92 @@
                          SelectionChanged="ProblemList_SelectionChanged" />
             </Grid>
 
-            <!-- PANEL DERECHO: Descripción + Editor -->
+            <!-- PANEL DERECHO: Descripción (izquierda) + Código (derecha) y Consola abajo -->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
+                    <!-- Franja principal: descripción + código -->
                     <RowDefinition Height="3*"/>
+                    <!-- Franja inferior: consola -->
                     <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-                <TabControl Grid.Row="0"
-                            Background="#2d2d30"
-                            Foreground="White">
-                    <TabItem Header="Descripción">
-                        <ScrollViewer>
-                            <TextBlock x:Name="DescriptionText"
-                                       TextWrapping="Wrap"
-                                       Foreground="White"
-                                       Margin="10"/>
-                        </ScrollViewer>
-                    </TabItem>
-                </TabControl>
+                <!-- DESCRIPCIÓN + CÓDIGO LADO A LADO -->
+                <Grid Grid.Row="0" Margin="5,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <!-- Descripción -->
+                        <ColumnDefinition Width="3*"/>
+                        <!-- Código -->
+                    </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="2*"/>
-                    </Grid.RowDefinitions>
+                    <!-- Descripción -->
+                    <GroupBox Header="Descripción"
+                              Grid.Column="0"
+                              Margin="0,0,5,0"
+                              Foreground="White"
+                              Background="#2d2d30">
+                        <Border Padding="5">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <TextBlock x:Name="DescriptionText"
+                                           TextWrapping="Wrap"
+                                           Foreground="White"/>
+                            </ScrollViewer>
+                        </Border>
+                    </GroupBox>
 
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="0"
-                                Margin="5">
-                        <Button Content="Run"
-                                Click="Run_Click"
-                                Margin="0,0,8,0"/>
-                        <Button Content="Submit"
-                                Click="Submit_Click"/>
-                    </StackPanel>
+                    <!-- Código + Botones -->
+                    <GroupBox Header="Código"
+                              Grid.Column="1"
+                              Margin="5,0,0,0"
+                              Foreground="White"
+                              Background="#2d2d30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- botones -->
+                                <RowDefinition Height="*"/>
+                                <!-- editor -->
+                            </Grid.RowDefinitions>
 
-                    <avalonedit:TextEditor x:Name="CodeEditor"
-                                           Grid.Row="1"
-                                           FontFamily="Consolas"
-                                           FontSize="14"
-                                           SyntaxHighlighting="C++"
-                                           Background="#1e1e1e"
-                                           Foreground="White"
-                                           ShowLineNumbers="True"/>
+                            <!-- Botones Run / Submit -->
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Row="0"
+                                        Margin="5">
+                                <Button Content="Run"
+                                        Click="Run_Click"
+                                        Margin="0,0,8,0"/>
+                                <Button Content="Submit"
+                                        Click="Submit_Click"/>
+                            </StackPanel>
 
-                    <TabControl Grid.Row="2"
-                                Background="#2d2d30"
-                                Foreground="White">
-                        <TabItem Header="Console">
-                            <TextBox x:Name="ConsoleOutput"
-                                     Foreground="White"
-                                     Background="#1e1e1e"
-                                     TextWrapping="Wrap"
-                                     AcceptsReturn="False"
-                                     IsReadOnly="True"
-                                     VerticalScrollBarVisibility="Auto"/>
-                        </TabItem>
-                        <TabItem Header="Output">
-                            <TextBox x:Name="ResultOutput"
-                                     Foreground="White"
-                                     Background="#1e1e1e"
-                                     IsReadOnly="True"
-                                     VerticalScrollBarVisibility="Auto"/>
-                        </TabItem>
-                    </TabControl>
+                            <!-- Editor de código -->
+                            <avalonedit:TextEditor x:Name="CodeEditor"
+                                                   Grid.Row="1"
+                                                   FontFamily="Consolas"
+                                                   FontSize="14"
+                                                   Background="#1e1e1e"
+                                                   Foreground="White"
+                                                   ShowLineNumbers="True"/>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
+
+                <!-- CONSOLA ABAJO (sin pestaña Output) -->
+                <GroupBox Grid.Row="1"
+                          Header="Consola"
+                          Margin="5,0,5,5"
+                          Foreground="White"
+                          Background="#2d2d30">
+                    <Border Padding="5">
+                        <TextBox x:Name="ConsoleOutput"
+                                 Foreground="White"
+                                 Background="#1e1e1e"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="False"
+                                 IsReadOnly="True"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </Border>
+                </GroupBox>
             </Grid>
         </Grid>
     </Grid>

@@ -8,8 +8,25 @@ using System.Windows.Controls;
 using UI.Models;
 using UI.Services;
 
+using System.IO;
+using System.Xml;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+
+
 namespace UI
 {
+    /// Ventana de administración del sistema.
+    ///
+    /// Funcionalidad principal:
+    /// - Crear nuevos problemas
+    /// - Editar problemas existentes
+    /// - Eliminar problemas
+    /// - Gestionar casos de prueba (input/expected)
+    ///
+    /// Esta vista es utilizada por docentes/administradores para mantener
+    /// la base de datos del Gestor de Problemas (C++).
     public partial class AdminWindow : Window
     {
         private ProblemApiClient _apiClient;
@@ -20,6 +37,8 @@ namespace UI
         {
             InitializeComponent();
 
+            CargarTemaNeonPastelEditor(CodeStubEditor); // para que el code stub use el tema
+
             // Inicializar cliente API
             _apiClient = new ProblemApiClient("http://localhost:8080");
             _currentTestCases = new List<TestCaseDto>();
@@ -27,6 +46,26 @@ namespace UI
             // Cargar lista al iniciar
             Loaded += AdminWindow_Loaded;
         }
+
+        // ==================== Cargar tema personalizado en AvalonEdit ====================
+        private void CargarTemaNeonPastelEditor(TextEditor editor)
+        {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CppNeonPastel.xshd");
+                using (var stream = File.OpenRead(path))
+                using (var reader = new XmlTextReader(stream))
+                {
+                    editor.SyntaxHighlighting =
+                        HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error cargando tema en Admin: " + ex.Message);
+            }
+        }
+
 
         // ==================== Inicialización ====================
         private async void AdminWindow_Loaded(object sender, RoutedEventArgs e)
@@ -102,7 +141,7 @@ namespace UI
 
             TitleTextBox.Text = problem.title;
             DescriptionTextBox.Text = problem.description;
-            CodeStubTextBox.Text = problem.code_stub;
+            CodeStubEditor.Text = problem.code_stub;
 
             // Dificultad
             DifficultyComboBox.SelectedIndex = problem.difficulty switch
@@ -157,7 +196,7 @@ namespace UI
                     title = TitleTextBox.Text.Trim(),
                     description = DescriptionTextBox.Text.Trim(),
                     difficulty = (DifficultyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Fácil",
-                    code_stub = CodeStubTextBox.Text.Trim(),
+                    code_stub = CodeStubEditor.Text.Trim(),
                     tags = TagsTextBox.Text
                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                         .Select(t => t.Trim())
@@ -351,7 +390,7 @@ namespace UI
 
             TitleTextBox.Clear();
             DescriptionTextBox.Clear();
-            CodeStubTextBox.Clear();
+            CodeStubEditor.Clear();
             TagsTextBox.Clear();
 
             DifficultyComboBox.SelectedIndex = 0; // Fácil por defecto

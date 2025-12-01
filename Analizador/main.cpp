@@ -1,7 +1,4 @@
-
-// Analizador/main.cpp
 #define CROW_MAIN
-
 
 #include <crow.h>
 #include "Analyzer/analizador.h"
@@ -14,7 +11,7 @@ using namespace std;
 int main() {
     crow::SimpleApp app;
 
-    // Cargar variables de entorno desde .env
+    // Cargar variables de entorno desde .env (ej: GEMINI_API_KEY).
     EnvLoader env(".env");
     string geminiKey = env.get("GEMINI_API_KEY", "");
 
@@ -24,6 +21,7 @@ int main() {
 
     if (!geminiKey.empty()) {
         cout << "[INFO] Gemini API: Enabled" << endl;
+        // Por seguridad solo se imprime un prefijo de la clave.
         cout << "[INFO] API Key: " << geminiKey.substr(0, 10) << "..." << endl;
     } else {
         cout << "[WARN] Gemini API: Disabled" << endl;
@@ -32,7 +30,7 @@ int main() {
 
     cout << "========================================" << endl;
 
-    // Endpoint: Analizar complejidad
+    // Endpoint principal: analiza la complejidad del código recibido vía POST /api/analyze
     CROW_ROUTE(app, "/api/analyze").methods(crow::HTTPMethod::Post)
     ([geminiKey](const crow::request& req) {
         crow::json::wvalue response;
@@ -40,6 +38,7 @@ int main() {
         try {
             auto body = crow::json::load(req.body);
 
+            // Validación básica del JSON de entrada.
             if (!body) {
                 response["success"] = false;
                 response["error"] = "Invalid JSON format";
@@ -48,10 +47,12 @@ int main() {
                 return res;
             }
 
+            // El campo "code" es obligatorio y contiene el código C++ a analizar.
             string code = body["code"].s();
             string problemName = "";
             string consoleOutput = "";
 
+            // Campos opcionales con metadatos adicionales.
             try {
                 if (body.has("problemName")) {
                     problemName = body["problemName"].s();
@@ -66,11 +67,11 @@ int main() {
                 cout << "[INFO] Problem: " << problemName << endl;
             }
 
-            // Analizar código con Gemini API key
+            // Crear el analizador y ejecutar el análisis usando la API key de Gemini (si existe).
             ComplexityAnalyzer analyzer(code, geminiKey);
             AnalysisResult result = analyzer.analyze();
 
-            // Construir respuesta
+            // Construir respuesta JSON para el cliente.
             response["success"] = result.success;
             response["complexity"] = result.complexity;
             response["algorithmType"] = result.algorithmType;
@@ -95,18 +96,20 @@ int main() {
             cout << "[SUCCESS] Analysis completed: " << result.complexity << endl;
 
         } catch (const exception& e) {
+            // Manejo de excepciones generales para evitar caídas del servidor.
             response["success"] = false;
             response["error"] = string("Exception: ") + e.what();
             cerr << "[ERROR] " << e.what() << endl;
         }
 
         crow::response res(response);
+        // CORS básico para permitir peticiones desde la UI en otro origen.
         res.add_header("Access-Control-Allow-Origin", "*");
         res.add_header("Content-Type", "application/json; charset=utf-8");
         return res;
     });
 
-    // Health check
+    // Endpoint de health check: permite verificar que el servicio está vivo.
     CROW_ROUTE(app, "/api/health").methods(crow::HTTPMethod::Get)
     ([]() {
         crow::json::wvalue health;
@@ -120,7 +123,7 @@ int main() {
         return res;
     });
 
-    // Test endpoint
+    // Endpoint de prueba estático: no analiza nada real, solo devuelve un ejemplo fijo.
     CROW_ROUTE(app, "/api/test")
     ([](const crow::request&) {
         crow::json::wvalue response;
@@ -152,6 +155,7 @@ int main() {
     });
 
 // ========== NUEVO: Test de conexión con Gemini ==========
+// Endpoint para probar específicamente que la integración con Gemini está funcionando.
 CROW_ROUTE(app, "/api/test-gemini")
 ([geminiKey](const crow::request&) {
     crow::json::wvalue response;
@@ -160,6 +164,7 @@ CROW_ROUTE(app, "/api/test-gemini")
         cout << "[TEST-GEMINI] Testing Gemini API connection..." << endl;
 
         if (geminiKey.empty()) {
+            // Si no hay API key, se informa al cliente.
             response["success"] = false;
             response["error"] = "Gemini API key not configured";
             response["message"] = "Set GEMINI_API_KEY in .env file";
@@ -169,7 +174,7 @@ CROW_ROUTE(app, "/api/test-gemini")
             return res;
         }
 
-        // Código de prueba simple
+        // Código de prueba simple para alimentar al analizador.
         string testCode = R"(
 void linearSearch(int n) {
     vector<int> arr(n);
@@ -182,7 +187,7 @@ void linearSearch(int n) {
 }
         )";
 
-        // Crear analizador con API key
+        // Crear analizador con API key y ejecutar un análisis completo.
         ComplexityAnalyzer analyzer(testCode, geminiKey);
         AnalysisResult result = analyzer.analyze();
 
@@ -193,10 +198,10 @@ void linearSearch(int n) {
             response["complexity"] = result.complexity;
             response["algorithmType"] = result.algorithmType;
 
-            // Verificar si las sugerencias vienen de Gemini o son estáticas
+            // Heurística para distinguir si las sugerencias provienen de Gemini o del fallback estático.
             bool isGeminiResponse = false;
             for (const auto& suggestion : result.suggestions) {
-                // Las sugerencias de Gemini suelen ser más largas y específicas
+                // Las sugerencias de Gemini suelen ser más largas y específicas.
                 if (suggestion.length() > 50) {
                     isGeminiResponse = true;
                     break;
@@ -231,7 +236,7 @@ void linearSearch(int n) {
     return res;
 });
 
-    // CORS
+    // CORS genérico para OPTIONS (preflight requests de navegadores).
     CROW_ROUTE(app, "/api/<path>").methods(crow::HTTPMethod::Options)
     ([](const crow::request&, string) {
         crow::response res(200);
@@ -244,6 +249,7 @@ void linearSearch(int n) {
     cout << "Server started at http://localhost:8081" << endl;
     cout << "========================================" << endl;
 
+    // Configuración del servidor HTTP: puerto 8081 y multihilo.
     app.port(8081)
         .multithreaded()
         .run();
