@@ -9,11 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="CppNeonPastel-FIXED.xshd" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="CppNeonPastel-FIXED.xshd">
+    <Content Include="CppNeonPastel.xshd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

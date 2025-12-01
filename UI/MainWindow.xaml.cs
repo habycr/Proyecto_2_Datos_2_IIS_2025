@@ -59,7 +59,7 @@ namespace UI
             
             try
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CppNeonPastel-FIXED.xshd");
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CppNeonPastel.xshd");
                 using (var stream = File.OpenRead(path))
                 using (var reader = new XmlTextReader(stream))
                 {

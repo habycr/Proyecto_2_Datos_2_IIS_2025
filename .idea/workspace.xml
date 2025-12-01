@@ -33,13 +33,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional.">
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos">
+      <change afterPath="$PROJECT_DIR$/UI/CppNeonPastel.xshd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/MainWindow.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/UI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UI/UI.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/UI.sln" beforeDir="false" afterPath="$PROJECT_DIR$/UI/UI.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +214,7 @@
       <workItem from="1764201053746" duration="13836000" />
       <workItem from="1764293077037" duration="7978000" />
       <workItem from="1764410758778" duration="1408000" />
-      <workItem from="1764550264248" duration="6837000" />
+      <workItem from="1764550264248" duration="7552000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
@@ -258,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764563549866</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos">
+      <option name="closed" value="true" />
+      <created>1764569097861</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1764569097861</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,7 +291,8 @@
     <MESSAGE value="Arreglos" />
     <MESSAGE value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
     <MESSAGE value="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional." />
-    <option name="LAST_COMMIT_MESSAGE" value="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional." />
+    <MESSAGE value="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
