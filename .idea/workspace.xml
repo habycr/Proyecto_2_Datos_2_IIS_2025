@@ -33,10 +33,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/AdminWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/UI/AdminWindow.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/AdminWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/AdminWindow.xaml.cs" afterDir="false" />
+    <list default="true" id="16c28f02-545d-4fbd-b5e2-70018525ff21" name="Changes" comment="Se mejoró el código del LLM para que sea más inteligente y dé un mejor fedback">
+      <change beforePath="$PROJECT_DIR$/Documentacion_Gestor_CodeCoach.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProyectoCompleto.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resumen_gestor.pdf" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +161,12 @@
       <recent name="C:\Users\josef\Documentos\GitHub\Proyecto_2_Datos_2_IIS_2025\evaluation_engine" />
     </key>
   </component>
-  <component name="RunManager" selected="CMake Application.problem_manager_api">
+  <component name="RunManager" selected="CMake Application.analyzer_server">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CodeCoachDBTest" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CodeCoachDBTest" TARGET_NAME="CodeCoachDBTest" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="CodeCoachDBTest" RUN_TARGET_NAME="CodeCoachDBTest">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -214,7 +219,9 @@
       <workItem from="1764293077037" duration="7978000" />
       <workItem from="1764410758778" duration="1408000" />
       <workItem from="1764550264248" duration="8080000" />
-      <workItem from="1764570519958" duration="1802000" />
+      <workItem from="1764570519958" duration="1891000" />
+      <workItem from="1764573374144" duration="1258000" />
+      <workItem from="1764601069445" duration="5540000" />
     </task>
     <task id="LOCAL-00001" summary="Estructura V2">
       <option name="closed" value="true" />
@@ -272,7 +279,23 @@
       <option name="project" value="LOCAL" />
       <updated>1764569730862</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos">
+      <option name="closed" value="true" />
+      <created>1764572878500</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1764572878500</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Se mejoró el código del LLM para que sea más inteligente y dé un mejor fedback">
+      <option name="closed" value="true" />
+      <created>1764607547028</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1764607547028</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -300,7 +323,8 @@
     <MESSAGE value="Se agregaron comentarios a todos los archivos de Motor, Analizador y Gestor" />
     <MESSAGE value="Se agregaron comentarios a todos los archivos de UI, además se arregló un problema de un botón que no estaba sirviendo y se modificó el aspecto de la UI para que sea más atractivo y funcional." />
     <MESSAGE value="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos" />
-    <option name="LAST_COMMIT_MESSAGE" value="Se mejoraron los colores de la UI, se agregaron tonos pastel más visibles y bonitos" />
+    <MESSAGE value="Se mejoró el código del LLM para que sea más inteligente y dé un mejor fedback" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se mejoró el código del LLM para que sea más inteligente y dé un mejor fedback" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
