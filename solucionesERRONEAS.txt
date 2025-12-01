@@ -1,0 +1,213 @@
+===========================
+1) palindrome-number
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    long long x; 
+    cin >> x;
+    cout << "false";
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    long long x;
+    cin >> x;
+    while (true) {}
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    long long x; 
+    cin >> x;
+    vector<int> v(2000000000, 7);
+    cout << "false";
+}
+
+
+
+===========================
+2) sum-of-digits
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    long long n; cin >> n;
+    cout << n;
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    long long n; cin >> n;
+    while(true) n++;
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    long long n; cin >> n;
+    vector<int> v(900000000);
+    cout << 0;
+}
+
+
+
+===========================
+3) maximum-in-array
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    cout << -999999;
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    char c;
+    while (true) cin >> c;
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<int> v(300000000);
+    cout << 0;
+}
+
+
+
+===========================
+4) valid-parentheses
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    cout << "true";
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    string s;
+    cin >> s;
+    while(true);
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<int> huge(500000000);
+    cout << "false";
+}
+
+
+
+===========================
+5) maximum-subarray-sum
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    cout << 0;
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    while(true){}
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<long long> v(800000000);
+    cout << 1;
+}
+
+
+
+===========================
+6) minimum-path-sum-grid
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    cout << 99999;
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    while(true){}
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<vector<int>> g(50000, vector<int>(50000));
+    cout << 0;
+}
+
+
+
+===========================
+7) sum-two-integers
+===========================
+
+--- WRONG ANSWER ---
+#include <iostream>
+using namespace std;
+int main() {
+    long long a,b; cin>>a>>b;
+    cout << a - b;
+}
+
+--- TLE ---
+#include <iostream>
+using namespace std;
+int main() {
+    while(true){}
+}
+
+--- MLE ---
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+    vector<int> v(900000000);
+    cout << 0;
+}
